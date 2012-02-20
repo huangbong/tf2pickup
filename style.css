@@ -1,0 +1,89 @@
+body {
+	background-color:#CCCCCC;
+	font-family:"Verdana";
+}
+
+#wrapper {
+	margin-left: 15%;
+	margin-right: 15%;
+	margin-top: 40px;
+}
+
+#header {
+	float: left;
+	padding-bottom: 15px;
+	width: 100%;
+}
+
+#welcome {
+	float: left;
+}
+
+#steam {
+	float: right;
+}
+
+#steam a img {
+	border: none;
+}
+
+#middle {
+	clear: both;
+	height: 600px;
+}
+
+#left {
+	float: left;
+	width: 34%;
+}
+
+#news {
+	border-style: solid;
+   border-color: #FFFFFF;
+	border-radius: 10px;
+	margin-top: 5px;
+	height: 170px;
+	padding: 10px;
+}
+
+#chat {
+	border-style: solid;
+   border-radius: 10px;
+   border-color: #FFFFFF;
+	margin-top: 15px;
+	height: 325px;
+	padding: 10px;
+}
+
+#right {
+	float: right;
+	width: 65%;
+}
+
+#footer {
+	clear: both;
+}
+
+#copy {
+	float: right;
+}
+
+#user {
+	float: left;
+}
+div.flag {
+	padding-top: 6px;
+	border: 0;
+}
+div.pug {
+	border-style: solid;
+	border-color: #FFFFFF;
+   border-radius: 10px;
+	margin-top: 5px;
+	margin-bottom: 12px;
+	padding: 10px;
+}
+a:link { 
+	text-decoration: none; 
+	color: #FF0000;
+}
