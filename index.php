@@ -1,4 +1,7 @@
-<?php include 'steambutton.php'; ?>
+<?php include 'openid.php'; ?>
+<?php
+$steamloginbutton = '<a href="' . SteamSignIn::genUrl() . '"><img src="http://cdn.steamcommunity.com/public/images/signinthroughsteam/sits_small.png" alt="steam login"/></a>';
+?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
@@ -15,14 +18,7 @@
 <div id="logo"></div>
 		</div>
 		<div id="steam">
-		<?php 
-		if (empty($_COOKIE['username'])){
-      echo $steamloginbutton;
-		}
-		else {
-      echo '<img src="' . $_COOKIE['avatar'] . '" alt="avatar"/> ' . $_COOKIE['username'] . ' || <a href="/stats" target="_self">stats</a> - <a href="/settings" target="_self">settings</a> - <a href="/logout.php" target="_self">logout</a>';
-		}
-		?>
+		<?php include 'userbar.php';?>
 		</div>
 	</div>
 	<div id="middle">

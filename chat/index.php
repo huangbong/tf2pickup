@@ -27,8 +27,7 @@ $(document).keypress(function(e)
 			type: "POST",
 			url: "post.php",
 			data: dataString,
-			success: function() {
-				alert(dataString);
+			success: function(message) {
 			}
 		});
 	}
@@ -42,11 +41,12 @@ function update()
   		document.getElementById("chatbox").innerHTML=data;
 	});
 	var elem = document.getElementById("chatbox");
-	elem.scrollTop = elem.scrollHeight;
 
 	setTimeout(update, 100);
 }
 setTimeout(update, 100);
+
+elem.scrollTop = elem.scrollHeight;
 </script>
 
 <textarea rows="10" cols="30" readonly="readonly" id="chatbox">
