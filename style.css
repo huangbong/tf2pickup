@@ -65,6 +65,21 @@ html {
 	padding: 10px;
 }
 
+#chatbox {
+   resize:none;
+	overflow:hidden;
+	border:0; 
+	outline: 0;
+	background-color: transparent; 
+	width: 98%; 
+	color: #0F0;
+	height: 90%;
+}
+
+#chatinput {
+width: 98%;
+}
+
 #right {
 	float: right;
 	width: 65%;
