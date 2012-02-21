@@ -12,7 +12,7 @@
 <div id="wrapper">
 	<div id="header">
 		<div id="welcome">
-		Welcome to Team Fortress 2 Pickup!
+<div id="logo"></div>
 		</div>
 		<div id="steam">
 		<?php 
@@ -51,7 +51,11 @@
 		</div>
 	</div>
 </div>
-<?php include 'footer.php'; ?>
+<div id="footer">
+   <div id="copy">
+   &copy;2012 TF2Pickup.com
+   </div>
+</div>
 </div>
 </body>
 </html>

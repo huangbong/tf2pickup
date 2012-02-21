@@ -1,18 +1,29 @@
-body {
-	background-color:#CCCCCC;
+html {
+	height: 100%;
 	font-family:"Verdana";
+	color: #d0cbc7;
+	background-color: #333333;
+}
+
+#logo {
+	background-image: url(http://cdn.huang.mx/i/fagmr.png);
+	background-repeat: no-repeat;
+	background-position: left top;
+	padding: 24px;
+	width: 270px;
 }
 
 #wrapper {
-	margin-left: 15%;
-	margin-right: 15%;
-	margin-top: 40px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 1000px;
 }
 
 #header {
 	float: left;
-	padding-bottom: 15px;
+	margin-bottom: 5px;
 	width: 100%;
+	margin-top: 20px;
 }
 
 #welcome {
@@ -39,7 +50,6 @@ body {
 
 #news {
 	border-style: solid;
-   border-color: #FFFFFF;
 	border-radius: 10px;
 	margin-top: 5px;
 	height: 170px;
@@ -49,7 +59,6 @@ body {
 #chat {
 	border-style: solid;
    border-radius: 10px;
-   border-color: #FFFFFF;
 	margin-top: 15px;
 	height: 325px;
 	padding: 10px;
@@ -77,13 +86,24 @@ div.flag {
 }
 div.pug {
 	border-style: solid;
-	border-color: #FFFFFF;
-   border-radius: 10px;
+	border-radius: 10px;
 	margin-top: 5px;
 	margin-bottom: 12px;
 	padding: 10px;
 }
 a:link { 
 	text-decoration: none; 
-	color: #FF0000;
+	color: #d0cbc7;
+}
+a:visited {
+	text-decoration: none;
+	color: #d0cbc7;
+}
+a:hover {
+	text-decoration: none;
+	color: #ffffff;
+}
+a:active {
+	text-decoration: none;
+	color: #d0cbc7;
 }

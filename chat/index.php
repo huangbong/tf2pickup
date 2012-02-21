@@ -2,52 +2,57 @@
 <head>
 <title>TF2 Pickup Chat</title>
 
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+<style type="text/css">
+#chatbox
+{
+	resize:none;
+	margin: 0; 
+	padding: 0;
+}
+</style>
+
 </head>
 <body>
 
-<?php
-$file = file_get_contents('chatlog.txt') or exit ("Unable to open file!");
-
-if (isset($_POST['submit']))
-{
-	if ($_POST["chat"] != "") 
-	{
-		$addFile = fopen("chatlog.txt", 'a') or exit ("Unable to open file!");
-		$append = "\n" . $_POST["chat"];
-		fwrite($addFile, $append);
-		fclose($addFile);
-	}
-}
-?>
-
 <script type="text/javascript">
+$(document).keypress(function(e)
+{
+	if (e.which == 13 && document.getElementById("chat").value != "")
+	{
+		var dataString = "msg=" + encodeURIComponent(document.getElementById("chat").value);
+
+		$.ajax({
+			type: "POST",
+			url: "post.php",
+			data: dataString,
+			success: function() {
+				alert(dataString);
+			}
+		});
+	}
+});
+
+
 function update() 
 {
 	$.get("chatlog.txt", function(data) 
 	{
   		document.getElementById("chatbox").innerHTML=data;
-  		alert(data);
 	});
+	var elem = document.getElementById("chatbox");
+	elem.scrollTop = elem.scrollHeight;
 
-	setTimeout(update, 1000);
+	setTimeout(update, 100);
 }
-
-setTimeout(update, 1000);
+setTimeout(update, 100);
 </script>
 
 <textarea rows="10" cols="30" readonly="readonly" id="chatbox">
-<?php echo htmlentities($file); ?>
-</textarea>
+</textarea></br>
 
-<form method="post">
-Chat: <input type="text" name="chat"/>
-<input name="submit" type="submit"/>
-</form>
-
-<div id="test">
-hello. test.
-</div>
+<input type="text" name="chat" id="chat"/>
 
 </body>
 
