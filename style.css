@@ -72,8 +72,9 @@ html {
 	outline: 0;
 	background-color: transparent; 
 	width: 98%; 
-	color: #0F0;
+	color: #d0cbc7;
 	height: 90%;
+   font-family: "Verdana";
 }
 
 #chatinput {
