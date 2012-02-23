@@ -6,17 +6,27 @@ html {
 }
 
 #logo {
-	background-image: url(http://cdn.huang.mx/i/fagmr.png);
+	background-image: url(http://cdn.tf2pickup.com/logo.png);
 	background-repeat: no-repeat;
 	background-position: left top;
 	padding: 24px;
 	width: 270px;
 }
 
+#superwrapper {
+	margin-left: auto;
+	margin-right: auto;
+	width: 1150px;
+	padding-top: 25px;
+	background-image: url(http://cdn.tf2pickup.com/tf2logo.png);
+	background-repeat: no-repeat;
+	background-position: 0px 5px;
+}
+
 #wrapper {
 	margin-left: auto;
 	margin-right: auto;
-	width: 1000px;
+	width: 1050px;
 }
 
 #header {
@@ -42,6 +52,7 @@ html {
 #middle {
 	clear: both;
 	height: 600px;
+	width: 100%;
 }
 
 #left {
@@ -55,6 +66,7 @@ html {
 	margin-top: 5px;
 	height: 170px;
 	padding: 10px;
+	background-color: #333333;
 }
 
 #chat {
@@ -66,7 +78,7 @@ html {
 }
 
 #chatbox {
-   resize:none;
+	resize:none;
 	overflow:hidden;
 	border:0; 
 	outline: 0;
@@ -74,11 +86,12 @@ html {
 	width: 98%; 
 	color: #d0cbc7;
 	height: 90%;
-   font-family: "Verdana";
+	font-family: "Verdana";
+	font-size: 12px;
 }
 
 #chatinput {
-width: 98%;
+	width: 98%;
 }
 
 #right {
@@ -97,17 +110,42 @@ width: 98%;
 #user {
 	float: left;
 }
-div.flag {
-	padding-top: 6px;
-	border: 0;
-}
 div.pug {
+	height: 80px;
 	border-style: solid;
 	border-radius: 10px;
 	margin-top: 5px;
 	margin-bottom: 12px;
-	padding: 10px;
+	#padding: 10px;
+	width: 100%;
+	position: relative;
 }
+
+div.pug:hover {
+	border-color: #FFFFFF;
+}
+div.pug1 {
+	position:absolute;
+	left: 2%;
+   margin-top: 25px;
+}
+div.pug2 {
+	position:absolute;
+	left: 32%;
+   margin-top: 25px;
+}
+div.pug3 {
+	position:absolute;
+	left: 55%;
+   margin-top: 25px;
+}
+div.pug4 {
+	position:absolute;
+	left: 82%;
+	font-size: 35px;
+	margin-top: 25px;
+}
+
 a:link { 
 	text-decoration: none; 
 	color: #d0cbc7;

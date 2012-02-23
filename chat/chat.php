@@ -1,44 +1,115 @@
 <script type="text/javascript">
-//<![CDATA[
+var curMessageID = 0;
+var updateTime = 100;
+var updateCounter = 0;
+
 $(document).keypress(function(e)
 {
 	if (e.which == 13 && document.getElementById("chatinput").value != "")
 	{
-		var dataString = "msg=" + encodeURIComponent(document.getElementById("chatinput").value);
-		document.getElementById("chatinput").value="";
-
 		$.ajax({
 			type: "POST",
-			url: "chat/post.php",
-			data: dataString,
+			url: "chat/getName.php",
+			data: "",
 			success: function(message) {
+				if (message == "0")
+				{
+					var dataString = "msg=" + encodeURIComponent(document.getElementById("chatinput").value);
+					document.getElementById("chatinput").value="";
+
+					$.ajax({
+						type: "POST",
+						url: "chat/post.php",
+						data: dataString,
+						success: function(message) {
+						}
+					});
+				}
+				else
+				{
+					alert("Please login before posting!");
+				} 
 			}
 		});
 	}
 });
+
+/*
+	if (e.which == 13 && document.getElementById("chatinput").value != "")
+	{
+		$.ajax({
+			type: "POST",
+			url: "chat/getName.php",
+			data: "",
+			success: function(message) {
+				if (message == "0")
+				{
+					var dataString = "msg=" + encodeURIComponent(document.getElementById("chatinput").value);
+					document.getElementById("chatinput").value="";
+
+					$.ajax({
+						type: "POST",
+						url: "chat/post.php",
+						data: dataString,
+						success: function(message) {
+						}
+					});
+				}
+				else
+				{
+					
+				}
+			}
+		});
+	}
+*/
 
 
 function update() 
 {
 	$.ajax({
 		type: "POST",
-		url: "chat/retrieve.php",
-		data: ""
-	}).done(function(msg) {
-		if (msg != document.getElementById("chatbox").value)
-		{
-			var txt = $("textarea#chatbox");
-			txt.val(msg);
-			//document.getElementById("chatbox").innerHTML = msg;
-			var elem = document.getElementById('chatbox');  
-    		elem.scrollTop = elem.scrollHeight;
-		}	
+		url: "chat/findNew.php",
+		data: "ID=" + curMessageID,
+		success: function(message) {
+			if (message != "nothing detected")
+			{
+				$.ajax({
+					type: "POST",
+					url: "chat/retrieve.php",
+					data: "ID=" + curMessageID + "&newID=" + message,
+					success: function(message2) {
+						var txt = $("textarea#chatbox");
+						txt.append(message2);
+						var elem = document.getElementById('chatbox');
+						elem.scrollTop = elem.scrollHeight;
+						updateCounter = 0;
+					}
+				});
+			}
+			else 
+			{
+				updateCounter++;
+			}
+			if (message != "nothing detected")
+			{
+				curMessageID = message;
+			}
+			if (updateCounter == 100)
+			{
+				updateTime = 5000;
+			}
+			else if (updateCounter == 0) 
+			{
+				updateTime = 100;
+			}
+		}
 	});
 
-	setTimeout(update, 100);
+	setTimeout(update, updateTime);
 }
 
-setTimeout(update, 100);
+setTimeout(update, updateTime);
 </script>
 
 <textarea rows="10" cols="30" readonly="readonly" id="chatbox">

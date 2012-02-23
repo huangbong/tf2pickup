@@ -1,6 +1,6 @@
 <?php include '../session.php';?>
 <?php
-	$message = $_POST['msg'];
+	$message = urlencode($_POST['msg']);
 	$curDate = date('h:i:s');
 	
 	if (!empty($_SESSION['username']))
