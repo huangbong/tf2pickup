@@ -9,7 +9,7 @@ class mysql {
     function connect() {
         /* If this fails, the whole site will just be replaced by
          * an error message... */
-        $con = mysql_connect(DB_HOST, DB_USER, DB_PASS) or die("");
+        $con = mysql_connect(DB_HOST, DB_USER, DB_PASS) or die("Error connecting to MySQL");
         mysql_select_db(DB_NAME, $con);
         return $con;
     }
