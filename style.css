@@ -27,8 +27,8 @@ div#alert_contents {
     border: 3px #D0CBC7 solid;
     text-align: center;
     padding-top: 50px;
-	position: relative;
-	top: 50%;
+    position: relative;
+    top: 50%;
     margin: -144px auto;
 }
 
