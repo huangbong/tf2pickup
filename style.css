@@ -25,9 +25,11 @@ div#alert_contents {
     background-color: #333;
     border-radius: 24px;
     border: 3px #D0CBC7 solid;
-    margin: 23% auto;
     text-align: center;
     padding-top: 50px;
+	position: relative;
+	top: 50%;
+    margin: -144px auto;
 }
 
 div#alert_contents h2 {
