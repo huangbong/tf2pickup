@@ -24,7 +24,7 @@ $con = mysql::connect();
 $search = "SELECT * FROM `users` WHERE `id` = '$steam64'";
 $result = mysql_query($search);
 
-if (mysql_num_rows($result) >= 0) {
+if (mysql_num_rows($result) === 1) {
     mysql_query("UPDATE `users` SET `username` = '$username', `avatar` = '$avatar', `country` = '$country' WHERE `id` = '$steam64'");
 }
 else {
