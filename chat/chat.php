@@ -2,6 +2,8 @@
 var curMessageID = 0;
 var updateTime = 100;
 var updateCounter = 0;
+var alertBox = document.getElementById("alert");
+var alertBackground = document.getElementById("alertbackground");
 
 $(document).keypress(function(e)
 {
@@ -27,43 +29,16 @@ $(document).keypress(function(e)
 				}
 				else
 				{
-					alert("Please login before posting!");
+					//alertBox.style.height = 200px;
+					//alertBox.style.width = 500px;
+					//alertBox.backgroundColor = #8b7d6b;
+					//alertBox.innerHTML="Please login to use this feature.";
+					//alert("Please login before posting!");
 				} 
 			}
 		});
 	}
 });
-
-/*
-	if (e.which == 13 && document.getElementById("chatinput").value != "")
-	{
-		$.ajax({
-			type: "POST",
-			url: "chat/getName.php",
-			data: "",
-			success: function(message) {
-				if (message == "0")
-				{
-					var dataString = "msg=" + encodeURIComponent(document.getElementById("chatinput").value);
-					document.getElementById("chatinput").value="";
-
-					$.ajax({
-						type: "POST",
-						url: "chat/post.php",
-						data: dataString,
-						success: function(message) {
-						}
-					});
-				}
-				else
-				{
-					
-				}
-			}
-		});
-	}
-*/
-
 
 function update() 
 {
