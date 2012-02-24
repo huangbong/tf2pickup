@@ -8,7 +8,8 @@ require 'header.php';
             2.19.2012 - haxing noobs
             </div>
             <div id="chat">
-                <?php include 'chat/chat.php';?>
+                <textarea readonly="readonly" id="chatbox"></textarea>
+                <input type="text" id="chatinput" autocomplete="off"/>
             </div>
         </div>
 

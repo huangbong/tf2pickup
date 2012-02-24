@@ -11,6 +11,7 @@ $logged_in = isset($_SESSION['steam64']);
         <link rel="shortcut icon" type="image/x-icon" href="http://cdn.tf2pickup.com/favicon.ico">
         <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
         <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="scripts/chat<?php if(isset($_GET["gc"])) {?>_gc<?php } ?>.js"></script>
     </head>
     <body>
     <div id="alert"<?php if ($logged_in) { ?> class="hidden"<?php } ?>>
