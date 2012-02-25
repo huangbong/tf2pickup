@@ -2,34 +2,20 @@
     /* Common jQuery handles */
     var $news, $stats, $lobby_info;
 
-    var log = function() {
-        if (console) {
-            var log = Function.prototype.bind.call(console.log, console);
-            log.apply(console, $.makeArray(arguments));
-        }
-    }
-
-
     /* Display news in */
     var displayNews = function($steam64) {
-        log("Displaying news");
-
         $stats.hide();
         $lobby_info.hide();
         $news.show();
     };
 
     var displayUserStats = function(steam64) {
-        log("Displaying stats of: " + steam64);
-
         $stats.show();
         $lobby_info.hide();
         $news.hide();
     };
 
     var displayLobbyInfo = function(lobby_id) {
-        log("Displaying stats of: " + lobby_id);
-
         $stats.hide();
         $lobby_info.show();
         $news.hide();
