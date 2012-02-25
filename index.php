@@ -18,11 +18,17 @@ $logged_in = isset($_SESSION['steam64']);
     <body>
         <div id="alert"<?php if ($logged_in) { ?> class="hidden"<?php } ?>>
             <div id="alert_contents">
-                <h2>You have to sign in with Steam to use this site!</h2>
-                <a href="<?php echo SteamSignIn::genUrl(); ?>">
-                    <img src="http://cdn.steamcommunity.com/public/images/signinthroughsteam/sits_small.png"
-                         alt="steam login"/>
-                </a>
+                <div id="login_box">
+                    <h2>You have to sign in with Steam to use this site!</h2>
+                    <a href="<?php echo SteamSignIn::genUrl(); ?>">
+                        <img src="http://cdn.steamcommunity.com/public/images/signinthroughsteam/sits_small.png"
+                             alt="steam login"/>
+                    </a>
+                </div>
+                <div id="start_lobby_box">
+                    <div class="close_alert">X</div>
+                    <h2>Create a lobby</h2>
+                </div>
             </div>
         </div>
         <div id="superwrapper">
@@ -111,6 +117,25 @@ if (isset($logged_in)) {
                     </div>
 
                     <div id="right">
+                        <div id="pug_list_header">
+                            Filter:
+                            <span id="filter_6s" filter="pug_type_1">
+                                6v6
+                            </span>
+                            <span id="filter_9s" filter="pug_type_2">
+                                9v9
+                            </span>
+                            <span id="filter_us" filter="region_us">
+                                <img src="img/us.png" />
+                            </span>
+                            <span id="filter_eu" filter="region_eu" class="filter_disabled">
+                                <img src="img/eu.png" />
+                            </span>
+                            <input type="text" id="filter_map" placeholder="Map name" />
+                            <a href="#" id="start_lobby">
+                                Start Lobby
+                            </a>
+                        </div>
                         <div class="pug" pugid="3">
                             <div class="pug_map">
                                 <div class="map_image">
@@ -125,11 +150,12 @@ if (isset($logged_in)) {
                                 11/18
                             </div>
                             <div class="pug_server_info">
-                                Server: RUGC East Coast Match Server <br />
-                                Host: bEAST Gcommer
+                                Server: RUGC East Coast Match Server<br />
+                                Host: bEAST Gcommer<br />
+
                             </div>
                             <div class="pug_teams">
-                                <div class="pug_team red_team">
+                                <div class="pug_team team_1">
                                     <img src="img/class_icons/scout.png" class="empty" />
                                     <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/4f/4fdc405b2b955056cbc8e0aae4ef0c7a3cf98105.jpg" class="mini_player" />
                                     <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/5c/5c237bb671fca4de02a4aee1008a5f81bdf77e3c.jpg" class="mini_player" />
@@ -140,7 +166,7 @@ if (isset($logged_in)) {
                                     <img src="img/class_icons/sniper.png" class="empty" />
                                     <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/73/73adc812c1cbe28b0d284522a248debf0a021a87.jpg" class="mini_player" />
                                 </div>
-                                <div class="pug_team blue_team">
+                                <div class="pug_team team_2">
                                     <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/8e/8e4b419bd8ce849dd919d8317ee374082138c92a.jpg" steamid="steam54" class="mini_player friend" />
                                     <img src="img/class_icons/soldier.png" class="empty" />
                                     <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/72/72f78b4c8cc1f62323f8a33f6d53e27db57c2252.jpg" class="mini_player" />
