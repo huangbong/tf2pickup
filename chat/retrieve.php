@@ -4,10 +4,11 @@
 	$newID = $_POST['newID'];
 	$toID = $newID - $curID;
 
-	//if ($curID != 0)
-	//{
-	//	$curID -= 2;
-	//}
+	if ($toID > 50)
+	{
+		$toID = 50;
+		$curID = $newID - $toID;
+	}
 
 	$con = mysql_connect("localhost","tf2pickup","dHuY4k3MNflJ6RV");
 	if (!$con)
