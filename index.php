@@ -46,9 +46,11 @@ if (isset($logged_in)) {
                         <div id="news">
                             2.19.2012 - haxing noobs
                         </div>
-                        <div id="chat">
-                            <textarea readonly="readonly" id="chatbox"></textarea>
-                            <input type="text" id="chatinput" autocomplete="off"/>
+                        <div id="chat_wrapper">
+                            <div id="chat">
+                                <textarea readonly="readonly" id="chatbox"></textarea>
+                                <input type="text" id="chatinput" autocomplete="off"/>
+                            </div>
                         </div>
                     </div>
 
