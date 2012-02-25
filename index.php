@@ -8,8 +8,8 @@ $logged_in = isset($_SESSION['steam64']);
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-        <title>TF2 Pickup Games</title>
-        <link rel="shortcut icon" type="image/x-icon" href="http://cdn.tf2pickup.com/favicon.ico">
+        <title>TF2Pickup - Play Team Fortress 2 Pickup Games</title>
+        <link rel="shortcut icon" type="image/x-icon" href="http://cdn.tf2pickup.com/favicon.ico"/>
         <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
         <script src="http://code.jquery.com/jquery-latest.js"></script>
         <script src="scripts/chat<?php if(isset($_GET["gc"])) {?>_gc<?php } ?>.js"></script>
@@ -110,7 +110,7 @@ if (isset($logged_in)) {
 
                         <div id="footer">
                             <div id="copy">
-                                &copy;2012 TF2Pickup.com
+                                &copy; 2012 TF2Pickup.com
                             </div>
                         </div>
                     </div>

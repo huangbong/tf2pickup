@@ -1,12 +1,9 @@
 var curMessageID = 0;
-//var time = new Date().getTime() / 1000;
 
 $(document).keypress(function(e)
 {
     if (e.which == 13 && document.getElementById("chatinput").value != "")
     {
-        //alert(time - Date().getTime()/1000);
-        //time = Date().getName() / 1000;
         $.ajax({
             type: "POST",
             url: "chat/getName.php",
