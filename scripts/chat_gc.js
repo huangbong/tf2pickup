@@ -9,7 +9,7 @@ $(function() {
                 curId = val["id"];
                 $chatbox.append(val["time"] + " "
                               + val["username"] + ": "
-                              + val["message"] + "\n");
+                              + val["message"] + "<br />");
             });
             timer = setTimeout(update, 2500);
             $chatbox.scrollTop(999999);

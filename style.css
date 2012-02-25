@@ -31,7 +31,7 @@ a:hover {
     display: none;
 }
 
-/* Alert/Login box */
+/* Alert box for logging in/starting lobbies/etc */
 div#alert {
     width: 100%;
     height: 100%;
@@ -55,7 +55,25 @@ div#alert_contents {
     margin: -144px auto;
 }
 
-div#alert_contents h2 {
+div#login_box, div#start_pug_box {
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+div.close_alert {
+    position: absolute;
+    top: 6px;
+    right: 11px;
+    color: rgb(151, 51, 51);
+    cursor: pointer;
+}
+
+div#login_box {
+    display: block;
+}
+
+div#login_box h2 {
     height: 60px;
 }
 
@@ -134,14 +152,14 @@ div#login_box img {
     z-index: 100;
 }
 
-#news, #lobby_info, #player_stats {
+#news, #pug_info, #player_stats {
     display: none;
     height: 100%;
     width: 100%;
     overflow: auto;
 }
 
-#player_stats {
+#news {
     display: block;
 }
 
@@ -201,6 +219,53 @@ div#login_box img {
     height: 20px;
 }
 
+/* Filter and Start PUG header */
+div#pug_list_header {
+    height: 30px;
+    padding: 5px;
+    width: 100%;
+    background-color: #282828;
+    border-radius: 10px;
+    font-size: 17px;
+
+    /* Disable annoying text selection when pressing
+     * the filter buttons */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+div#pug_list_header span {
+    cursor: pointer;
+}
+
+div#pug_list_header img {
+    position: relative;
+    top: 2px;
+}
+
+input#filter_map {
+    position: relative;
+    top: -2px;
+}
+
+.filter_disabled {
+    opacity: .3;
+}
+
+span#filter_us, input#filter_map {
+    margin-left: 10px;
+}
+
+a#start_pug {
+    float: right;
+}
+
+/* Pug listing style */
 div.pug:hover {
     border-color: #FFFFFF;
 }
@@ -209,7 +274,7 @@ div.pug {
     height: 80px;
     border-style: solid;
     border-radius: 10px;
-    margin-bottom: 12px;
+    margin-top: 10px;
     width: 100%;
     position: relative;
     cursor: pointer;
@@ -229,6 +294,11 @@ div.pug .pug_map .map_name {
 
 div.pug .pug_title {
     float: left;
+}
+
+div.pug_title img {
+    position: relative;
+    top: 4px;
 }
 
 div.pug .pug_teams {
@@ -263,7 +333,7 @@ div.pug_player_count {
 div.pug_server_info {
     float: right;
     margin: 5px 5px 0 0;
-    width: 200px;
+    max-width: 305px;
     font-size: 11px;
 }
 

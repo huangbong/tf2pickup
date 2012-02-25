@@ -42,7 +42,7 @@ function update()
                     data: "ID=" + curMessageID + "&newID=" + message,
                     success: function(message2) {
                         var txt = $("textarea#chatbox");
-                        txt.append(message2);
+                        txt.append(message2.replace(/\n\r?/g, '<br />'));
                         var elem = document.getElementById('chatbox');
                         elem.scrollTop = elem.scrollHeight;
                     }
