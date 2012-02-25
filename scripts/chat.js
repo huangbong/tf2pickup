@@ -53,7 +53,7 @@ function update()
                     url: "chat/retrieve.php",
                     data: "ID=" + curMessageID + "&newID=" + message,
                     success: function(message2) {
-                        var txt = $("textarea#chatbox");
+                        var txt = $("#chatbox");
                         txt.append(message2.replace(/\n\r?/g, '<br />'));
                         var elem = document.getElementById('chatbox');
                         elem.scrollTop = elem.scrollHeight;

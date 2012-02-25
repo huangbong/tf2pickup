@@ -110,7 +110,7 @@ if (isset($logged_in)) {
                         </div>
                         <div id="chat_wrapper">
                             <div id="chat">
-                                <textarea readonly="readonly" id="chatbox"></textarea>
+                                <div id="chatbox"></div>
                                 <input type="text" id="chatinput" autocomplete="off"/>
                             </div>
                         </div>
@@ -149,11 +149,6 @@ if (isset($logged_in)) {
                             <div class="pug_player_count">
                                 11/18
                             </div>
-                            <div class="pug_server_info">
-                                Server: RUGC East Coast Match Server<br />
-                                Host: bEAST Gcommer<br />
-
-                            </div>
                             <div class="pug_teams">
                                 <div class="pug_team team_1">
                                     <img src="img/class_icons/scout.png" class="empty" />
@@ -177,6 +172,26 @@ if (isset($logged_in)) {
                                     <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/a8/a8d7d3d1762464bae43274cb1ab0d42d27481861.jpg" class="mini_player" />
                                     <img src="img/class_icons/spy.png" class="empty" />
                                 </div>
+                            </div>
+                            <div class="pug_server_info">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            Server:
+                                        </td>
+                                        <td>
+                                            RUGC East Coast Match Server
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Host:
+                                        </td>
+                                        <td>
+                                            bEAST Gcommer
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
 

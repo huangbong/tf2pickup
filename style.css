@@ -181,6 +181,8 @@ div#login_box img {
 
 #chatbox {
     resize: none;
+    overflow-y: auto;
+    white-space: normal;
     border: 0;
     outline: 0;
     background-color: transparent;
@@ -328,13 +330,16 @@ div.pug .pug_team:first-child {
 div.pug_player_count {
     float: right;
     margin: 0 5px 0 0;
+    font-size: 25px;
 }
 
 div.pug_server_info {
     float: right;
+    clear: right;
     margin: 5px 5px 0 0;
     max-width: 305px;
     font-size: 11px;
+    text-align: right;
 }
 
 /* Players stats! */
