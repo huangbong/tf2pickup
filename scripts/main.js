@@ -4,7 +4,8 @@
 
     var log = function() {
         if (console) {
-            console.log.apply(console, $.makeArray(arguments));
+            var log = Function.prototype.bind.call(console.log, console);
+            log.apply(console, $.makeArray(arguments));
         }
     }
 
