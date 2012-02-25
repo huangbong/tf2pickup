@@ -5,15 +5,25 @@
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
+    font-family: Verdana, Arial, sans-serif;
 }
 
 html {height: 100%;}
 
 body {
     height: 100%;
-    font-family:"Verdana";
     color: #d0cbc7;
     background-color: #333333;
+}
+
+a {
+    text-decoration: none;
+}
+a:link, a:visited, a:active {
+    color: #d0cbc7;
+}
+a:hover {
+    color: #ffffff;
 }
 
 /* General classes */
@@ -62,7 +72,7 @@ div#alert_contents img {
     width: 1150px;
     height: 100%;
     position: relative;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
 }
 
 #wrapper {
@@ -218,12 +228,73 @@ div.pug4 {
     margin-top: 25px;
 }
 
-a {
-    text-decoration: none;
+div.pug {
+    height: 80px;
+    border-style: solid;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    #padding: 10px;
+    width: 100%;
+    position: relative;
 }
-a:link, a:visited, a:active {
-    color: #d0cbc7;
+
+/* Gcommer's pug concept */
+div.pug_gc:hover {
+    border-color: #FFFFFF;
 }
-a:hover {
-    color: #ffffff;
+
+div.pug_gc {
+    height: 80px;
+    border-style: solid;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    width: 100%;
+    position: relative;
+    cursor: pointer;
+}
+
+div.pug_gc .pug_map {
+    width: 114px;
+    height: 64px;
+    margin: 5px;
+    float: left;
+}
+
+div.pug_gc .pug_map .map_name {
+    font-size: 11px;
+    float: left;
+}
+
+div.pug_gc .pug_title {
+    float: left;
+}
+
+div.pug_gc .pug_teams {
+    float: left;
+    margin: 5px 5px 0 0;
+}
+
+div.pug_gc .pug_teams img {
+    width: 20px;
+    height: 20px;
+    border: 2px transparent solid;
+    border-radius: 2px;
+}
+
+div.pug_gc .pug_teams img.empty {
+    border: 0;
+}
+
+div.pug_gc .pug_teams img.friend {
+    border: 2px rgb(167, 244, 70) solid;
+}
+
+div.pug_gc .pug_team:first-child {
+    margin-bottom: 2px;
+}
+
+div.pug_player_count {
+    float: right;
+    margin: 5px;
+    font-size: 50px;
 }
