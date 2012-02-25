@@ -121,21 +121,33 @@ div#alert_contents img {
     height: 100%;
 }
 
-#news {
+#info_box {
     border: 3px #d0cbc7 solid;
     border-radius: 10px;
-    height: 170px;
+    height: 275px;
     width: 100%;
     padding: 10px;
     background-color: #333333;
     position: absolute;
     top: 0;
+    z-index: 100;
+}
+
+#news, #lobby_info, #player_stats {
+    display: none;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
+#player_stats {
+    display: block;
 }
 
 #chat_wrapper {
     height: 100%;
     width: 100%;
-    padding-top: 180px;
+    padding-top: 280px;
     position: relative;
     top: 0;
 }
@@ -185,65 +197,14 @@ div#alert_contents img {
     position: absolute;
     bottom: 0;
     right: 0;
-
     height: 20px;
-}
-
-div.pug {
-    height: 80px;
-    border-style: solid;
-    border-radius: 10px;
-    margin-bottom: 12px;
-    #padding: 10px;
-    width: 100%;
-    position: relative;
 }
 
 div.pug:hover {
     border-color: #FFFFFF;
 }
 
-div.pug1 {
-    position:absolute;
-    left: 2%;
-    margin-top: 25px;
-}
-
-div.pug2 {
-    position:absolute;
-    left: 32%;
-    margin-top: 25px;
-}
-
-div.pug3 {
-    position:absolute;
-    left: 55%;
-    margin-top: 25px;
-}
-
-div.pug4 {
-    position:absolute;
-    left: 82%;
-    font-size: 35px;
-    margin-top: 25px;
-}
-
 div.pug {
-    height: 80px;
-    border-style: solid;
-    border-radius: 10px;
-    margin-bottom: 12px;
-    #padding: 10px;
-    width: 100%;
-    position: relative;
-}
-
-/* Gcommer's pug concept */
-div.pug_gc:hover {
-    border-color: #FFFFFF;
-}
-
-div.pug_gc {
     height: 80px;
     border-style: solid;
     border-radius: 10px;
@@ -253,48 +214,68 @@ div.pug_gc {
     cursor: pointer;
 }
 
-div.pug_gc .pug_map {
+div.pug .pug_map {
     width: 114px;
     height: 64px;
     margin: 5px;
     float: left;
 }
 
-div.pug_gc .pug_map .map_name {
+div.pug .pug_map .map_name {
     font-size: 11px;
     float: left;
 }
 
-div.pug_gc .pug_title {
+div.pug .pug_title {
     float: left;
 }
 
-div.pug_gc .pug_teams {
+div.pug .pug_teams {
     float: left;
     margin: 5px 5px 0 0;
 }
 
-div.pug_gc .pug_teams img {
+div.pug .pug_teams img {
     width: 20px;
     height: 20px;
     border: 2px transparent solid;
     border-radius: 2px;
 }
 
-div.pug_gc .pug_teams img.empty {
+div.pug .pug_teams img.empty {
     border: 0;
 }
 
-div.pug_gc .pug_teams img.friend {
+div.pug .pug_teams img.friend {
     border: 2px rgb(167, 244, 70) solid;
 }
 
-div.pug_gc .pug_team:first-child {
+div.pug .pug_team:first-child {
     margin-bottom: 2px;
 }
 
 div.pug_player_count {
     float: right;
-    margin: 5px;
-    font-size: 50px;
+    margin: 0 5px 0 0;
+}
+
+div.pug_server_info {
+    float: right;
+    margin: 5px 5px 0 0;
+    width: 200px;
+    font-size: 11px;
+}
+
+/* Players stats! */
+div#player_stats img, div#player_stats div#stats_name {
+    float: left;
+}
+
+div#player_stats div#stats_name {
+    margin-left: 5px;
+    font-size: 20px;
+}
+
+div#player_stats table {
+    clear: both;
 }
