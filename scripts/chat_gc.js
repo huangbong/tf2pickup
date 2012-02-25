@@ -12,7 +12,7 @@ $(function() {
                               + val["message"] + "\n");
             });
             timer = setTimeout(update, 2500);
-            $chatbox.scrollTop(99999);
+            $chatbox.scrollTop(999999);
         },
         update = function() {
             var data = {}
