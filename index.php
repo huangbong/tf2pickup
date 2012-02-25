@@ -21,7 +21,7 @@ $logged_in = isset($_SESSION['steam64']);
                 <div id="login_box">
                     <h2>You have to sign in with Steam to use this site!</h2>
                     <a href="<?php echo SteamSignIn::genUrl(); ?>">
-                        <img src="http://cdn.steamcommunity.com/public/images/signinthroughsteam/sits_small.png"
+                        <img src="http://cdn.steamcommunity.com/public/images/signinthroughsteam/sits_large_border.png"
                              alt="steam login"/>
                     </a>
                 </div>

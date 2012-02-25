@@ -78,7 +78,8 @@ div#login_box h2 {
 }
 
 div#login_box img {
-    margin-top: 50px;
+    margin-top: 20px;
+    border: 0;
 }
 
 /* Content */
