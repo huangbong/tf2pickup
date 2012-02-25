@@ -20,7 +20,7 @@ $logged_in = isset($_SESSION['steam64']);
         <div id="alert"<?php if ($logged_in) { ?> class="hidden"<?php } ?>>
             <div id="alert_contents">
                 <div id="login_box">
-                    <h2>You have to sign in with Steam to use this site!</h2>
+                    <h2>You must sign-in with Steam to use this TF2Pickup!</h2>
                     <a href="<?php echo SteamSignIn::genUrl(); ?>">
                         <img src="http://cdn.steamcommunity.com/public/images/signinthroughsteam/sits_large_border.png"
                              alt="steam login"/>
@@ -138,22 +138,19 @@ if (isset($logged_in)) {
                             </a>
                         </div>
                         <div class="pug" pugid="3">
+                                <div class="pug_location">
+                                    <img src="img/na.png" />
+                                </div>
                             <div class="pug_map">
                                 <div class="map_image">
                                     <img src="img/maps/cp_badlands.jpg" alt="badlands" width="114" height="64" />
                                 </div>
                             </div>
                             <div class="pug_title">
-                                <img src="img/us.png" />
-                                cp_badlands - 9v9 - Awesome pug title!
+                                highlander badlands! - cp_badlands
                             </div>
                             <div class="pug_player_count">
                                 11/18
-                            </div>
-                            <div class="pug_server_info">
-                                Server: RUGC East Coast Match Server<br />
-                                Host: bEAST Gcommer<br />
-
                             </div>
                             <div class="pug_teams">
                                 <div class="pug_team team_1">

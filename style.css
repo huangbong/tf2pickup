@@ -271,20 +271,25 @@ div.pug:hover {
 }
 
 div.pug {
-    height: 80px;
+    height: 90px;
     border-style: solid;
     border-radius: 10px;
     margin-top: 10px;
     width: 100%;
+    padding-left: 5px;
+    padding-top: 6px;
     position: relative;
     cursor: pointer;
 }
 
 div.pug .pug_map {
-    width: 114px;
+    width: 180px;
     height: 64px;
     margin: 5px;
     float: left;
+}
+
+div.pug .pug_location {
 }
 
 div.pug .pug_map .map_name {
@@ -327,7 +332,9 @@ div.pug .pug_team:first-child {
 
 div.pug_player_count {
     float: right;
-    margin: 0 5px 0 0;
+    margin: 0 10px 0 0;
+    margin-top: 10px;
+    font-size: 40px;
 }
 
 div.pug_server_info {
