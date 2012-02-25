@@ -1,7 +1,7 @@
 (function($) {
     /* Common jQuery handles */
-    var $news, $stats, $lobby_info,
-        $alert, $login_box, $start_lobby_box,
+    var $news, $stats, $pug_info,
+        $alert, $login_box, $start_pug_box,
         $close_alert;
 
     /* Persistent data */
@@ -15,19 +15,19 @@
     /* Display news in */
     var displayNews = function($steam64) {
         $stats.hide();
-        $lobby_info.hide();
+        $pug_info.hide();
         $news.show();
     };
 
     var displayUserStats = function(steam64) {
         $stats.show();
-        $lobby_info.hide();
+        $pug_info.hide();
         $news.hide();
     };
 
-    var displayPUGInfo = function(lobby_id) {
+    var displayPUGInfo = function(pug_id) {
         $stats.hide();
-        $lobby_info.show();
+        $pug_info.show();
         $news.hide();
     };
 
@@ -48,12 +48,12 @@
         /* Various information panels */
         $news = $("#news");
         $stats = $("#player_stats");
-        $lobby_info = $("#lobby_info");
+        $pug_info = $("#pug_info");
 
         /* Alert box panels */
         $alert = $("#alert");
         $login_box = $("#login_box");
-        $start_lobby_box = $("#start_lobby_box");
+        $start_pug_box = $("#start_pug_box");
 
 
         /* when hovering over player icons */
@@ -75,10 +75,10 @@
         /* When clicking on filter icons... */
         $("div#pug_list_header span").click(toggleFilter);
 
-        /* Open lobby creation window */
-        $("a#start_lobby").click(function() {
+        /* Open pug creation window */
+        $("a#start_pug").click(function() {
             $login_box.hide();
-            $start_lobby_box.show();
+            $start_pug_box.show();
             $alert.show();
         });
 
