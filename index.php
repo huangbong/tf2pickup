@@ -1,5 +1,6 @@
 <?php
 require_once 'session.php';
+require_once 'bancheck.php';
 require_once 'openid.php';
 
 $logged_in = isset($_SESSION['steam64']);
@@ -18,11 +19,17 @@ $logged_in = isset($_SESSION['steam64']);
     <body>
         <div id="alert"<?php if ($logged_in) { ?> class="hidden"<?php } ?>>
             <div id="alert_contents">
-                <h2>You have to sign in with Steam to use this site!</h2>
-                <a href="<?php echo SteamSignIn::genUrl(); ?>">
-                    <img src="http://cdn.steamcommunity.com/public/images/signinthroughsteam/sits_large_border.png"
-                         alt="steam login"/>
-                </a>
+                <div id="login_box">
+                    <h2>You have to sign in with Steam to use this site!</h2>
+                    <a href="<?php echo SteamSignIn::genUrl(); ?>">
+                        <img src="http://cdn.steamcommunity.com/public/images/signinthroughsteam/sits_large_border.png"
+                             alt="steam login"/>
+                    </a>
+                </div>
+                <div id="start_pug_box">
+                    <div class="close_alert">X</div>
+                    <h2>Create a PUG</h2>
+                </div>
             </div>
         </div>
         <div id="superwrapper">

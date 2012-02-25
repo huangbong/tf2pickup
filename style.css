@@ -59,9 +59,9 @@ div#alert_contents h2 {
     height: 60px;
 }
 
-div#alert_contents img {
+div#login_box img {
     margin-top: 20px;
-    border: none;
+    border: 0;
 }
 
 /* Content */
