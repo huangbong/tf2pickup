@@ -9,7 +9,7 @@ if (isset($_SESSION['steam64']))
     $search = "SELECT * FROM `users` WHERE `id` = '$steam64'";
     $result = mysql_query($search);
     $row = mysql_fetch_array($result, MYSQL_ASSOC);
-    if($row[banned] == 1) {
+    if($row["banned"] == 1) {
         header("Location: http://banned.tf2pickup.com/");
     }
 }
