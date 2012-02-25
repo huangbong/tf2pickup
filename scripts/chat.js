@@ -1,13 +1,12 @@
 var curMessageID = 0;
-var updateTime = 100;
-var updateCounter = 0;
-var alertBox = document.getElementById("alert");
-var alertBackground = document.getElementById("alertbackground");
+//var time = new Date().getTime() / 1000;
 
 $(document).keypress(function(e)
 {
     if (e.which == 13 && document.getElementById("chatinput").value != "")
     {
+        //alert(time - Date().getTime()/1000);
+        //time = Date().getName() / 1000;
         $.ajax({
             type: "POST",
             url: "chat/getName.php",
@@ -26,20 +25,12 @@ $(document).keypress(function(e)
                         }
                     });
                 }
-                else
-                {
-                    //alertBox.style.height = 200px;
-                    //alertBox.style.width = 500px;
-                    //alertBox.backgroundColor = #8b7d6b;
-                    //alertBox.innerHTML="Please login to use this feature.";
-                    //alert("Please login before posting!");
-                }
             }
         });
     }
 });
 
-function update()
+function update() 
 {
     $.ajax({
         type: "POST",
@@ -57,30 +48,15 @@ function update()
                         txt.append(message2);
                         var elem = document.getElementById('chatbox');
                         elem.scrollTop = elem.scrollHeight;
-                        updateCounter = 0;
                     }
                 });
-            }
-            else
-            {
-                updateCounter++;
-            }
-            if (message != "nothing detected")
-            {
+
                 curMessageID = message;
-            }
-            if (updateCounter == 100)
-            {
-                updateTime = 5000;
-            }
-            else if (updateCounter == 0)
-            {
-                updateTime = 100;
             }
         }
     });
 
-    setTimeout(update, updateTime);
+    setTimeout(update, 300);
 }
 
-setTimeout(update, updateTime);
+setTimeout(update, 300);
