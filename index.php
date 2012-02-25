@@ -127,10 +127,10 @@ if (isset($logged_in)) {
                                 9v9
                             </span>
                             <span id="filter_us" filter="region_us">
-                                <img src="img/us.png" />
+                                <img src="img/na_icon.png" />
                             </span>
                             <span id="filter_eu" filter="region_eu" class="filter_disabled">
-                                <img src="img/eu.png" />
+                                <img src="img/eu_icon.png" />
                             </span>
                             <input type="text" id="filter_map" placeholder="Map name" />
                             <a href="#" id="start_pug">
