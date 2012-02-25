@@ -25,9 +25,9 @@ $logged_in = isset($_SESSION['steam64']);
                              alt="steam login"/>
                     </a>
                 </div>
-                <div id="start_lobby_box">
+                <div id="start_pug_box">
                     <div class="close_alert">X</div>
-                    <h2>Create a lobby</h2>
+                    <h2>Create a PUG</h2>
                 </div>
             </div>
         </div>
@@ -102,7 +102,7 @@ if (isset($logged_in)) {
                                     </tr>
                                 </table>
                             </div>
-                            <div id="lobby_info">
+                            <div id="pug_info">
                                 <img src="img/maps/cp_badlands.jpg" alt="badlands" width="114" height="64" />
                                 badlands?
                                 &lt;LIST OF PLAYERS&gt;
@@ -132,8 +132,8 @@ if (isset($logged_in)) {
                                 <img src="img/eu.png" />
                             </span>
                             <input type="text" id="filter_map" placeholder="Map name" />
-                            <a href="#" id="start_lobby">
-                                Start Lobby
+                            <a href="#" id="start_pug">
+                                Start PUG
                             </a>
                         </div>
                         <div class="pug" pugid="3">
