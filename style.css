@@ -108,7 +108,6 @@ div#alert_contents img {
     float: left;
     width: 34%;
     position: relative;
-    padding-top: 180px;
     height: 100%;
 }
 
@@ -116,20 +115,27 @@ div#alert_contents img {
     border: 3px #d0cbc7 solid;
     border-radius: 10px;
     height: 170px;
+    width: 100%;
     padding: 10px;
     background-color: #333333;
+    position: absolute;
+    top: 0;
+}
+
+#chat_wrapper {
+    height: 100%;
+    width: 100%;
+    padding-top: 180px;
     position: relative;
-    top: -180px;
+    top: 0;
 }
 
 #chat {
-    border-style: solid;
+    border: 3px #d0cbc7 solid;
     border-radius: 10px;
     height: 100%;
     width: 100%;
     padding: 10px 10px 30px 10px;
-    position: relative;
-    top: -170px;
 }
 
 #chatbox {
