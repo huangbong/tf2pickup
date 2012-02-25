@@ -4,15 +4,25 @@ $(function() {
         $chatbox = $("#chatbox"),
         $chatinput = $("#chatinput"),
         onSuccess = function(_data) {
-            var data = JSON.parse(_data);
+            var data = JSON.parse(_data), text = "";
             $.each(data, function(index, val) {
                 curId = val["id"];
-                $chatbox.append(val["time"] + " "
-                              + val["username"] + ": "
-                              + val["message"] + "<br />");
+                text += "<div class=\"chat_line\">"
+                         + "<div class=\"chat_time\">"
+                           + val["time"]
+                         + "</div>"
+                         + "<div class=\"chat_message\">"
+                           + "<a href=\"\">"
+                               + val["username"]
+                           + ":</a> "
+                           + val["message"]
+                         + "</div>"
+                       + "</div>";
             });
-            timer = setTimeout(update, 2500);
+            $chatbox.append(text);
             $chatbox.scrollTop(999999);
+
+            timer = setTimeout(update, 2500);
         },
         update = function() {
             var data = {}
