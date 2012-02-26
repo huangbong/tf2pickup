@@ -13,10 +13,70 @@ $logged_in = isset($_SESSION['steam64']);
         <link rel="shortcut icon" type="image/x-icon" href="http://cdn.tf2pickup.com/favicon.ico"/>
         <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
         <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="scripts/jsrender.js"></script>
         <script src="scripts/chat<?php if(isset($_GET["gc"])) {?>_gc<?php } ?>.js"></script>
         <script src="scripts/main.js"></script>
     </head>
     <body>
+        <script id="PUGListingTemplate" type="text/x-jquery-tmpl">
+            <div class="pug" pugid="{{=id}}">
+                <div class="pug_map">
+                    <img src="img/{{=region}}.png"
+                         width="25px"
+                         height="65px" />
+                    <img src="http://cdn.tf2pickup.com/maps/320/{{=map}}.jpg"
+                         alt="badlands"
+                         width="116"
+                         height="65" />
+                </div>
+                <div class="pug_title">
+                    {{=name}}
+                    <div class="pug_info">
+                        {{=players_per_team}}v{{=players_per_team}} cp_badlands
+                    </div>
+                </div>
+                <div class="pug_teams">
+                    <div class="pug_team team_1">
+                        <img src="img/class_icons/scout.png" class="empty" />
+                        <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/4f/4fdc405b2b955056cbc8e0aae4ef0c7a3cf98105.jpg" class="mini_player" />
+                        <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/5c/5c237bb671fca4de02a4aee1008a5f81bdf77e3c.jpg" class="mini_player" />
+                        <img src="img/class_icons/demo.png" class="empty" />
+                        <img src="img/class_icons/heavy.png" class="empty" />
+                        <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/b3/b37b7921857d138a42a4be6ac56ca50d9e689abd.jpg" class="mini_player friend" />
+                        <img src="img/class_icons/medic.png" class="empty" />
+                        <img src="img/class_icons/sniper.png" class="empty" />
+                        <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/73/73adc812c1cbe28b0d284522a248debf0a021a87.jpg" class="mini_player" />
+                    </div>
+                    <div class="pug_team team_2">
+                        <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/8e/8e4b419bd8ce849dd919d8317ee374082138c92a.jpg" steamid="steam54" class="mini_player friend" />
+                        <img src="img/class_icons/soldier.png" class="empty" />
+                        <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/72/72f78b4c8cc1f62323f8a33f6d53e27db57c2252.jpg" class="mini_player" />
+                        <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/8b/8bf9d62ba0e6e1c43630da0f9b905bb82641c117.jpg" class="mini_player" />
+                        <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/7f/7f7cd93b9d8fe1663f8fe13225b38247c6f94364.jpg" class="mini_player" />
+                        <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/69/696931177080ab219edaddda48de07f30dcba561.jpg" class="mini_player" />
+                        <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/7f/7f7cd93b9d8fe1663f8fe13225b38247c6f94364.jpg" class="mini_player" />
+                        <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/a8/a8d7d3d1762464bae43274cb1ab0d42d27481861.jpg" class="mini_player" />
+                        <img src="img/class_icons/spy.png" class="empty" />
+                    </div>
+                </div>
+                <div class="pug_player_count">
+                    11 / {{=total_players}}
+                </div>
+                <div class="pug_server_info">
+                    <table>
+                        <tr>
+                            <td>Server:</td>
+                            <td>{{=server_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Host:</td>
+                            <td>{{=host_name}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </script>
+
         <div id="alert"<?php if ($logged_in) { ?> class="hidden"<?php } ?>>
             <div id="alert_contents">
                 <div id="login_box">
@@ -71,63 +131,67 @@ if (isset($logged_in)) {
                             Start PUG
                         </a>
                     </div>
-                    <div class="pug" pugid="3">
-                        <div class="pug_map">
-                            <img src="img/na.png"
-                                 width="25px"
-                                 height="65px" />
-                            <img src="img/maps/cp_badlands.jpg"
-                                 alt="badlands"
-                                 width="116"
-                                 height="65" />
-                        </div>
-                        <div class="pug_title">
-                            Highlander badlands!
-                            <div class="pug_info">
-                                6v6 cp_badlands
+                    <div id="no_pugs">
+                        No PUGs are open!
+                    </div>
+                    <div id="pugs_container">
+                        <div class="pug" pugid="3">
+                            <div class="pug_map">
+                                <img src="img/na.png"
+                                     width="25px"
+                                     height="65px" />
+                                <img src="img/maps/cp_badlands.jpg"
+                                     alt="badlands"
+                                     width="116"
+                                     height="65" />
                             </div>
-                        </div>
-                        <div class="pug_teams">
-                            <div class="pug_team team_1">
-                                <img src="img/class_icons/scout.png" class="empty" />
-                                <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/4f/4fdc405b2b955056cbc8e0aae4ef0c7a3cf98105.jpg" class="mini_player" />
-                                <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/5c/5c237bb671fca4de02a4aee1008a5f81bdf77e3c.jpg" class="mini_player" />
-                                <img src="img/class_icons/demo.png" class="empty" />
-                                <img src="img/class_icons/heavy.png" class="empty" />
-                                <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/b3/b37b7921857d138a42a4be6ac56ca50d9e689abd.jpg" class="mini_player friend" />
-                                <img src="img/class_icons/medic.png" class="empty" />
-                                <img src="img/class_icons/sniper.png" class="empty" />
-                                <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/73/73adc812c1cbe28b0d284522a248debf0a021a87.jpg" class="mini_player" />
+                            <div class="pug_title">
+                                Highlander badlands!
+                                <div class="pug_info">
+                                    6v6 cp_badlands
+                                </div>
                             </div>
-                            <div class="pug_team team_2">
-                                <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/8e/8e4b419bd8ce849dd919d8317ee374082138c92a.jpg" steamid="steam54" class="mini_player friend" />
-                                <img src="img/class_icons/soldier.png" class="empty" />
-                                <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/72/72f78b4c8cc1f62323f8a33f6d53e27db57c2252.jpg" class="mini_player" />
-                                <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/8b/8bf9d62ba0e6e1c43630da0f9b905bb82641c117.jpg" class="mini_player" />
-                                <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/7f/7f7cd93b9d8fe1663f8fe13225b38247c6f94364.jpg" class="mini_player" />
-                                <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/69/696931177080ab219edaddda48de07f30dcba561.jpg" class="mini_player" />
-                                <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/7f/7f7cd93b9d8fe1663f8fe13225b38247c6f94364.jpg" class="mini_player" />
-                                <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/a8/a8d7d3d1762464bae43274cb1ab0d42d27481861.jpg" class="mini_player" />
-                                <img src="img/class_icons/spy.png" class="empty" />
+                            <div class="pug_teams">
+                                <div class="pug_team team_1">
+                                    <img src="img/class_icons/scout.png" class="empty" />
+                                    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/4f/4fdc405b2b955056cbc8e0aae4ef0c7a3cf98105.jpg" class="mini_player" />
+                                    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/5c/5c237bb671fca4de02a4aee1008a5f81bdf77e3c.jpg" class="mini_player" />
+                                    <img src="img/class_icons/demo.png" class="empty" />
+                                    <img src="img/class_icons/heavy.png" class="empty" />
+                                    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/b3/b37b7921857d138a42a4be6ac56ca50d9e689abd.jpg" class="mini_player friend" />
+                                    <img src="img/class_icons/medic.png" class="empty" />
+                                    <img src="img/class_icons/sniper.png" class="empty" />
+                                    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/73/73adc812c1cbe28b0d284522a248debf0a021a87.jpg" class="mini_player" />
+                                </div>
+                                <div class="pug_team team_2">
+                                    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/8e/8e4b419bd8ce849dd919d8317ee374082138c92a.jpg" steamid="steam54" class="mini_player friend" />
+                                    <img src="img/class_icons/soldier.png" class="empty" />
+                                    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/72/72f78b4c8cc1f62323f8a33f6d53e27db57c2252.jpg" class="mini_player" />
+                                    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/8b/8bf9d62ba0e6e1c43630da0f9b905bb82641c117.jpg" class="mini_player" />
+                                    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/7f/7f7cd93b9d8fe1663f8fe13225b38247c6f94364.jpg" class="mini_player" />
+                                    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/69/696931177080ab219edaddda48de07f30dcba561.jpg" class="mini_player" />
+                                    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/7f/7f7cd93b9d8fe1663f8fe13225b38247c6f94364.jpg" class="mini_player" />
+                                    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/a8/a8d7d3d1762464bae43274cb1ab0d42d27481861.jpg" class="mini_player" />
+                                    <img src="img/class_icons/spy.png" class="empty" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="pug_player_count">
-                            11 / 18
-                        </div>
-                        <div class="pug_server_info">
-                            <table>
-                                <tr>
-                                    <td>Server:</td>
-                                    <td>RUGC East Coast Match Server</td>
-                                </tr>
-                                <tr>
-                                    <td>Host:</td>
-                                    <td>bEAST Gcommer</td>
-                                </tr>
-                            </table>
+                            <div class="pug_player_count">
+                                11 / 18
+                            </div>
+                            <div class="pug_server_info">
+                                <table>
+                                    <tr>
+                                        <td>Server:</td>
+                                        <td>RUGC East Coast Match Server</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Host:</td>
+                                        <td>bEAST Gcommer</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
-
                     <div id="footer">
                         &copy; 2012 TF2Pickup.com
                     </div>

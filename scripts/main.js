@@ -2,7 +2,8 @@
     /* Common jQuery handles */
     var $news, $stats, $pug_info,
         $alert, $login_box, $start_pug_box,
-        $close_alert;
+        $close_alert,
+        $pugs_container, $PUGListingTemplate;
 
     /* Persistent data */
     var filter_options = {
@@ -49,12 +50,35 @@
         $news = $("#news");
         $stats = $("#player_stats");
         $pug_info = $("#pug_info");
+        $pugs_container = $("#pugs_container");
+        $PUGListingTemplate = $("#PUGListingTemplate");
 
         /* Alert box panels */
         $alert = $("#alert");
         $login_box = $("#login_box");
         $start_pug_box = $("#start_pug_box");
 
+        $.ajax({
+            type: "GET",
+            url: "ajax/getPUGs.php",
+            success: function(_data) {
+                var data = JSON.parse(_data);
+                var params = $.map(data, function(server) {
+                    return {
+                        id: server["id"],
+                        region: server["region"],
+                        map: server["map"],
+                        name: server["name"],
+                        players_per_team: server["pug_type"] === "1"? 6:9,
+                        total_players: server["pug_type"] === "1"? 12:18,
+                        server_name: server["servername"],
+                        host_name: "gc"
+                    };
+                });
+                var html = $PUGListingTemplate.render(params);
+                $pugs_container.html(html);
+            }
+        });
 
         /* when hovering over player icons */
         $("img.mini_player").mouseover(function(e) {

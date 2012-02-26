@@ -27,29 +27,14 @@ $(document).keypress(function(e)
     }
 });
 
-function update() 
+function update()
 {
     $.ajax({
         type: "POST",
         url: "chat/findNew.php",
         data: "ID=" + curMessageID,
         success: function(message) {
-            if (message != "nothing detected")
-            {
-                $.ajax({
-                    type: "POST",
-                    url: "chat/retrieve.php",
-                    data: "ID=" + curMessageID + "&newID=" + message,
-                    success: function(message2) {
-                        var txt = $("#chatbox");
-                        txt.append(message2.replace(/\n\r?/g, '<br />'));
-                        var elem = document.getElementById('chatbox');
-                        elem.scrollTop = elem.scrollHeight;
-                    }
-                });
 
-                curMessageID = message;
-            }
         }
     });
 

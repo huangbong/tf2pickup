@@ -188,6 +188,14 @@ a#start_pug {
     float: right;
 }
 
+#no_pugs {
+    margin-top: 25px;
+    text-align: center;
+    color: red;
+    font-size: 50px;
+    display: none;
+}
+
 /* Pug listing style */
 div.pug {
     height: 90px;
@@ -268,9 +276,13 @@ div.pug .pug_map {
     float: right;
     clear: right;
     margin: 5px 5px 0 0;
-    max-width: 305px;
+    width: 240px;
     font-size: 11px;
-    text-align: right;
+}
+
+.pug_server_info table {
+    width: 100%;
+    text-align: left;
 }
 
 /* Players stats! */
