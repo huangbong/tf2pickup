@@ -39,17 +39,16 @@ div#alert {
     position:  absolute;
     top: 0;
     left: 0;
-    z-index: 1000;
+    z-index: 100000;
 }
 
 div#alert_contents {
     width: 500px;
-    height: 233px;
     background-color: #333;
     border-radius: 24px;
     border: 3px #D0CBC7 solid;
     text-align: center;
-    padding-top: 50px;
+    padding: 10px;
     position: relative;
     top: 45%;
     margin: -144px auto;
@@ -57,7 +56,6 @@ div#alert_contents {
 
 div#login_box, div#start_pug_box {
     width: 100%;
-    height: 100%;
     display: none;
 }
 
@@ -71,6 +69,7 @@ div.close_alert {
 
 div#login_box {
     display: block;
+    padding: 30px 0;
 }
 
 div#login_box h2 {
@@ -78,7 +77,7 @@ div#login_box h2 {
 }
 
 div#login_box img {
-    margin-top: 20px;
+    margin-top: 30px;
     border: 0;
 }
 

@@ -89,7 +89,7 @@ $logged_in = isset($_SESSION['steam64']);
         <div id="alert"<?php if ($logged_in) { ?> class="hidden"<?php } ?>>
             <div id="alert_contents">
                 <div id="login_box">
-                    <h2>You must sign-in with Steam to use this TF2Pickup!</h2>
+                    <h2>Please login with Steam to<br />use this site</h2>
                     <a href="<?php echo SteamSignIn::genUrl(); ?>">
                         <img src="http://cdn.steamcommunity.com/public/images/signinthroughsteam/sits_large_border.png"
                              alt="steam login"/>
