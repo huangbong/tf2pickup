@@ -8,17 +8,7 @@
     var pugs_cache;
 
     /* Persistent data */
-    var filter_options = {
-        pug_type_1: true,
-        pug_type_2: true,
-        region_us: true,
-        region_eu: false,
-        game_mode_5cp: true,
-        game_mode_ctf: true,
-        game_mode_pl: true,
-        game_mode_ad: true,
-        game_mode_arena: false
-    };
+    var filters = {};
 
     /*
     var defaultPlayers = function(pug_type) {
@@ -63,19 +53,46 @@
         });
 
         $no_pugs.toggle($("#pugs_container .pug").size() === 0);
-        applyPUGFilter();
+        applyPUGFilters();
     }
 
     /* Will apply filter_options to currently displayed pugs */
-    var applyPUGFilter = function() {
-        // TODO...
+    var applyPUGFilters = function() {
+        $.each(pugs_cache, function (idx, pug) {
+            /* If any of the filters match, hide this pug listing */
+            var show = true;
+
+            $.each(filters, function(filter_name, filter) {
+                show = show && !filter(pug);
+            });
+
+            $("#pug_id_" + pug["id"]).toggle(show);
+        });
     };
 
+    var makeFilter = function(filter_string) {
+        var parts = filter_string.split("=");
+        if (parts.length != 2)
+            return function() {return true};
+
+        var attr_name = parts[0], reject_val = parts[1];
+        return function(pug) {
+            /* (Using == on purpose) */
+            return (pug[attr_name] == reject_val);
+        };
+    }
+
     var toggleFilter = function() {
-        var $this = $(this), filter = $this.attr("filter");
-        filter_options[filter] = !filter_options[filter];
-        $this.toggleClass("filter_disabled", !filter_options[filter]);
-        applyPUGFilter();
+        var $this = $(this);
+        var filter_string = $this.attr("filter");
+
+        if (filters[filter_string])
+            delete filters[filter_string];
+        else
+            filters[filter_string] = makeFilter(filter_string);
+
+        $this.toggleClass("filter_disabled", !!filters[filter_string]);
+        applyPUGFilters();
     };
 
     /* On page load - setup keybinds and get handles to common page elements */

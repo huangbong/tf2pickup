@@ -121,17 +121,16 @@ if (isset($logged_in)) {
                 <div id="middle">
                     <div id="pug_list_header">
                         Filter:
-                        <span id="filter_6s" filter="pug_type_1">
+                        <span id="filter_6s" filter="players_per_team=6">
                             6v6
                         </span>
-                        <span id="filter_9s" filter="pug_type_2">
+                        <span id="filter_9s" filter="players_per_team=9">
                             9v9
                         </span>
-                        <span id="filter_us" filter="region_us">
+                        <span id="filter_na" filter="region=na">
                             <img src="img/na_icon.png" />
                         </span>
-                        <span id="filter_eu" filter="region_eu"
-                              class="filter_disabled">
+                        <span id="filter_eu" filter="region=eu">
                             <img src="img/eu_icon.png" />
                         </span>
                         <span id="filter_5cp" filter="game_mode_5cp">
@@ -146,8 +145,7 @@ if (isset($logged_in)) {
                         <span id="filter_ad" filter="game_mode_ad">
                             A/D
                         </span>
-                        <span id="filter_arena" filter="game_mode_arena"
-                              class="filter_disabled">
+                        <span id="filter_arena" filter="game_mode_arena">
                             ARENA
                         </span>
                         <input type="text" id="filter_map"
