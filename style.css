@@ -303,17 +303,3 @@ div.pug .pug_map {
     width: 100%;
     text-align: left;
 }
-
-/* Players stats! */
-div#player_stats img, div#player_stats div#stats_name {
-    float: left;
-}
-
-div#player_stats div#stats_name {
-    margin-left: 5px;
-    font-size: 20px;
-}
-
-div#player_stats table {
-    clear: both;
-}
