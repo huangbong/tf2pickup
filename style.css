@@ -260,7 +260,7 @@ div.pug .pug_map {
 .pug_player_count {
     float: right;
     margin: 0 10px 0 0;
-    font-size: 40px;
+    font-size: 30px;
 }
 
 .pug_server_info {
