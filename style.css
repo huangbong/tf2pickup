@@ -107,6 +107,7 @@ div#login_box img {
     height: 48px;
     position: absolute;
     top: 45px;
+    z-index: 10000;
 }
 
 #logo {

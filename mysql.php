@@ -95,9 +95,9 @@ SQL;
     /* Takes an array of ids and fetches all associated lobbies */
     private function fetchPUGs($ids) {
         $sql = <<<SQL
-    SELECT * FROM `pugs` WHERE `teams`.`id` in :id_list
+    SELECT * FROM `pugs` WHERE `teams`.`id` in (:id_list)
 SQL;
-        $id_list = "(" . implode(",", $ids) . ")";
+        $id_list = implode(",", $ids);
         return $this->__query($sql, array(':id_list' => $team_id));
     }
 
@@ -107,5 +107,9 @@ SQL;
     SELECT * FROM `players` WHERE `players`.`pug_id` = :id
 SQL;
         return $this->__query($sql, array(':id' => $id));
+    }
+
+    private function createPUG() {
+
     }
 }

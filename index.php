@@ -112,7 +112,7 @@ if (isset($logged_in)) {
                             </div>
                         </div>
                         <div class="pug_player_count">
-                            11 / 16
+                            11 / 18
                         </div>
                         <div class="pug_server_info">
                             <table>
