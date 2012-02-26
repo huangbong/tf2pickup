@@ -33,6 +33,7 @@ $country = $record->country_name;
 $city = $record->city;
 $latitude = $record->latitude;
 $longitude = $record->longitude;
+var_dump($record);
 
 geoip_close($gi);
 

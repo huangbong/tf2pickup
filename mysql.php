@@ -85,15 +85,15 @@ class Model {
     }
 
     /* Fetch all currently open lobbies */
-    private function fetchOpenPUGs() {
+    public function fetchOpenPUGs() {
         $sql = <<<SQL
-    SELECT * FROM `pugs` WHERE `teams`.`id` in :id_list
+    SELECT * FROM `pugs` WHERE `pugs`.`started` = FALSE
 SQL;
         return $this->__query($sql);
     }
 
     /* Takes an array of ids and fetches all associated lobbies */
-    private function fetchPUGs($ids) {
+    public function fetchPUGs($ids) {
         $sql = <<<SQL
     SELECT * FROM `pugs` WHERE `teams`.`id` in (:id_list)
 SQL;
@@ -101,15 +101,32 @@ SQL;
         return $this->__query($sql, array(':id_list' => $team_id));
     }
 
+    public function fetchPUG($id) {
+        $sql = <<<SQL
+    SELECT * FROM `pugs` WHERE `teams`.`id` = :id
+SQL;
+        return $this->__query($sql, array(':id' => $id));
+    }
+
     /* Fetch all players in the lobby with the given id */
-    private function fetchPlayersInPUG($id) {
+    public function fetchPlayersInPUG($id) {
         $sql = <<<SQL
     SELECT * FROM `players` WHERE `players`.`pug_id` = :id
 SQL;
         return $this->__query($sql, array(':id' => $id));
     }
 
-    private function createPUG() {
+    public function getMapId($name) {
+        $sql = <<<SQL
+    SELECT `id` FROM `maps` WHERE `maps`.`name` = ':name'
+SQL;
+        return $this->__query($sql, array(':name' => $name));
+    }
 
+    public function createPUG($name, $region, $pug_type) {
+        $sql = <<<SQL
+    INSERT INTO `pugs` (`name`, `region`, `pug_type`, `map_id`)
+SQL;
+        return $this->__query($sql);
     }
 }
