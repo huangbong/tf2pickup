@@ -3,11 +3,7 @@
  *
  * Provides database access through a convenient singleton.
  */
-
-define("DB_HOST", "localhost");
-define("DB_NAME", "tf2pickup");
-define("DB_USER", "tf2pickup");
-define("DB_PASS", "dHuY4k3MNflJ6RV");
+require_once 'config.php';
 
 /* Solely for backwards compatibility with old code */
 class mysql {
@@ -118,7 +114,7 @@ SQL;
          , `users`.`avatar`
     FROM `players` INNER JOIN `users`
         ON `players`.`user_id` = `users`.`id`
-        WHERE `players`.`pug_id` = 1
+        WHERE `players`.`pug_id` = :id
 SQL;
         return $this->__query($sql, array(':id' => $id));
     }
