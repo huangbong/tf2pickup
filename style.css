@@ -258,7 +258,7 @@ div.pug .pug_map {
 
 .pug_teams {
     float: left;
-    margin: 15px 5px;
+    margin: 15px 62px;
     height: 53px;
 }
 
@@ -287,8 +287,8 @@ div.pug .pug_map {
 
 .pug_player_count {
     float: right;
-    margin: 0 10px 0 0;
-    font-size: 30px;
+    margin: 8px 10px 0 0;
+    font-size: 50px;
 }
 
 .pug_server_info {

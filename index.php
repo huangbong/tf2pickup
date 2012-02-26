@@ -34,6 +34,8 @@ $logged_in = isset($_SESSION['steam64']);
                     {{=name}}
                     <div class="pug_info">
                         {{=players_per_team}}v{{=players_per_team}} cp_badlands
+                        <br/>
+                        {{=server_name}} 
                     </div>
                 </div>
                 <div class="pug_teams">
@@ -70,18 +72,6 @@ $logged_in = isset($_SESSION['steam64']);
                 </div>
                 <div class="pug_player_count">
                     {{=player_count}} / {{=max_players}}
-                </div>
-                <div class="pug_server_info">
-                    <table>
-                        <tr>
-                            <td>Server:</td>
-                            <td>{{=server_name}}</td>
-                        </tr>
-                        <tr>
-                            <td>Host:</td>
-                            <td>{{=host_name}}</td>
-                        </tr>
-                    </table>
                 </div>
             </div>
         </script>
