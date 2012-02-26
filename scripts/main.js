@@ -10,7 +10,12 @@
         pug_type_1: true,
         pug_type_2: true,
         region_us: true,
-        region_eu: false
+        region_eu: false,
+        game_mode_5cp: true,
+        game_mode_ctf: true,
+        game_mode_pl: true,
+        game_mode_ad: true,
+        game_mode_arena: false
     };
 
     /* Display news in */
@@ -72,7 +77,7 @@
                         players_per_team: server["pug_type"] === "1"? 6:9,
                         total_players: server["pug_type"] === "1"? 12:18,
                         server_name: server["servername"],
-                        host_name: "gc"
+                        host_name: server["hostname"]
                     };
                 });
                 var html = $PUGListingTemplate.render(params);

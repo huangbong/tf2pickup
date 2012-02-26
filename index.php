@@ -125,6 +125,21 @@ if (isset($logged_in)) {
                               class="filter_disabled">
                             <img src="img/eu_icon.png" />
                         </span>
+                        <span id="filter_5cp" filter="game_mode_5cp">
+                            5CP
+                        </span>
+                        <span id="filter_ctf" filter="game_mode_ctf">
+                            CTF
+                        </span>
+                        <span id="filter_pl" filter="game_mode_pl">
+                            PL
+                        </span>
+                        <span id="filter_ad" filter="game_mode_ad">
+                            A/D
+                        </span>
+                        <span id="filter_arena" filter="game_mode_arena">
+                            ARENA
+                        </span>
                         <input type="text" id="filter_map"
                                placeholder="Map name" />
                         <a href="#" id="start_pug">

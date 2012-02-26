@@ -111,7 +111,14 @@ SQL;
     /* Fetch all players in the lobby with the given id */
     public function fetchPlayersInPUG($id) {
         $sql = <<<SQL
-    SELECT * FROM `players` WHERE `players`.`pug_id` = :id
+    SELECT `players`.`team`
+         , `players`.`class`
+         , `players`.`user_id`
+         , `users`.`username`
+         , `users`.`avatar`
+    FROM `players` INNER JOIN `users`
+        ON `players`.`user_id` = `users`.`id`
+        WHERE `players`.`pug_id` = 1
 SQL;
         return $this->__query($sql, array(':id' => $id));
     }

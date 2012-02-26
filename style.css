@@ -180,7 +180,7 @@ input#filter_map {
     opacity: .3;
 }
 
-span#filter_us, input#filter_map {
+span#filter_us, input#filter_map, span#filter_5cp {
     margin-left: 10px;
 }
 
@@ -222,6 +222,14 @@ div.pug .pug_map {
 
 .pug_map img {
     float: left;
+}
+
+.pug_map img:first-child {
+    border-radius: 5px 0 0 5px;
+}
+
+.pug_map img:last-child {
+    border-radius: 0 5px 5px 0;
 }
 
 .pug_title {
