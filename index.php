@@ -87,20 +87,23 @@ $logged_in = isset($_SESSION['steam64']);
                 </div>
                 <div id="start_pug_box">
                     <div class="close_alert">X</div>
-                    <h2>Create a PUG</h2>
-<form>
-PUG Name:
-<p><input type="text" name="name"/></p>
-Server IP:
-<p><input type="text" name="ip"/></p>
-Server Port:
-<p><input type="text" name="port"/></p>
-Password:
-<p><input type="password" name="password"/></p>
-<input type="radio" name="gameType" value="6"/>6s<br/>
-<input type="radio" name="gameType" value="9"/>9s<br/>
-</form>
 
+                    <h2>Create a PUG</h2>
+                    PUG Name:
+                    <p><input type="text" id="new_pug_name" /></p>
+                    Server IP:
+                    <p><input type="text" name="new_pug_ip" /></p>
+                    Server Port:
+                    <p><input type="text" name="new_pug_port" value="27015" /></p>
+                    RCON:
+                    <p><input type="password" name="new_pug_rcon" /></p>
+                    Password:
+                    <p><input type="password" name="new_pug_password" /></p>
+                    <form>
+                    <input type="radio" name="new_pug_type" value="6" checked="true" />Standard<br/>
+                    <input type="radio" name="new_pug_type" value="9" />Highlander<br/>
+                    </form>
+                    <input type="button" id="start_new_pug" value="Start PUG" />
                 </div>
             </div>
         </div>
