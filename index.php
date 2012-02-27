@@ -17,6 +17,7 @@ $logged_in = isset($_SESSION['steam64']);
         <script src="scripts/jsrender.js"></script>
         <script src="scripts/chat<?php if(isset($_GET["gc"])) {?>_gc<?php } ?>.js"></script>
         <script src="scripts/main.js"></script>
+        <script src="scripts/fancyform.js"></script>
     </head>
     <body>
         <script id="PUGListingTemplate" type="text/x-jquery-tmpl">
@@ -77,20 +78,22 @@ $logged_in = isset($_SESSION['steam64']);
         </script>
 
         <div id="alert"<?php if ($logged_in) { ?> class="hidden"<?php } ?>>
-            <div id="alert_contents">
+            <div id="alert_contents"<?php if ($logged_in) { ?> class="hidden"<?php } ?>>
                 <div id="login_box">
-                    <h2>Please login with Steam to<br />use this site</h2>
+                    <h2>Please login with Steam to<br />use this site.</h2>
                     <a href="<?php echo SteamSignIn::genUrl(); ?>">
                         <img src="http://cdn.steamcommunity.com/public/images/signinthroughsteam/sits_large_border.png"
                              alt="steam login"/>
                     </a>
                 </div>
+            </div>
+            <div id="alert_contents_start_pug">
                 <div id="start_pug_box">
                     <div class="close_alert">X</div>
 
-                    <h2>Create a PUG</h2>
+                    <h2><div id="start_pug_box_title">Create a PUG</div></h2>
                     PUG Name:
-                    <p><input type="text" id="new_pug_name" maxlength="150" /></p>
+                    <p><input type="text" id="new_pug_name" maxlength="150"/></p>
                     Server IP:
                     <p><input type="text" name="new_pug_ip" /></p>
                     Server Port:
@@ -99,11 +102,13 @@ $logged_in = isset($_SESSION['steam64']);
                     <p><input type="password" name="new_pug_rcon" /></p>
                     Password:
                     <p><input type="password" name="new_pug_password" /></p>
-                    <form>
-                    <input type="radio" name="new_pug_type" value="6" checked="true" />Standard<br/>
-                    <input type="radio" name="new_pug_type" value="9" />Highlander<br/>
-                    </form>
-                    <input type="button" id="start_new_pug" value="Start PUG" />
+                    <div id="start_pug_box_select">
+                        <select>
+                        <option>Standard</option>
+                        <option>Highlander</option>
+                        </select>
+                    </div>
+                    <div id="start_pug_box_button"><input type="button" id="start_new_pug" value="Start PUG" /></div>
                 </div>
             </div>
         </div>
@@ -155,5 +160,7 @@ if (isset($logged_in)) {
                 </div>
             </div>
         </div>
+                    <p><input type="text" name="new_pug_port" value="27015" /></p>
+
     </body>
 </html>
