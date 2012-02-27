@@ -73,19 +73,7 @@
         applyPUGFilters();
     };
 
-    /* On page load - setup keybinds and get handles to common page elements */
-    $(function() {
-        /* Various handles we want to keep a reference to */
-        $pugs_container = $("#pugs_container");
-        $no_pugs = $("#no_pugs");
-        $PUGListingTemplate = $("#PUGListingTemplate");
-
-        /* Alert box panels */
-        $alert = $("#alert");
-        $login_box = $("#login_box");
-        $start_pug_box = $("#start_pug_box");
-
-        /* Get initial PUG listing */
+    var updatePUGs = function(initial) {
         $.ajax({
             type: "GET",
             url: "ajax/getPUGs.php",
@@ -126,6 +114,22 @@
                 updatePUGListing();
             }
         });
+    };
+
+    /* On page load - setup keybinds and get handles to common page elements */
+    $(function() {
+        /* Various handles we want to keep a reference to */
+        $pugs_container = $("#pugs_container");
+        $no_pugs = $("#no_pugs");
+        $PUGListingTemplate = $("#PUGListingTemplate");
+
+        /* Alert box panels */
+        $alert = $("#alert");
+        $login_box = $("#login_box");
+        $start_pug_box = $("#start_pug_box");
+
+        /* Get initial PUG listing */
+        updatePUGs(true);
 
         /* When clicking on filter icons... */
         $("div#pug_list_header span").click(toggleFilter);
