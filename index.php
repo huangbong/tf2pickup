@@ -146,7 +146,7 @@ if (isset($logged_in)) {
                     No PUGs are open!
                 </div>
                 <div id="pugs_loading">
-                    <img src="img/ajax-loader.gif" />
+                    <img src="http://cdn.tf2pickup.com/ajax-loader.gif" />
                 </div>
                 <div id="pugs_container">
                 </div>
