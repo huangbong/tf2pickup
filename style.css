@@ -228,6 +228,14 @@ div.pug .pug_map {
     height: 64px;
     margin: 10px 10px 10px 5px;
     float: left;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 .pug_map img {
@@ -259,6 +267,14 @@ div.pug .pug_map {
     float: left;
     margin: 15px 62px;
     height: 53px;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 .pug_teams img {
