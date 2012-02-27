@@ -10,6 +10,8 @@ require_once "../steam-condenser/steam-condenser.php";
 //    die ("Not authenticated!");
 
 
+error_reporting(E_STRICT | E_ALL);
+
 /* Make sure all the parameters were passed */
 $required_keys = array("name", "pugtype", "map", "serverip", "serverport"
                      , "rcon");
@@ -19,6 +21,11 @@ foreach ($required_keys as $rkey) {
 }
 
 /* Get the parameters into nicer variables and do basic sanity checks */
+$ip = $_GET['serverip'];
+$rcon = $_GET['rcon'];
+$map = $_GET['map'];
+$name = substr($_GET['name'], 0, 150);
+
 $port = (int) $_GET['serverport'];
 if (!(1 <= $port && $port <= 65535))
     die ("Invalid port number ($port)");
@@ -27,15 +34,11 @@ $pug_type = (int) $_GET['pugtype'];
 if (!($pug_type === 1 || $pug_type === 2))
     die ("Invalid PUG type");
 
-$ip = $_GET['serverip'];
-$rcon = $_GET['rcon'];
-$map = $_GET['map'];
-$name = substr($_GET['name'], 0, 150);
-
-$tf2_server = new SourceServer($ip, $port);
+echo "Connect with $ip:$port";
+$server = new SourceServer($ip, $port);
 try {
-  $server->rconAuth($rcon);
-  $status = $server->rconExec('status');
+    $server->rconAuth($rcon);
+    $status = $server->rconExec('status');
 }
 catch(RCONNoAuthException $e) {
     die ('Invalid RCON Password');
