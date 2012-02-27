@@ -8,10 +8,11 @@ $db->connect();
 
 $export = array();
 
-if (isset($_GET['id'])) {
-    $id = (int) $_GET['id'];
+if (isset($_GET['pugs'])) {
+    $id = (int) $_GET['pugs'];
 
     $export = $db->fetchPUG($id);
+
 }
 else {
     /* For every currently open pug... */

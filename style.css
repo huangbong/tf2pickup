@@ -155,7 +155,7 @@ div#login_box img {
 /* Filter and Start PUG header */
 div#pug_list_header {
     height: 30px;
-    padding: 5px;
+    padding: 3px 10px;
     width: 100%;
     background-color: #282828;
     border-radius: 10px;
@@ -228,6 +228,14 @@ div.pug .pug_map {
     height: 64px;
     margin: 10px 10px 10px 5px;
     float: left;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 .pug_map img {
@@ -256,9 +264,17 @@ div.pug .pug_map {
 }
 
 .pug_teams {
-    float: left;
-    margin: 15px 62px;
+    float: right;
+    margin: 15px 21px;
     height: 53px;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 .pug_teams img {
