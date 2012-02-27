@@ -107,8 +107,8 @@ div#login_box img {
     width: 191px;
     height: 191px;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 5px;
+    left: -50px;
 }
 
 #header {
