@@ -109,7 +109,7 @@ div#login_box img {
     height: 191px;
     position: absolute;
     top: 5px;
-    left: -65px;
+    left: -60px;
 }
 
 #header {
@@ -286,8 +286,8 @@ div.pug .pug_map {
 
 .pug_player_count {
     float: right;
-    margin: 8px 10px 0 0;
-    font-size: 50px;
+    margin: 16px 16px 0 0;
+    font-size: 40px;
 }
 
 .pug_server_info {
