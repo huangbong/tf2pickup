@@ -139,7 +139,9 @@
 
         $("div.close_alert").click(function() {
             $alert.hide();
-        })
+        });
+
+        $("#start_new_pug").click(createPug);
     });
 
 })(jQuery);

@@ -90,7 +90,7 @@ $logged_in = isset($_SESSION['steam64']);
 
                     <h2>Create a PUG</h2>
                     PUG Name:
-                    <p><input type="text" id="new_pug_name" /></p>
+                    <p><input type="text" id="new_pug_name" maxlength="150" /></p>
                     Server IP:
                     <p><input type="text" name="new_pug_ip" /></p>
                     Server Port:
