@@ -1,5 +1,6 @@
 <?php
 require_once 'session.php';
+require_once 'config.php';
 require_once 'openid.php';
 require_once 'mysql.php';
 require_once 'geoip/geoip.php';
@@ -12,7 +13,7 @@ if ($steam64 === false)
     exit(0);
 }
 
-$steamapi = file_get_contents("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=2C90B16410B5B8BE3DB9A7FD67A76A89&steamids=" . $steam64);
+$steamapi = file_get_contents("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" . STEAM_API_KEY . "&steamids=" . $steam64);
 $json = json_decode($steamapi);
 $username = $json->response->players[0]->personaname;
 $avatar = $json->response->players[0]->avatar;

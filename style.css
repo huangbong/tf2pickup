@@ -270,7 +270,7 @@ div.pug .pug_map {
 }
 
 .pug_teams img.empty {
-    opacity: .4;
+    #opacity: .4;
 }
 
 .pug_teams img.friend {
