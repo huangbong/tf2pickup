@@ -126,10 +126,28 @@ SQL;
         return $this->__query($sql, array(':name' => $name));
     }
 
-    public function createPUG($name, $region, $pug_type) {
+    public function createPUG($name, $region, $pug_type,
+                              $map_name, $host_id, $server_name,
+                              $server_ip, $server_port, $rcon) {
         $sql = <<<SQL
-    INSERT INTO `pugs` (`name`, `region`, `pug_type`, `map_id`)
+    INSERT INTO `pugs`
+        (`name`, `region`, `pug_type`, `map_name`, `host_id`
+       , `servername`, `serverip`, `serverport`, `rcon`)
+    VALUES
+        (':name', ':region', ':pug_type', `:map_name`
+       , `:host_id`, `:server_name`, `:server_ip`, `:server_port`
+       , `rcon`)
 SQL;
-        return $this->__query($sql);
+        return $this->__query($sql, array(
+            ':name' => $name,
+            ':region' => $region,
+            ':pug_type' => $pug_type,
+            ':map_name' => $map_name,
+            ':host_id' => $host_id,
+            ':sever_name' => $server_name,
+            ':server_ip' => $server_ip,
+            ':server_port' => $server_port,
+            ':rcon' => $rcon
+        ));
     }
 }
