@@ -92,23 +92,23 @@ div#login_box img {
 }
 
 /* Content */
-#superwrapper {
-    margin: 0 auto;
-    background-image: url(http://cdn.tf2pickup.com/tf2logo.png);
-    background-repeat: no-repeat;
-    background-position: 0px 5px;
-    width: 1150px;
-    height: 100%;
-    position: relative;
-    padding-bottom: 40px;
-}
-
 #wrapper {
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
     width: 1050px;
     height: 100%;
+    padding-bottom: 40px;
     position: relative;
+}
+
+#tf2_icon {
+    background-image: url(http://cdn.tf2pickup.com/tf2logo.png);
+    background-repeat: no-repeat;
+    z-index: -100;
+    width: 191px;
+    height: 191px;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 #header {

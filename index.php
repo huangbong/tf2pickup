@@ -104,54 +104,51 @@ Password:
                 </div>
             </div>
         </div>
-
-        <div id="superwrapper">
-            <div id="wrapper">
-                <div id="header">
-                    <div id="logo"></div>
+        <div id="wrapper">
+            <div id="tf2_icon"></div>
+            <div id="header">
+                <div id="logo"></div>
 <?php
 if (isset($logged_in)) {
 ?>
-                    <div id="steam">
-                        <img src="<?php echo $_SESSION['avatar']; ?>" alt="avatar" width="30" height="30" />
-                        <?php echo $_SESSION['username']; ?> ||
-                        <a href="/stats" target="_self">stats</a>
-                      - <a href="/settings" target="_self">settings</a>
-                      - <a href="/logout.php" target="_self">logout</a>
-                    </div><?php
+                <div id="steam">
+                    <img src="<?php echo $_SESSION['avatar']; ?>" alt="avatar" width="30" height="30" />
+                    <?php echo $_SESSION['username']; ?> ||
+                    <a href="/stats" target="_self">stats</a>
+                  - <a href="/settings" target="_self">settings</a>
+                  - <a href="/logout.php" target="_self">logout</a>
+                </div><?php
 } ?>
+            </div>
+            <div id="middle">
+                <div id="pug_list_header">
+                    Filter:
+                    <span id="filter_6s" filter="players_per_team=6">
+                        6v6
+                    </span>
+                    <span id="filter_9s" filter="players_per_team=9">
+                        9v9
+                    </span>
+                    <span id="filter_na" filter="region=na">
+                        <img src="img/na_icon.png" />
+                    </span>
+                    <span id="filter_eu" filter="region=eu">
+                        <img src="img/eu_icon.png" />
+                    </span>
+                    <a href="#" id="start_pug">
+                        Start PUG
+                    </a>
                 </div>
-                <div id="middle">
-                    <div id="pug_list_header">
-                        Filter:
-                        <span id="filter_6s" filter="players_per_team=6">
-                            6v6
-                        </span>
-                        <span id="filter_9s" filter="players_per_team=9">
-                            9v9
-                        </span>
-                        <span id="filter_na" filter="region=na">
-                            <img src="img/na_icon.png" />
-                        </span>
-                        <span id="filter_eu" filter="region=eu">
-                            <img src="img/eu_icon.png" />
-                        </span>
-                        <a href="#" id="start_pug">
-                            Start PUG
-                        </a>
-                    </div>
-                    <div id="no_pugs">
-                        No PUGs are open!
-                    </div>
-                    <div id="pugs_loading">
-                        <img src="img/ajax-loader.gif" />
-                    </div>
-                    <div id="pugs_container">
-
-                    </div>
-                    <div id="footer">
-                        &copy; 2012 TF2Pickup.com
-                    </div>
+                <div id="no_pugs">
+                    No PUGs are open!
+                </div>
+                <div id="pugs_loading">
+                    <img src="img/ajax-loader.gif" />
+                </div>
+                <div id="pugs_container">
+                </div>
+                <div id="footer">
+                    &copy; 2012 TF2Pickup.com
                 </div>
             </div>
         </div>
