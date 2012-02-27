@@ -26,6 +26,16 @@ a:hover {
     color: #ffffff;
 }
 
+input[type=text] {
+    border-radius: 3px;
+    border: 0;
+    outline: 0;
+    background-color: #333;
+    height: 20px;
+    padding: 0 5px;
+    color: #D0C4C7;
+}
+
 /* General classes */
 .hidden {
     display: none;
@@ -170,23 +180,11 @@ div#pug_list_header img {
     top: 2px;
 }
 
-input#filter_map {
-    position: relative;
-    top: -2px;
-    border-radius: 3px;
-    border: 0;
-    outline: 0;
-    background-color: #333;
-    height: 20px;
-    padding: 0 5px;
-    color: #D0C4C7;
-}
-
 .filter_disabled {
     opacity: .3;
 }
 
-span#filter_na, input#filter_map, span#filter_5cp {
+span#filter_na {
     margin-left: 10px;
 }
 

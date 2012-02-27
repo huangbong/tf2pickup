@@ -4,33 +4,11 @@
         $close_alert,
         $no_pugs, $pugs_container, $PUGListingTemplate;
 
-    /* Cached data */
+    /* Cached data from server */
     var pugs_cache;
 
-    /* Persistent data */
+    /* Selected filters, map of filter name to filter functions */
     var filters = {};
-
-    /*
-    var defaultPlayers = function(pug_type) {
-        if (pug_type === 2) {
-            // Highlander
-            return [
-                {avatar: "img/class_icons/med.png", class="empty"},
-                {avatar: "img/class_icons/med.png", class="empty"},
-                {avatar: "img/class_icons/med.png", class="empty"},
-                {avatar: "img/class_icons/med.png", class="empty"},
-                {avatar: "img/class_icons/med.png", class="empty"},
-                {avatar: "img/class_icons/med.png", class="empty"},
-                {avatar: "img/class_icons/med.png", class="empty"},
-                {avatar: "img/class_icons/med.png", class="empty"},
-                {avatar: "img/class_icons/med.png", class="empty"}
-            ];
-        }
-        else {
-            // 6s
-
-        }
-    } */
 
     var updatePUGListing = function() {
         var current_ids = {};
