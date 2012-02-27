@@ -115,6 +115,7 @@ SQL;
     FROM `players` INNER JOIN `users`
         ON `players`.`user_id` = `users`.`id`
         WHERE `players`.`pug_id` = :id
+          AND `players`.`left` = 0
 SQL;
         return $this->__query($sql, array(':id' => $id));
     }

@@ -38,6 +38,9 @@ $logged_in = isset($_SESSION['steam64']);
                         {{=server_name}}
                     </div>
                 </div>
+                <div class="pug_player_count">
+                    {{=player_count}} / {{=max_players}}
+                </div>
                 <div class="pug_teams">
 <?php /*            {{#each teams}}
                         <div class="pug_team team_1">
@@ -69,9 +72,6 @@ $logged_in = isset($_SESSION['steam64']);
     <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/a8/a8d7d3d1762464bae43274cb1ab0d42d27481861.jpg" class="mini_player" />
     <img src="img/class_icons/spy.png" class="empty" />
                         </div>
-                </div>
-                <div class="pug_player_count">
-                    {{=player_count}} / {{=max_players}}
                 </div>
             </div>
         </script>

@@ -155,7 +155,7 @@ div#login_box img {
 /* Filter and Start PUG header */
 div#pug_list_header {
     height: 30px;
-    padding: 5px;
+    padding: 3px 10px;
     width: 100%;
     background-color: #282828;
     border-radius: 10px;
@@ -264,8 +264,8 @@ div.pug .pug_map {
 }
 
 .pug_teams {
-    float: left;
-    margin: 15px 62px;
+    float: right;
+    margin: 15px 21px;
     height: 53px;
 
     -webkit-touch-callout: none;
