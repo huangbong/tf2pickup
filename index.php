@@ -93,20 +93,19 @@ $logged_in = isset($_SESSION['steam64']);
                     PUG Name:
                     <p><input type="text" id="new_pug_name" maxlength="150"/></p>
                     Server IP:
-                    <p><input type="text" name="new_pug_ip" /></p>
+                    <p><input type="text" id="new_pug_ip" /></p>
                     Server Port:
-                    <p><input type="text" name="new_pug_port" value="27015" /></p>
+                    <p><input type="text" id="new_pug_port" value="27015" /></p>
                     RCON:
-                    <p><input type="password" name="new_pug_rcon" /></p>
-                    Password:
-                    <p><input type="password" name="new_pug_password" /></p>
-                    <div id="start_pug_box_select">
-                        <select>
+                    <p><input type="password" id="new_pug_rcon" /></p>
+                    PUG Password:
+                    <p><input type="password" id="new_pug_password" /></p>
+                    Game Type:
+                    <select id="new_pug_type">
                         <option>Standard</option>
                         <option>Highlander</option>
-                        </select>
-                    </div>
-                    <div id="start_pug_box_button"><input type="button" id="start_new_pug" value="Start PUG" /></div>
+                    </select>
+                    <input type="button" id="launch_pug" value="Start PUG" />
                 </div>
             </div>
         </div>

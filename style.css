@@ -87,12 +87,7 @@ div#alert_contents_start_pug {
     margin: -144px auto;
 }
 
-div#login_box {
-    width: 100%;
-    display: none;
-}
-
-div#start_pug_box {
+div#login_box, div#start_pug_box {
     width: 100%;
     display: none;
     outline: none;
@@ -231,12 +226,13 @@ a#start_pug {
     margin-bottom: 20px;
 }
 
-#start_pug_box_select select {
-    margin-top: 15px;
-    width: 165px;
+#new_pug_type {
+    width: 167px;
+    display: block;
+    margin: 0 auto;
 }
 
-#start_new_pug {
+#launch_pug {
     margin-top: 15px;
     margin-bottom: 15px;
     padding-bottom: 4px;
