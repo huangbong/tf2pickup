@@ -21,15 +21,21 @@ foreach ($required_keys as $rkey) {
         die ("Missing parameter: " . $rkey);
 }
 
-/* Get the parameters into nicer variables and do basic sanity checks */
+// TODO: Move this validation into utility functions that can be unit tested
+
+/* Get the parameters in to nicer variables and do basic sanity checks */
 $ip = $_GET['serverip'];
+// TODO: Better IP regex
+if (!preg_match("/(\d{1,3}\.){3}(\d{1,3})/", $ip))
+    die ("Invalid IP");
+
 $rcon = $_GET['rcon'];
 $map = $_GET['map'];
 $name = substr($_GET['name'], 0, 150);
 
 $port = (int) $_GET['serverport'];
 if (!(1 <= $port && $port <= 65535))
-    die ("Invalid port number ($port)");
+    die ("Invalid port");
 
 $pug_type = (int) $_GET['pugtype'];
 if (!($pug_type === 1 || $pug_type === 2))

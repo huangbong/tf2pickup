@@ -89,6 +89,35 @@ SQL;
         return $this->__query($sql);
     }
 
+    /* Takes an array of [id, timestamp] pairs and fetches all
+     * lobbies with an id in the list and timestamp after the
+     * provided timestamp. */
+    public function fetchUpdatedPUGs($pugs) {
+        $sql = <<<SQL
+    SELECT *, UNIX_TIMESTAMP(`pugs`.`last_updated`) as `updated`
+    FROM `pugs`
+    WHERE (
+SQL;
+        $first = true;
+        $params = array();
+        foreach ($pugs as $pug) {
+            if (!$first)
+                $sql .= " OR ";
+            $first = false;
+
+            // Could use a HAVING clause instead of re-applying UNIX_TIMESTAMP,
+            // but HAVING clauses can hurt performance, while UNIX_TIMESTAMP
+            // has practically no overhead
+            $sql .= "(`pugs`.`id` = ? AND UNIX_TIMESTAMP(`pugs`.`last_updated`) > ?)";
+
+            list($id, $time) = $pug;
+            array_push($params, $id, $time);
+        }
+        $sql .= ")";
+
+        return $this->__query($sql, $params);
+    }
+
     /* Takes an array of ids and fetches all associated lobbies */
     public function fetchPUGs($ids) {
         $sql = <<<SQL

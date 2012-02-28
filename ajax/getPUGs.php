@@ -9,10 +9,31 @@ $db->connect();
 $export = array();
 
 if (isset($_GET['pugs'])) {
-    $id = (int) $_GET['pugs'];
+    // Should be a list of id,time;id,time;id,time etc...
+    $param = $_GET['pugs'];
 
-    $export = $db->fetchPUG($id);
+    $pug_ids_times = explode(";", $param);
 
+    if (count($pug_ids_times) > 100) {
+        // This seems sketchy...
+        die();
+    }
+
+    $pugs = array_map(function($id_time) {
+        $id = $time = 0;
+
+        if (strpos($id_time, ",") != false) {
+            list($id, $time) = explode(",", $id_time, 2);
+            $id = (int) $id;
+            $time = (int) $time;
+        }
+        else
+            $id = (int) $id_time;
+
+        return array($id, $time);
+    }, $pug_ids_times);
+
+    $export = $db->fetchUpdatedPUGs($pugs);
 }
 else {
     /* For every currently open pug... */
