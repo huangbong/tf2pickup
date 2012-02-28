@@ -53,4 +53,4 @@ $db = Model::getInstance();
 $db->connect();
 
 $db->createPUG($name, $region, $pug_type, $map_name, $_SESSION['steam64'],
-               $server_name, $server_ip, $server_port, $rcon)
+               $server_name, $server_ip, $server_port, $rcon);

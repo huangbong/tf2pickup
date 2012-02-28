@@ -26,6 +26,7 @@ else {
         $pug_data["name"] = $pug["name"];
         $pug_data["pug_type"] = $pug["pug_type"];
         $pug_data["servername"] = $pug["servername"];
+        $pug_data["updated"] = $pug["updated"];
 
         /* Get all the players for this pug */
         $players = $db->fetchPlayersInPUG((int)$pug["id"]);

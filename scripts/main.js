@@ -73,52 +73,77 @@
         applyPUGFilters();
     };
 
+    var receivePUGData = function(_data) {
+        var data = JSON.parse(_data);
+
+        pugs_cache = $.map(data, function(pug) {
+            var players_per_team = (pug["pug_type"] === "1")? 6:9;
+            var teams = [{players: []}, {players: []}];
+            var player_count = 0;
+
+
+            $.each(pug["players"], function() {
+                /* teams[+this["team"]].players.push({
+                    avatar: this["avatar"],
+                    id: this[id]
+                }); */
+
+                if (!this["empty"]) {
+                    ++player_count;
+                }
+            });
+
+            return {
+                id: pug["id"],
+                region: pug["region"],
+                map: pug["map"],
+                name: pug["name"],
+                players_per_team: players_per_team,
+                max_players: 2*players_per_team,
+                player_count: player_count,
+                server_name: pug["servername"],
+                updated: pug["updated"],
+                host_name: pug["hostname"] /*,
+                teams: teams */
+            };
+        });
+        $("#pugs_loading").hide();
+        updatePUGListing();
+        setTimeout(updatePUGs, 2500);
+    };
+
     var updatePUGs = function(initial) {
+        var data = "";
+        if (!initial) {
+            data = [];
+            $.each(pugs_cache, function(key, pug) {
+                data.push(pug["id"] + "," + pug["updated"]);
+            });
+            data = data.join(";")
+        }
+
         $.ajax({
             type: "GET",
             url: "ajax/getPUGs.php",
-            success: function(_data) {
-                var data = JSON.parse(_data);
-
-                pugs_cache = $.map(data, function(pug) {
-                    var players_per_team = (pug["pug_type"] === "1")? 6:9;
-                    var teams = [{players: []}, {players: []}];
-                    var player_count = 0;
-
-
-                    $.each(pug["players"], function() {
-                        /* teams[+this["team"]].players.push({
-                            avatar: this["avatar"],
-                            id: this[id]
-                        }); */
-
-                        if (!this["empty"]) {
-                            ++player_count;
-                        }
-                    });
-
-                    return {
-                        id: pug["id"],
-                        region: pug["region"],
-                        map: pug["map"],
-                        name: pug["name"],
-                        players_per_team: players_per_team,
-                        max_players: 2*players_per_team,
-                        player_count: player_count,
-                        server_name: pug["servername"],
-                        host_name: pug["hostname"] /*,
-                        teams: teams */
-                    };
-                });
-                $("#pugs_loading").hide();
-                updatePUGListing();
+            data: data,
+            success: receivePUGData,
+            error: function() {
+                $("#comm_error").show();
+                setTimeout(updatePUGs, 20000);
             }
         });
     };
 
-    /* On page load - setup keybinds and get handles to common page elements */
+    /* Callback from "start pug" button. Reads data from the
+     * create PUG form and sends ajax request                */
+    var createPUG = function() {
+
+    }
+
+    /* On page load - setup keybinds and get handles
+     * to common page elements                               */
     $(function() {
-        /* Various handles we want to keep a reference to */
+        /* Various handles we want to keep a reference to    */
         $pugs_container = $("#pugs_container");
         $no_pugs = $("#no_pugs");
         $PUGListingTemplate = $("#PUGListingTemplate");
@@ -145,7 +170,7 @@
             $alert.hide();
         });
 
-        $("#start_new_pug").click(createPug);
+        $("#start_new_pug").click(createPUG);
     });
 
 })(jQuery);

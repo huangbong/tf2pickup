@@ -83,7 +83,8 @@ class Model {
     /* Fetch all currently open lobbies */
     public function fetchOpenPUGs() {
         $sql = <<<SQL
-    SELECT * FROM `pugs` WHERE `pugs`.`started` = FALSE
+    SELECT *, UNIX_TIMESTAMP(`pugs`.`last_updated`) as `updated`
+    FROM `pugs` WHERE `pugs`.`started` = FALSE
 SQL;
         return $this->__query($sql);
     }
@@ -91,7 +92,8 @@ SQL;
     /* Takes an array of ids and fetches all associated lobbies */
     public function fetchPUGs($ids) {
         $sql = <<<SQL
-    SELECT * FROM `pugs` WHERE `teams`.`id` in (:id_list)
+    SELECT *, UNIX_TIMESTAMP(`pugs`.`last_updated`) as `updated`
+    FROM `pugs` WHERE `teams`.`id` in (:id_list)
 SQL;
         $id_list = implode(",", $ids);
         return $this->__query($sql, array(':id_list' => $team_id));
@@ -99,7 +101,8 @@ SQL;
 
     public function fetchPUG($id) {
         $sql = <<<SQL
-    SELECT * FROM `pugs` WHERE `teams`.`id` = :id
+    SELECT *, UNIX_TIMESTAMP(`pugs`.`last_updated`) as `updated`
+    FROM `pugs` WHERE `pugs`.`id` = :id
 SQL;
         return $this->__query($sql, array(':id' => $id));
     }

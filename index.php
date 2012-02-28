@@ -15,7 +15,7 @@ $logged_in = isset($_SESSION['steam64']);
         <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
         <script src="http://code.jquery.com/jquery-latest.js"></script>
         <script src="scripts/jsrender.js"></script>
-        <script src="scripts/chat<?php if(isset($_GET["gc"])) {?>_gc<?php } ?>.js"></script>
+        <!--<script src="scripts/chat<?php if(isset($_GET["gc"])) {?>_gc<?php } ?>.js"></script>-->
         <script src="scripts/main.js"></script>
     </head>
     <body>
@@ -144,6 +144,9 @@ if (isset($logged_in)) {
                 </div>
                 <div id="no_pugs">
                     No PUGs are open!
+                </div>
+                <div id="comm_error">
+                    Error retreiving servers. Automatically retrying.
                 </div>
                 <div id="pugs_loading">
                     <img src="img/ajax-loader.gif" />
