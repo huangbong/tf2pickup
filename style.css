@@ -311,7 +311,7 @@ div.pug .pug_map {
     overflow: hidden;
 }
 
-.pug_title {
+.pug_name {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;

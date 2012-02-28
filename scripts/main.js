@@ -10,6 +10,10 @@
     /* Selected filters, stored as a map of filter name to filter functions */
     var filters = {};
 
+    var PUGListing = {
+
+    };
+
     var updatePUGListing = function() {
         var current_ids = {};
         $.each(pugs_cache, function() {
@@ -23,6 +27,10 @@
             }
             else {
                 /* PUG Listing already exists, update? */
+                $pug_name = $(".pug_name", $pug);
+                if ($pug_name.text() !== this["name"]) {
+                    $pug_name.text(this["name"]);
+                }
             }
         });
 

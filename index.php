@@ -31,7 +31,7 @@ $logged_in = isset($_SESSION['steam64']);
                          height="65" />
                 </div>
                 <div class="pug_details">
-                    <span class="pug_title">{{=name}}</span>
+                    <span class="pug_name">{{=name}}</span>
                     <div class="pug_info">
                         {{=players_per_team}}v{{=players_per_team}} cp_badlands
                         <br/>
