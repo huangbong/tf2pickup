@@ -302,22 +302,30 @@ div.pug .pug_map {
     border-radius: 0 5px 5px 0;
 }
 
-.pug_title {
+.pug_details {
     float: left;
     margin-top: 15px;
     font-size: 18px;
     height: 69px;
-    width: 325px;
+    width: 430px;
+    overflow: hidden;
+}
+
+.pug_title {
+    text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    display: block;
+    width: 100%;
 }
+
 .pug_info {
     font-size: 12px;
 }
 
 .pug_teams {
     float: right;
-    margin: 15px 21px;
+    margin: 15px 21px 0 0;
     height: 53px;
 
     -webkit-touch-callout: none;

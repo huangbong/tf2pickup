@@ -13,9 +13,11 @@
     var updatePUGListing = function() {
         var current_ids = {};
         $.each(pugs_cache, function() {
-            /* If this PUG does not exist yet... */
+            var $pug = $("#pug_id_" + this["id"]);
             current_ids["pug_id_" + this.id] = true;
-            if ($("#pug_id_" + this["id"]).size() === 0) {
+
+            /* If this PUG does not exist yet... */
+            if ($pug.size() === 0) {
                 var html = $PUGListingTemplate.render(this);
                 $pugs_container.append($(html));
             }
