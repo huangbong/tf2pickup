@@ -127,6 +127,7 @@ if ($logged_in) {
                 </div><?php
 } ?>
             </div>
+
             <div id="middle">
                 <div id="pug_list_header">
                     Filter:
@@ -161,8 +162,7 @@ if ($logged_in) {
                     &copy; 2012 TF2Pickup.com
                 </div>
             </div>
-        </div>
-                    <p><input type="text" name="new_pug_port" value="27015" /></p>
 
+        </div>
     </body>
 </html>
