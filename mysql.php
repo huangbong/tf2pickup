@@ -100,6 +100,7 @@ SQL;
 SQL;
         $first = true;
         $params = array();
+        $ids = array();
         foreach ($pugs as $pug) {
             if (!$first)
                 $sql .= " OR ";
@@ -111,9 +112,10 @@ SQL;
             $sql .= "(`pugs`.`id` = ? AND UNIX_TIMESTAMP(`pugs`.`last_updated`) > ?)";
 
             list($id, $time) = $pug;
+            array_push($ids, $id);
             array_push($params, $id, $time);
         }
-        $sql .= ")";
+        $sql .= " OR (`pugs`.`started` = 0 AND !(`pugs`.`id` in (" . implode(",", $ids) . "))) )";
 
         return $this->__query($sql, $params);
     }

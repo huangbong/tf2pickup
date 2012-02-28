@@ -48,6 +48,7 @@
         });
     };
 
+    /* Creates a filter function from  */
     var makeFilter = function(filter_string) {
         var parts = filter_string.split("=");
         if (parts.length != 2)
@@ -60,6 +61,7 @@
         };
     }
 
+    /* Callback when filters are clicked */
     var toggleFilter = function() {
         var $this = $(this);
         var filter_string = $this.attr("filter");
@@ -73,6 +75,30 @@
         applyPUGFilters();
     };
 
+    /* Request PUG info from the server */
+    var updatePUGs = function(initial) {
+        var data = "";
+        if (!initial) {
+            data = [];
+            $.each(pugs_cache, function(key, pug) {
+                data.push(pug["id"] + "," + pug["updated"]);
+            });
+            data = data.join(";")
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "ajax/getPUGs.php",
+            data: data,
+            success: receivePUGData,
+            error: function() {
+                $("#comm_error").show();
+                setTimeout(updatePUGs, 20000);
+            }
+        });
+    };
+
+    /* Receive PUG data from the server */
     var receivePUGData = function(_data) {
         var data = JSON.parse(_data);
 
@@ -109,29 +135,9 @@
         });
         $("#pugs_loading").hide();
         updatePUGListing();
+
+        /* Schedule next update */
         setTimeout(updatePUGs, 2500);
-    };
-
-    var updatePUGs = function(initial) {
-        var data = "";
-        if (!initial) {
-            data = [];
-            $.each(pugs_cache, function(key, pug) {
-                data.push(pug["id"] + "," + pug["updated"]);
-            });
-            data = data.join(";")
-        }
-
-        $.ajax({
-            type: "GET",
-            url: "ajax/getPUGs.php",
-            data: data,
-            success: receivePUGData,
-            error: function() {
-                $("#comm_error").show();
-                setTimeout(updatePUGs, 20000);
-            }
-        });
     };
 
     /* Callback from "start pug" button. Reads data from the

@@ -6,8 +6,8 @@ require_once "../mysql.php";
 $db = Model::getInstance();
 $db->connect();
 
-$export = array();
-
+/* Fetch either all open pugs or, if a ?pugs parameter was given, fetch
+ * only pugs which have been recently updated */
 if (isset($_GET['pugs'])) {
     // Should be a list of id,time;id,time;id,time etc...
     $param = $_GET['pugs'];
@@ -19,7 +19,7 @@ if (isset($_GET['pugs'])) {
         die();
     }
 
-    $pugs = array_map(function($id_time) {
+    $pugs_params = array_map(function($id_time) {
         $id = $time = 0;
 
         if (strpos($id_time, ",") != false) {
@@ -33,46 +33,50 @@ if (isset($_GET['pugs'])) {
         return array($id, $time);
     }, $pug_ids_times);
 
-    $export = $db->fetchUpdatedPUGs($pugs);
+    $pugs = $db->fetchUpdatedPUGs($pugs_params);
 }
 else {
     /* For every currently open pug... */
     $pugs = $db->fetchOpenPUGs();
-    foreach ($pugs as $pug) {
-        /* Copy the data we want */
-        $pug_data = array();
-        $pug_data["id"] = $pug["id"];
-        $pug_data["region"] = $pug["region"];
-        $pug_data["map"] = $pug["map"];
-        $pug_data["name"] = $pug["name"];
-        $pug_data["pug_type"] = $pug["pug_type"];
-        $pug_data["servername"] = $pug["servername"];
-        $pug_data["updated"] = $pug["updated"];
+}
 
-        /* Get all the players for this pug */
-        $players = $db->fetchPlayersInPUG((int)$pug["id"]);
-        $players_data = array();
-        foreach ($players as $player) {
-            $player_data = array();
+/* Parse data from server and send only the values we need to the client.
+ * Also, fill out the players from a lobby */
+$export = array();
+foreach ($pugs as $pug) {
+    /* Copy the data we want */
+    $pug_data = array();
+    $pug_data["id"] = $pug["id"];
+    $pug_data["region"] = $pug["region"];
+    $pug_data["map"] = $pug["map"];
+    $pug_data["name"] = $pug["name"];
+    $pug_data["pug_type"] = $pug["pug_type"];
+    $pug_data["servername"] = $pug["servername"];
+    $pug_data["updated"] = $pug["updated"];
 
-            $player_data["team"] = $player["team"];
-            $player_data["class"] = $player["class"];
-            $player_data["steam64"] = $player["user_id"];
-            $player_data["name"] = $player["username"];
-            $player_data["avatar"] = $player["avatar"];
+    /* Get all the players for this pug */
+    $players = $db->fetchPlayersInPUG((int)$pug["id"]);
+    $players_data = array();
+    foreach ($players as $player) {
+        $player_data = array();
 
-            if ($pug["host_id"] === $player["user_id"]) {
-                $pug_data["hostname"] = $player["username"];
-            }
+        $player_data["team"] = $player["team"];
+        $player_data["class"] = $player["class"];
+        $player_data["steam64"] = $player["user_id"];
+        $player_data["name"] = $player["username"];
+        $player_data["avatar"] = $player["avatar"];
 
-            array_push($players_data, $player_data);
+        if ($pug["host_id"] === $player["user_id"]) {
+            $pug_data["hostname"] = $player["username"];
         }
-        $pug_data["players"] = $players_data;
 
-        /* And add this pug's data to the list of data to
-         * send to the client.                            */
-        array_push($export, $pug_data);
+        array_push($players_data, $player_data);
     }
+    $pug_data["players"] = $players_data;
+
+    /* And add this pug's data to the list of data to
+     * send to the client.                            */
+    array_push($export, $pug_data);
 }
 
 echo json_encode($export);
