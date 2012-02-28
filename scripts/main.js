@@ -7,7 +7,7 @@
     /* Cached data from server */
     var pugs_cache;
 
-    /* Selected filters, map of filter name to filter functions */
+    /* Selected filters, stored as a map of filter name to filter functions */
     var filters = {};
 
     var updatePUGListing = function() {
@@ -135,15 +135,15 @@
     };
 
     /* Callback from "start pug" button. Reads data from the
-     * create PUG form and sends ajax request                */
+     * create PUG form and sends ajax request */
     var createPUG = function() {
-
+        // TODO
     }
 
     /* On page load - setup keybinds and get handles
-     * to common page elements                               */
+     * to common page elements */
     $(function() {
-        /* Various handles we want to keep a reference to    */
+        /* Various handles we want to keep a reference to */
         $pugs_container = $("#pugs_container");
         $no_pugs = $("#no_pugs");
         $PUGListingTemplate = $("#PUGListingTemplate");

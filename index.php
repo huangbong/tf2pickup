@@ -77,7 +77,7 @@ $logged_in = isset($_SESSION['steam64']);
         </script>
 
         <div id="alert"<?php if ($logged_in) { ?> class="hidden"<?php } ?>>
-            <div id="alert_contents"<?php if ($logged_in) { ?> class="hidden"<?php } ?>>
+            <div id="alert_contents">
                 <div id="login_box">
                     <h2>Please login with Steam to<br />use this site.</h2>
                     <a href="<?php echo SteamSignIn::genUrl(); ?>">
