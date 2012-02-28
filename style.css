@@ -193,7 +193,7 @@ a#start_pug {
     float: right;
 }
 
-#no_pugs {
+#no_pugs, #comm_error {
     margin-top: 25px;
     text-align: center;
     color: red;
