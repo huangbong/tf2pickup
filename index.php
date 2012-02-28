@@ -3,7 +3,6 @@ require_once 'config.php';
 require_once 'session.php';
 require_once 'bancheck.php';
 require_once 'openid.php';
-
 $logged_in = isset($_SESSION['steam64']);
 
 ?><!DOCTYPE html>
@@ -86,8 +85,7 @@ $logged_in = isset($_SESSION['steam64']);
                              alt="steam login"/>
                     </a>
                 </div>
-            </div>
-            <div id="alert_contents_start_pug">
+
                 <div id="start_pug_box">
                     <div class="close_alert">X</div>
 
@@ -118,7 +116,7 @@ $logged_in = isset($_SESSION['steam64']);
             <div id="header">
                 <div id="logo"></div>
 <?php
-if (isset($logged_in)) {
+if ($logged_in) {
 ?>
                 <div id="steam">
                     <img src="<?php echo $_SESSION['avatar']; ?>" alt="avatar" width="30" height="30" />

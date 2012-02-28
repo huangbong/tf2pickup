@@ -135,8 +135,7 @@ SQL;
     SELECT `banned` FROM `users` WHERE `id` = ':steam64'
 SQL;
         $result = $this->__query($sql, array(':steam64' => $steam64));
-        var_dump($result);
-        return $result["banned"] === 1;
+        return (count($result) === 1 && $result["banned"] === 1);
     }
 
     public function createPUG($name, $region, $pug_type,

@@ -11,8 +11,8 @@ if (isset($_SESSION['steam64']))
 
     if($db->isBanned($steam64)) {
         header("Location: http://banned.tf2pickup.com/");
+        exit();
     }
 
     $db->disconnect();
-    exit();
 }
