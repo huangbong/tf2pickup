@@ -130,6 +130,15 @@ SQL;
         return $this->__query($sql, array(':name' => $name));
     }
 
+    public function isBanned($steam64) {
+        $sql = <<<SQL
+    SELECT `banned` FROM `users` WHERE `id` = ':steam64'
+SQL;
+        $result = $this->__query($sql, array(':steam64' => $steam64));
+        var_dump($result);
+        return $result["banned"] === 1;
+    }
+
     public function createPUG($name, $region, $pug_type,
                               $map_name, $host_id, $server_name,
                               $server_ip, $server_port, $rcon) {

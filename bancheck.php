@@ -1,17 +1,18 @@
 <?php
+/* Include in a page to perform to check if a user is banned */
 require_once 'session.php';
 require_once 'mysql.php';
 
 if (isset($_SESSION['steam64']))
 {
     $steam64 = $_SESSION['steam64'];
-    $con = mysql::connect();
-    $search = "SELECT * FROM `users` WHERE `id` = '$steam64'";
-    $result = mysql_query($search);
-    $row = mysql_fetch_array($result, MYSQL_ASSOC);
-    if($row["banned"] == 1) {
+    $db = Model::getInstance();
+    $db->connect();
+
+    if($db->isBanned($steam64)) {
         header("Location: http://banned.tf2pickup.com/");
     }
-}
 
-mysql_close($con);
+    $db->disconnect();
+    exit();
+}
