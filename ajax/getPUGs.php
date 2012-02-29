@@ -51,7 +51,7 @@ foreach ($pugs as $pug) {
     $pug_data["map"] = $pug["map"];
     $pug_data["name"] = $pug["name"];
     $pug_data["pug_type"] = $pug["pug_type"];
-    $pug_data["servername"] = $pug["servername"];
+    $pug_data["server_name"] = $pug["server_name"];
     $pug_data["updated"] = $pug["updated"];
 
     /* Get all the players for this pug */
@@ -61,7 +61,8 @@ foreach ($pugs as $pug) {
         $player_data = array();
 
         $player_data["team"] = $player["team"];
-        $player_data["class"] = $player["class"];
+        /* class is a reserved word, so change it to class_id for our js */
+        $player_data["class_id"] = $player["class"];
         $player_data["steam64"] = $player["user_id"];
         $player_data["name"] = $player["username"];
         $player_data["avatar"] = $player["avatar"];

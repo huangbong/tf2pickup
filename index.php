@@ -16,7 +16,6 @@ $logged_in = isset($_SESSION['steam64']);
         <script src="scripts/jsrender.js"></script>
         <!--<script src="scripts/chat<?php if(isset($_GET["gc"])) {?>_gc<?php } ?>.js"></script>-->
         <script src="scripts/main.js"></script>
-        <script src="scripts/fancyform.js"></script>
     </head>
     <body>
         <script id="PUGListingTemplate" type="text/x-jquery-tmpl">
@@ -42,15 +41,17 @@ $logged_in = isset($_SESSION['steam64']);
                     {{=player_count}} / {{=max_players}}
                 </div>
                 <div class="pug_teams">
-<?php /*            {{#each teams}}
-                        <div class="pug_team team_1">
+            {{#each teams}}
+                        <div class="pug_team">
                             {{#each players}}
                                 <img src="{{=avatar}}"
                                      id="{{=id}}"
-                                     class="{{=class}}" />
-                            {{/each}} */ ?>
+                                     class="{{#if empty}}empty{{/if}}" />
+                            {{/each}}
+                        </div>
+            {{/each}}
 
-                        <div class="pug_team">
+     <?php /*                   <div class="pug_team">
     <img src="img/class_icons/scout.png" class="empty" />
     <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/4f/4fdc405b2b955056cbc8e0aae4ef0c7a3cf98105.jpg" class="mini_player" />
     <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/5c/5c237bb671fca4de02a4aee1008a5f81bdf77e3c.jpg" class="mini_player" />
@@ -71,7 +72,7 @@ $logged_in = isset($_SESSION['steam64']);
     <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/7f/7f7cd93b9d8fe1663f8fe13225b38247c6f94364.jpg" class="mini_player" />
     <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/a8/a8d7d3d1762464bae43274cb1ab0d42d27481861.jpg" class="mini_player" />
     <img src="img/class_icons/spy.png" class="empty" />
-                        </div>
+                        </div> */ ?>
                 </div>
             </div>
         </script>

@@ -342,6 +342,7 @@ div.pug .pug_map {
 
 .pug_teams img.empty {
     #opacity: .4;
+    border: 0;
 }
 
 .pug_teams img.friend {
@@ -374,3 +375,15 @@ div.pug .pug_map {
     width: 100%;
     text-align: left;
 }
+
+/* Class icons
+ * TODO: CSS Sprites! */
+.class_1 {background: transparent url(img/class_icons/scout.png) no-repeat 0 0;}
+.class_2 {background: transparent url(img/class_icons/soldier.png) no-repeat 0 0;}
+.class_3 {background: transparent url(img/class_icons/pyro.png) no-repeat 0 0;}
+.class_4 {background: transparent url(img/class_icons/demo.png) no-repeat 0 0;}
+.class_5 {background: transparent url(img/class_icons/heavy.png) no-repeat 0 0;}
+.class_6 {background: transparent url(img/class_icons/engy.png) no-repeat 0 0;}
+.class_7 {background: transparent url(img/class_icons/medic.png) no-repeat 0 0;}
+.class_8 {background: transparent url(img/class_icons/sniper.png) no-repeat 0 0;}
+.class_9 {background: transparent url(img/class_icons/spy.png) no-repeat 0 0;}

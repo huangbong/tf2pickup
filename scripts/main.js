@@ -6,11 +6,10 @@
       , $close_alert
       , $no_pugs, $pugs_container, $PUGListingTemplate;
 
-    /* Cached data from server
-     * TODO: be a map of id -> PUGListing's' */
-    var pugs_cache;
+    /* Cached data from server, maps id -> PUGListing */
+    var pugs_cache = {};
 
-    /* Selected filters, stored as a map of filter name to filter functions */
+    /* Selected filters, maps filter_name -> filter_functions */
     var filters = {};
 
     /* Functions for centered alert box (for logins, starting pugs, etc)
@@ -19,15 +18,35 @@
 
     var makeDefaultTeam = function(pug_type) {
         if (pug_type === 1) {
-            return [
-
+            var classes = [
+                1, 1, 2, 2, 4, 7
             ];
         }
+        else {
+            var classes = [
+                1, 2, 3, 4, 5, 6, 7, 8, 9
+            ];
+        }
+
+        return {
+            players: $.map(classes, function(class_id) {
+                return {
+                    class_id: class_id,
+                    empty: true,
+                    avatar: null,
+                    steamid: null
+                };
+            })
+        };
     };
 
     /* Constructor for a PUG listing.  Accepts decoded JSON straight from
      * the server */
     var PUGListing = function(data) {
+        this.load(data);
+    };
+
+    PUGListing.prototype.load = function(data) {
         var self = this
           , required_data = ["id", "region", "map", "name", "pug_type"
                            , "server_name", "host_name", "updated", "players"];
@@ -41,28 +60,35 @@
         this.players_per_team = (this.pug_type === 1)? 6:9;
         this.max_players = 2 * this.players_per_team ;
         this.player_count = 0;
-        this.teams = [makeDefaultTeam(this.pug_type), makeDefaultTeam(this.pug_type)];
+        this.teams = [makeDefaultTeam(this.pug_type)
+                    , makeDefaultTeam(this.pug_type)];
 
-        $.each(this.players, function() {
-            self.teams[+this.team].push({
-                avatar: this.avatar,
-                id: this.id
-            });
+
+        $.each(this.players, function(idx, player) {
+            var class_id = +player.class_id;
+            if (class_id > 0) {
+                $.each(self.teams[+player.team].players, function(idx, slot) {
+                    if (slot.class_id === class_id) {
+                        slot.avatar = player.avatar;
+                        slot.steamid = player.steam64;
+                    }
+                });
+            }
 
             ++self.player_count;
         });
-    };
+    }
 
     /* Updates the currently rendered PUG listing with data from pug_cache */
     var updatePUGListing = function() {
         var current_ids = {};
-        $.each(pugs_cache, function() {
-            var $pug = $("#pug_id_" + this.id), $pug_name;
-            current_ids["pug_id_" + this.id] = true;
+        $.each(pugs_cache, function(id, pug) {
+            var $pug = $("#pug_id_" + id), $pug_name;
+            current_ids["pug_id_" + id] = true;
 
             /* If this PUG does not exist yet... */
             if ($pug.size() === 0) {
-                var html = $PUGListingTemplate.render(this);
+                var html = $PUGListingTemplate.render(pug);
                 $pugs_container.append($(html));
             }
             else {
@@ -152,10 +178,16 @@
 
     /* Receive PUG data from the server */
     var receivePUGData = function(_data) {
+            console.log(_data);
         var data = JSON.parse(_data);
 
-        pugs_cache = $.map(data, function(pug) {
-            return new PUGListing(pug);
+        $.each(data, function(idx, pug) {
+            if (pugs_cache.hasOwnProperty(""+pug.id)) {
+                pugs_cache[pug.id].load(pug);
+            }
+            else {
+                pugs_cache[pug.id] = new PUGListing(pug);
+            }
         });
         $("#pugs_loading").hide();
         updatePUGListing();
