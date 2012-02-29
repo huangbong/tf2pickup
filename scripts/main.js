@@ -94,11 +94,15 @@
                 $pugs_container.append($(html));
             }
             else {
-                /* PUG Listing already exists, update? */
+                /* PUG Listing already exists, update?
                 $pug_name = $(".pug_name", $pug);
                 if ($pug_name.text() !== this.name) {
                     $pug_name.text(this.name);
                 }
+                */
+
+                var html = $PUGListingTemplate.render(pug);
+                $pug.replaceWith($(html));
             }
         });
 
@@ -180,7 +184,6 @@
 
     /* Receive PUG data from the server */
     var receivePUGData = function(_data) {
-            console.log(_data);
         var data = JSON.parse(_data);
 
         $.each(data, function(idx, pug) {
