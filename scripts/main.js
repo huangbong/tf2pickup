@@ -72,6 +72,7 @@
                         slot.empty = false;
                         slot.avatar = player.avatar;
                         slot.steamid = player.steam64;
+                        return false; // break from the .each
                     }
                 });
             }
