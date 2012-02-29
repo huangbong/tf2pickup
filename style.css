@@ -340,9 +340,10 @@ div.pug .pug_map {
     border-radius: 2px;
 }
 
-.pug_teams img.empty {
-    #opacity: .4;
-    border: 0;
+.pug_teams div.empty {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
 }
 
 .pug_teams img.friend {
@@ -378,6 +379,8 @@ div.pug .pug_map {
 
 /* Class icons
  * TODO: CSS Sprites! */
+.class_1, .class_2, .class_3, .class_4, .class_5, .class_6, .class_7,
+.class_8, .class_9 {background-size: 24px 24px;}
 .class_1 {background: transparent url(img/class_icons/scout.png) no-repeat 0 0;}
 .class_2 {background: transparent url(img/class_icons/soldier.png) no-repeat 0 0;}
 .class_3 {background: transparent url(img/class_icons/pyro.png) no-repeat 0 0;}

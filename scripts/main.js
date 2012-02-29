@@ -68,7 +68,8 @@
             var class_id = +player.class_id;
             if (class_id > 0) {
                 $.each(self.teams[+player.team].players, function(idx, slot) {
-                    if (slot.class_id === class_id) {
+                    if (slot.class_id === class_id && slot.empty) {
+                        slot.empty = false;
                         slot.avatar = player.avatar;
                         slot.steamid = player.steam64;
                     }

@@ -44,9 +44,12 @@ $logged_in = isset($_SESSION['steam64']);
             {{#each teams}}
                         <div class="pug_team">
                             {{#each players}}
+                                {{#if empty}}
+                                <div class="empty class_{{=class_id}}"></div>
+                                {{else}}
                                 <img src="{{=avatar}}"
-                                     id="{{=id}}"
-                                     class="{{#if empty}}empty{{/if}}" />
+                                     id="{{=steamid}}" />
+                                {{/if}}
                             {{/each}}
                         </div>
             {{/each}}
