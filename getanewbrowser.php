@@ -20,8 +20,6 @@
             <div id="middle">
                 <div id="pugs_container">
                 <h2>Your browser is not supported by TF2Pickup.</h2>We have support for Internet Explorer 9+, Firefox, Chrome, and Opera.<br/>We strongly recommend installing <a href="http://www.google.com/chrome">Google Chrome</a> or <a href="http://www.mozilla.org/en-US/firefox/new/">Mozilla Firefox</a> before using TF2Pickup.
-                <p/>
-                I don't want to listen to you and I want to use my shitty browser anyways!
                 </div>
                 <div id="footer">
                     &copy; 2012 TF2Pickup.com
