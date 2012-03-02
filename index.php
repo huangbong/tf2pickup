@@ -2,6 +2,7 @@
 require_once 'config.php';
 require_once 'session.php';
 require_once 'bancheck.php';
+require_once 'browsercheck.php';
 require_once 'openid.php';
 $logged_in = isset($_SESSION['steam64']);
 
