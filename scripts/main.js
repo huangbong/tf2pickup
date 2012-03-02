@@ -239,6 +239,16 @@
             showAlert();
         });
 
+        $(document).on("click", ".pug", function() {
+            $("#lobby_listing").animate({left: '-1050px'});
+            $("#in_pug").animate({left: '0px'});
+        });
+
+        $("#in_pug").on("click", function() {
+            $("#lobby_listing").animate({left: '0px'});
+            $("#in_pug").animate({left: '1100px'});
+        });
+
         $("div.close_alert").click(hideAlert);
 
         $("#launch_pug").click(createPUG);

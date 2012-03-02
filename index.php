@@ -107,33 +107,41 @@ if ($logged_in) {
 } ?>
             </div>
 
-            <div id="middle">
-                <div id="pug_list_header">
-                    Filter:
-                    <span id="filter_6s" filter="players_per_team=6" class="filter_button">
-                        6v6
-                    </span>
-                    <span id="filter_9s" filter="players_per_team=9" class="filter_button">
-                        9v9
-                    </span>
-                    <div id="filter_na" filter="region=na" class="small_region region_na filter_button"></div>
-                    <div id="filter_eu" filter="region=eu" class="small_region region_eu filter_button"></div>
-                    <div id="filter_au" filter="region=au" class="small_region region_au filter_button"></div>
-                    <a href="#" id="start_pug">
-                        Start PUG
-                    </a>
+            <div id="pages_wrapper">
+
+                <div id="lobby_listing">
+                    <div id="pug_list_header">
+                        Filter:
+                        <span id="filter_6s" filter="players_per_team=6" class="filter_button">
+                            6v6
+                        </span>
+                        <span id="filter_9s" filter="players_per_team=9" class="filter_button">
+                            9v9
+                        </span>
+                        <div id="filter_na" filter="region=na" class="small_region region_na filter_button"></div>
+                        <div id="filter_eu" filter="region=eu" class="small_region region_eu filter_button"></div>
+                        <div id="filter_au" filter="region=au" class="small_region region_au filter_button"></div>
+                        <a href="#" id="start_pug">
+                            Start PUG
+                        </a>
+                    </div>
+                    <div id="no_pugs">
+                        No PUGs are open!
+                    </div>
+                    <div id="comm_error">
+                        Error retreiving servers. Automatically retrying.
+                    </div>
+                    <div id="pugs_loading">
+                        <img src="http://cdn.tf2pickup.com/ajax-loader.gif" />
+                    </div>
+                    <div id="pugs_container">
+                    </div>
                 </div>
-                <div id="no_pugs">
-                    No PUGs are open!
+
+                <div id="in_pug">
+                    This panel will hold stuff for when a player is in a pug! For now just click here to go back to the lobby listing.
                 </div>
-                <div id="comm_error">
-                    Error retreiving servers. Automatically retrying.
-                </div>
-                <div id="pugs_loading">
-                    <img src="http://cdn.tf2pickup.com/ajax-loader.gif" />
-                </div>
-                <div id="pugs_container">
-                </div>
+
                 <div id="footer">
                     &copy; 2012 TF2Pickup.com
                 </div>
