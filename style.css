@@ -1,0 +1,442 @@
+/* Global stuff */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    font-family: Verdana, Arial, sans-serif;
+}
+
+html {height: 100%;}
+
+body {
+    height: 100%;
+    color: #d0cbc7;
+    background-color: #333333;
+}
+
+a {
+    text-decoration: none;
+}
+a:link, a:visited, a:active {
+    color: #d0cbc7;
+}
+a:hover {
+    color: #ffffff;
+}
+
+input.fancy_text_input {
+    border-radius: 3px;
+    border: 0;
+    outline: 0;
+    background-color: #333;
+    height: 20px;
+    padding: 0 5px;
+    color: #D0C4C7;
+}
+.focusField{
+    border:solid 2px #73A6FF;
+    background:#EFF5FF;
+    color:#000;
+}
+.idleField{
+    background:#EEE;
+    color: #6F6F6F;
+    border: solid 2px #DFDFDF;
+}
+
+
+/* General classes */
+.hidden {
+    display: none;
+}
+
+/* Alert box for logging in/starting lobbies/etc */
+div#alert {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    position:  absolute;
+    top: 0;
+    left: 0;
+    z-index: 100000;
+}
+
+div#alert_contents {
+    width: 400px;
+    background-color: #333;
+    border-radius: 24px;
+    border: 3px #D0CBC7 solid;
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    top: 45%;
+    margin: -144px auto;
+}
+
+div#alert_contents_start_pug {
+    width: 300px;
+    background-color: #333;
+    border-radius: 24px;
+    border: 3px #D0CBC7 solid;
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    top: 45%;
+    margin: -144px auto;
+}
+
+div#login_box, div#start_pug_box {
+    width: 100%;
+    display: none;
+    outline: none;
+}
+
+div.close_alert {
+    position: absolute;
+    top: 6px;
+    right: 11px;
+    color: rgb(151, 51, 51);
+    cursor: pointer;
+}
+
+div#login_box {
+    display: block;
+    padding: 30px 0;
+}
+
+div#login_box h2 {
+    height: 60px;
+}
+
+div#login_box img {
+    margin-top: 30px;
+    border: 0;
+}
+
+/* Content */
+#wrapper {
+    margin: 0 auto;
+    width: 1050px;
+    height: 100%;
+    padding-bottom: 40px;
+    position: relative;
+}
+
+#tf2_icon {
+    background-image: url(http://cdn.tf2pickup.com/tf2logo.png);
+    background-repeat: no-repeat;
+    z-index: -100;
+    width: 191px;
+    height: 191px;
+    position: absolute;
+    top: 5px;
+    left: -60px;
+}
+
+#header {
+    width: 1050px;
+    height: 48px;
+    position: absolute;
+    top: 45px;
+    z-index: 10000;
+}
+
+#logo {
+    background-image: url(http://cdn.tf2pickup.com/logo.png);
+    background-repeat: no-repeat;
+    height: 48px;
+    width: 318px;
+    float: left;
+}
+
+#steam {
+    float: right;
+    height: 48px;
+}
+
+#steam a img {
+    border: none;
+    padding-top: 15px;
+}
+
+#lobby_listing {
+    width: 100%;
+    height: 100%;
+    padding-top: 98px;
+    position: relative;
+}
+
+#pages_wrapper {
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#in_pug {
+    width: 100%;
+    height: 100%;
+    padding-top: 98px;
+    position: absolute;
+    top: 0px;
+    left: 1100px;
+    font-size: 50px;
+}
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 20px;
+}
+
+/* Filter and Start PUG header */
+div#pug_list_header {
+    height: 30px;
+    padding: 3px 10px;
+    width: 100%;
+    background-color: #282828;
+    border-radius: 10px;
+    font-size: 17px;
+
+    /* Disable annoying text selection when pressing
+     * the filter buttons */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+div#pug_list_header .filter_button {
+    cursor: pointer;
+}
+
+div#pug_list_header .small_region {
+    position: relative;
+    top: 2px;
+}
+
+.filter_disabled {
+    opacity: .3;
+}
+
+#filter_na {
+    margin-left: 10px;
+}
+
+a#start_pug {
+    float: right;
+}
+
+#start_pug_box p input {
+    background:#EEE;
+    color: #333;
+    border: solid 3px #DFDFDF;
+}
+
+#start_pug_box_title {
+    margin-bottom: 20px;
+}
+
+#new_pug_type {
+    width: 167px;
+    display: block;
+    margin: 0 auto;
+}
+
+#launch_pug {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-bottom: 4px;
+    padding-top: 4px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+#no_pugs, #comm_error {
+    margin-top: 25px;
+    text-align: center;
+    color: red;
+    font-size: 50px;
+    display: none;
+}
+
+#pugs_loading {
+    margin: 25px auto;
+    width: 66px;
+}
+
+/* Pug listing style */
+div.pug {
+    height: 90px;
+    border: 3px #d0cbc7 solid;
+    border-radius: 10px;
+    margin-top: 10px;
+    width: 100%;
+    padding: 0 5px;
+    position: relative;
+    cursor: pointer;
+    background-color: #333;
+}
+
+div.pug:hover {
+    border-color: #FFFFFF;
+}
+
+div.pug .pug_map {
+    width: 141px;
+    height: 64px;
+    margin: 10px 10px 10px 5px;
+    float: left;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.pug_map img {
+    float: left;
+}
+
+.pug_map .large_region {
+    border-radius: 5px 0 0 5px;
+    float: left;
+    display: inline-block;
+}
+
+.pug_map img {
+    border-radius: 0 5px 5px 0;
+}
+
+.pug_details {
+    float: left;
+    margin-top: 15px;
+    font-size: 18px;
+    height: 69px;
+    width: 430px;
+    overflow: hidden;
+}
+
+.pug_name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+}
+
+.pug_info {
+    font-size: 12px;
+}
+
+.pug_teams {
+    float: right;
+    margin: 15px 21px 0 0;
+    height: 53px;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.pug_teams img {
+    width: 24px;
+    height: 24px;
+    border: 2px transparent solid;
+    border-radius: 2px;
+}
+
+.pug_teams div.empty {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+}
+
+.pug_teams img.friend {
+    border: 2px rgb(167, 244, 70) solid;
+}
+
+.pug_team:first-child {
+    margin-bottom: 5px;
+}
+
+.pug_team {
+    height: 24px;
+}
+
+.pug_player_count {
+    float: right;
+    margin: 16px 16px 0 0;
+    font-size: 40px;
+}
+
+.pug_server_info {
+    float: right;
+    clear: right;
+    margin: 5px 5px 0 0;
+    width: 240px;
+    font-size: 11px;
+}
+
+.pug_server_info table {
+    width: 100%;
+    text-align: left;
+}
+
+/*******************************
+ * All the CSS Sprites         */
+.class_1, .class_2, .class_3, .class_4, .class_5, .class_6, .class_7,
+.class_8, .class_9, .region_na, .region_eu, .region_au {
+    background-image: url(http://cdn.tf2pickup.com/sprite.png);
+    background-repeat: no-repeat;
+ }
+
+/* Small class icons */
+.small_class {} /* Place holder incase we move the sprites around */
+.class_1.small_class {background-position: 0 0;}
+.class_2.small_class {background-position: -24px 0;}
+.class_3.small_class {background-position: -48px 0;}
+.class_4.small_class {background-position: -72px 0;}
+.class_5.small_class {background-position: -96px 0;}
+.class_6.small_class {background-position: -120px 0;}
+.class_7.small_class {background-position: -144px 0;}
+.class_8.small_class {background-position: -168px 0;}
+.class_9.small_class {background-position: -192px 0;}
+
+/* Large class icons */
+.large_class {}
+.class_1.large_class {background-position: 0 -64px;}
+.class_2.large_class {background-position: -64px -64px;}
+.class_3.large_class {background-position: -128px -64px;}
+.class_4.large_class {background-position: -192px -64px;}
+.class_5.large_class {background-position: -256px -64px;}
+.class_6.large_class {background-position: -320px -64px;}
+.class_7.large_class {background-position: -384px -64px;}
+.class_8.large_class {background-position: -448px -64px;}
+.class_9.large_class {background-position: -512px -64px;}
+
+/* Small region icons */
+.small_region {width: 25px; height: 15px; display: inline-block;}
+.region_na.small_region {background-position: -75px -137px;}
+.region_eu.small_region {background-position: -100px -137px;}
+.region_au.small_region {background-position: -125px -137px;}
+
+/* Large region icons */
+.large_region {width: 25px; height: 65px; display: inline-block;}
+.region_na.large_region {background-position: 0 -88px;}
+.region_eu.large_region {background-position: -25px -88px;}
+.region_au.large_region {background-position: -50px -88px;}
+
