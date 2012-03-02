@@ -195,11 +195,11 @@ div#pug_list_header {
     user-select: none;
 }
 
-div#pug_list_header span {
+div#pug_list_header .filter_button {
     cursor: pointer;
 }
 
-div#pug_list_header img {
+div#pug_list_header .small_region {
     position: relative;
     top: 2px;
 }
@@ -208,7 +208,7 @@ div#pug_list_header img {
     opacity: .3;
 }
 
-span#filter_na {
+#filter_na {
     margin-left: 10px;
 }
 
@@ -290,11 +290,13 @@ div.pug .pug_map {
     float: left;
 }
 
-.pug_map img:first-child {
+.pug_map .large_region {
     border-radius: 5px 0 0 5px;
+    float: left;
+    display: inline-block;
 }
 
-.pug_map img:last-child {
+.pug_map img {
     border-radius: 0 5px 5px 0;
 }
 
@@ -377,16 +379,47 @@ div.pug .pug_map {
     text-align: left;
 }
 
-/* Class icons
- * TODO: CSS Sprites! */
+/*******************************
+ * All the CSS Sprites         */
 .class_1, .class_2, .class_3, .class_4, .class_5, .class_6, .class_7,
-.class_8, .class_9 {background-size: 24px 24px;}
-.class_1 {background: transparent url(img/class_icons/scout.png) no-repeat 0 0;}
-.class_2 {background: transparent url(img/class_icons/soldier.png) no-repeat 0 0;}
-.class_3 {background: transparent url(img/class_icons/pyro.png) no-repeat 0 0;}
-.class_4 {background: transparent url(img/class_icons/demo.png) no-repeat 0 0;}
-.class_5 {background: transparent url(img/class_icons/heavy.png) no-repeat 0 0;}
-.class_6 {background: transparent url(img/class_icons/engy.png) no-repeat 0 0;}
-.class_7 {background: transparent url(img/class_icons/medic.png) no-repeat 0 0;}
-.class_8 {background: transparent url(img/class_icons/sniper.png) no-repeat 0 0;}
-.class_9 {background: transparent url(img/class_icons/spy.png) no-repeat 0 0;}
+.class_8, .class_9, .region_na, .region_eu, .region_au {
+    background-image: url(img/sprite.png);
+    background-repeat: no-repeat;
+ }
+
+/* Small class icons */
+.small_class {} /* Place holder incase we move the sprites around */
+.class_1.small_class {background-position-x: 0;}
+.class_2.small_class {background-position-x: -24px;}
+.class_3.small_class {background-position-x: -48px;}
+.class_4.small_class {background-position-x: -72px;}
+.class_5.small_class {background-position-x: -96px;}
+.class_6.small_class {background-position-x: -120px;}
+.class_7.small_class {background-position-x: -144px;}
+.class_8.small_class {background-position-x: -168px;}
+.class_9.small_class {background-position-x: -192px;}
+
+/* Large class icons */
+.large_class {background-position-y: -64px;}
+.class_1.large_class {background-position-x: 0;}
+.class_2.large_class {background-position-x: -64px;}
+.class_3.large_class {background-position-x: -128px;}
+.class_4.large_class {background-position-x: -192px;}
+.class_5.large_class {background-position-x: -256px;}
+.class_6.large_class {background-position-x: -320px;}
+.class_7.large_class {background-position-x: -384px;}
+.class_8.large_class {background-position-x: -448px;}
+.class_9.large_class {background-position-x: -512px;}
+
+/* Small region icons */
+.small_region {background-position-y: -137px; width: 25px; height: 15px; display: inline-block;}
+.region_na.small_region {background-position-x: -75px;}
+.region_eu.small_region {background-position-x: -100px;}
+.region_au.small_region {background-position-x: -125px;}
+
+/* Large region icons */
+.large_region {background-position-y: -88px; width: 25px; height: 65px; display: inline-block;}
+.region_na.large_region {background-position-x: 0;}
+.region_eu.large_region {background-position-x: -25px;}
+.region_au.large_region {background-position-x: -50px;}
+

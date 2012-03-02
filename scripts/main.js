@@ -56,6 +56,7 @@
             self[key] = data[key];
         });
 
+        this.needs_redisplay = true;
         this.pug_type = +this.pug_type;
         this.players_per_team = (this.pug_type === 1)? 6:9;
         this.max_players = 2 * this.players_per_team ;
@@ -101,9 +102,13 @@
                 }
                 */
 
-                var html = $PUGListingTemplate.render(pug);
-                $pug.replaceWith($(html));
+                if (pug.needs_redisplay) {
+                    var html = $PUGListingTemplate.render(pug);
+                    $pug.replaceWith($(html));
+                }
             }
+
+            pug.needs_redisplay = false;
         });
 
         $(".pug").each(function () {
@@ -225,7 +230,7 @@
         updatePUGs(true);
 
         /* When clicking on filter icons... */
-        $("div#pug_list_header span").click(toggleFilter);
+        $("div#pug_list_header .filter_button").click(toggleFilter);
 
         /* Open pug creation window */
         $("a#start_pug").click(function() {

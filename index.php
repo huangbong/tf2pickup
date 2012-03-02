@@ -20,14 +20,12 @@ $logged_in = isset($_SESSION['steam64']);
     <body>
         <script id="PUGListingTemplate" type="text/x-jquery-tmpl">
             <div class="pug" id="pug_id_{{=id}}">
-                <div class="pug_map">
-                    <img src="img/{{=region}}.png"
-                         width="25px"
-                         height="65px" />
+                <div class="pug_map" unselectable="on">
+                    <div class="large_region region_{{=region}}"></div>
                     <img src="http://cdn.tf2pickup.com/maps/320/{{=map}}.jpg"
                          alt="badlands"
                          width="116"
-                         height="65" />
+                         height="64" unselectable="on" />
                 </div>
                 <div class="pug_details">
                     <span class="pug_name">{{=name}}</span>
@@ -41,41 +39,18 @@ $logged_in = isset($_SESSION['steam64']);
                     {{=player_count}} / {{=max_players}}
                 </div>
                 <div class="pug_teams">
-            {{#each teams}}
+                    {{#each teams}}
                         <div class="pug_team">
                             {{#each players}}
                                 {{#if empty}}
-                                <div class="empty class_{{=class_id}}"></div>
+                                <div class="empty small_class class_{{=class_id}}"></div>
                                 {{else}}
                                 <img src="{{=avatar}}"
                                      id="{{=steamid}}" />
                                 {{/if}}
                             {{/each}}
                         </div>
-            {{/each}}
-
-     <?php /*                   <div class="pug_team">
-    <img src="img/class_icons/scout.png" class="empty" />
-    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/4f/4fdc405b2b955056cbc8e0aae4ef0c7a3cf98105.jpg" class="mini_player" />
-    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/5c/5c237bb671fca4de02a4aee1008a5f81bdf77e3c.jpg" class="mini_player" />
-    <img src="img/class_icons/demo.png" class="empty" />
-    <img src="img/class_icons/heavy.png" class="empty" />
-    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/b3/b37b7921857d138a42a4be6ac56ca50d9e689abd.jpg" class="mini_player friend" />
-    <img src="img/class_icons/medic.png" class="empty" />
-    <img src="img/class_icons/sniper.png" class="empty" />
-    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/73/73adc812c1cbe28b0d284522a248debf0a021a87.jpg" class="mini_player" />
-                        </div>
-                        <div class="pug_team">
-    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/8e/8e4b419bd8ce849dd919d8317ee374082138c92a.jpg" steamid="steam54" class="mini_player friend" />
-    <img src="img/class_icons/soldier.png" class="empty" />
-    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/72/72f78b4c8cc1f62323f8a33f6d53e27db57c2252.jpg" class="mini_player" />
-    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/8b/8bf9d62ba0e6e1c43630da0f9b905bb82641c117.jpg" class="mini_player" />
-    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/7f/7f7cd93b9d8fe1663f8fe13225b38247c6f94364.jpg" class="mini_player" />
-    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/69/696931177080ab219edaddda48de07f30dcba561.jpg" class="mini_player" />
-    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/7f/7f7cd93b9d8fe1663f8fe13225b38247c6f94364.jpg" class="mini_player" />
-    <img src="http://media.steampowered.com/steamcommunity/public/images/avatars/a8/a8d7d3d1762464bae43274cb1ab0d42d27481861.jpg" class="mini_player" />
-    <img src="img/class_icons/spy.png" class="empty" />
-                        </div> */ ?>
+                    {{/each}}
                 </div>
             </div>
         </script>
@@ -134,18 +109,15 @@ if ($logged_in) {
             <div id="middle">
                 <div id="pug_list_header">
                     Filter:
-                    <span id="filter_6s" filter="players_per_team=6">
+                    <span id="filter_6s" filter="players_per_team=6" class="filter_button">
                         6v6
                     </span>
-                    <span id="filter_9s" filter="players_per_team=9">
+                    <span id="filter_9s" filter="players_per_team=9" class="filter_button">
                         9v9
                     </span>
-                    <span id="filter_na" filter="region=na">
-                        <img src="img/na_icon.png" />
-                    </span>
-                    <span id="filter_eu" filter="region=eu">
-                        <img src="img/eu_icon.png" />
-                    </span>
+                    <div id="filter_na" filter="region=na" class="small_region region_na filter_button"></div>
+                    <div id="filter_eu" filter="region=eu" class="small_region region_eu filter_button"></div>
+                    <div id="filter_au" filter="region=au" class="small_region region_au filter_button"></div>
                     <a href="#" id="start_pug">
                         Start PUG
                     </a>
