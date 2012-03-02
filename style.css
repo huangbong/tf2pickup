@@ -383,7 +383,7 @@ div.pug .pug_map {
  * All the CSS Sprites         */
 .class_1, .class_2, .class_3, .class_4, .class_5, .class_6, .class_7,
 .class_8, .class_9, .region_na, .region_eu, .region_au {
-    background-image: url(img/sprite.png);
+    background-image: url(http://cdn.tf2pickup.com/sprite.png);
     background-repeat: no-repeat;
  }
 
