@@ -241,7 +241,7 @@
 
         $(document).on("click", ".pug", function() {
             $("#lobby_listing").animate({left: '-1050px'});
-            $("#in_pug").animate({left: '0px'});
+            $("#in_pug").show().animate({left: '0px'});
         });
 
         $("#in_pug").on("click", function() {
