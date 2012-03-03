@@ -13,7 +13,7 @@ $logged_in = isset($_SESSION['steam64']);
         <title>TF2Pickup - Play Team Fortress 2 Pickup Games</title>
         <link rel="shortcut icon" type="image/x-icon" href="http://cdn.tf2pickup.com/favicon.ico"/>
         <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
-        <script src="http://cdn.tf2pickup.com/jquery-latest.js"></script>
+        <script src="http://cdn.tf2pickup.com/jquery-mini.js"></script>
         <script src="scripts/jsrender.js"></script>
         <!--<script src="scripts/chat<?php if(isset($_GET["gc"])) {?>_gc<?php } ?>.js"></script>-->
         <script src="scripts/main.js"></script>
