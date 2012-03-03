@@ -141,12 +141,10 @@ if ($logged_in) {
                 <div id="in_pug">
                     This panel will hold stuff for when a player is in a pug! For now just click here to go back to the lobby listing.
                 </div>
-
-                <div id="footer">
-                    &copy; 2012 TF2Pickup.com
-                </div>
             </div>
-
+        </div>
+        <div id="footer">
+            &copy; 2012 TF2Pickup.com
         </div>
     </body>
 </html>
