@@ -37,7 +37,7 @@ $logged_in = isset($_SESSION['steam64']);
                     </div>
                 </div>
                 <div class="pug_player_count">
-                    {{=player_count}} / {{=max_players}}
+                    {{=player_count}}/{{=max_players}}
                 </div>
                 <div class="pug_teams">
                     {{#each teams}}
@@ -134,14 +134,38 @@ if ($logged_in) {
                     <div id="pugs_loading">
                         <img src="http://cdn.tf2pickup.com/ajax-loader.gif" />
                     </div>
-                    <div id="pugs_container">
+                    <div id="pugs_scrollbar_fix">
+                        <div id="pugs_container">
+                        </div>
                     </div>
                 </div>
 
                 <div id="in_pug">
-                    This panel will hold stuff for when a player is in a pug! For now just click here to go back to the lobby listing.
+                    <div id="pug_list_header">
+                        <span id="leave_pug">
+                            Leave PUG
+                        </span>
+                    </div>
+                    <div id="in_pug_players_list">
+                        <div id="in_pug_team1">
+                            <div class="in_pug_player">
+                            </div>
+                            <div class="in_pug_player">
+                            </div>
+                            <div class="in_pug_player">
+                            </div>
+                            <div class="in_pug_player">
+                            </div>
+                            <div class="in_pug_player">
+                            </div>
+                            <div class="in_pug_player">
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
+
         </div>
         <div id="footer">
             &copy; 2012 TF2Pickup.com

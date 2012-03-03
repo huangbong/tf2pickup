@@ -51,12 +51,19 @@
           , required_data = ["id", "region", "map", "name", "pug_type"
                            , "server_name", "host_name", "updated", "players"];
 
+        if (this.updated && data.updated) {
+            if (this.updated < data.updated) {
+                this.needs_redisplay = true;
+            }
+        }
+        else {
+            this.needs_redisplay = true;
+        }
 
         $.each(required_data, function(idx, key) {
             self[key] = data[key];
         });
 
-        this.needs_redisplay = true;
         this.pug_type = +this.pug_type;
         this.players_per_team = (this.pug_type === 1)? 6:9;
         this.max_players = 2 * this.players_per_team ;
@@ -80,6 +87,9 @@
 
             ++self.player_count;
         });
+
+        /* Force jsrender to display the number */
+        this.player_count = ""+this.player_count;
     }
 
     /* Updates the currently rendered PUG listing with data from pug_cache */
@@ -89,20 +99,20 @@
             var $pug = $("#pug_id_" + id), $pug_name;
             current_ids["pug_id_" + id] = true;
 
-            /* If this PUG does not exist yet... */
-            if ($pug.size() === 0) {
-                var html = $PUGListingTemplate.render(pug);
-                $pugs_container.append($(html));
-            }
-            else {
-                /* PUG Listing already exists, update?
-                $pug_name = $(".pug_name", $pug);
-                if ($pug_name.text() !== this.name) {
-                    $pug_name.text(this.name);
+            if (pug.needs_redisplay) {
+                /* If this PUG does not exist yet... */
+                if ($pug.size() === 0) {
+                    var html = $PUGListingTemplate.render(pug);
+                    $pugs_container.append($(html));
                 }
-                */
+                else {
+                    /* PUG Listing already exists, update?
+                    $pug_name = $(".pug_name", $pug);
+                    if ($pug_name.text() !== this.name) {
+                        $pug_name.text(this.name);
+                    }
+                    */
 
-                if (pug.needs_redisplay) {
                     var html = $PUGListingTemplate.render(pug);
                     $pug.replaceWith($(html));
                 }
@@ -244,7 +254,7 @@
             $("#in_pug").show().animate({left: '0px'});
         });
 
-        $("#in_pug").on("click", function() {
+        $("#leave_pug").on("click", function() {
             $("#lobby_listing").animate({left: '0px'});
             $("#in_pug").animate({left: '1100px'});
         });
