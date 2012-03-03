@@ -283,11 +283,14 @@ a#start_pug {
     width: 66px;
 }
 
-#pugs_height_wrapper {
-    position: absolute;
-    height: 100%;
+/* Needed solely for the overflow: hidden */
+#pages_wrapper {
     width: 100%;
-    padding-top: 98px;
+    overflow-x: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
 }
 
 #pugs_scrollbar_fix {

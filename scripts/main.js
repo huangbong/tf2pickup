@@ -256,7 +256,7 @@
 
         $("#leave_pug").on("click", function() {
             $("#lobby_listing").animate({left: '0px'});
-            $("#in_pug").animate({left: '1100px'});
+            $("#in_pug").animate({left: '1100px'}).hide(0);
         });
 
         $("div.close_alert").click(hideAlert);
