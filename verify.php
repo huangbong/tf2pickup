@@ -31,8 +31,6 @@ else {
     $db->createUser($steam64, $username, $avatar, $country);
 }
 
-mysql_close($con);
-
 $_SESSION['steam64'] = $steam64;
 $_SESSION['username'] = $username;
 $_SESSION['avatar'] = $avatar;
