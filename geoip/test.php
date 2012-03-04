@@ -1,15 +1,12 @@
 <?php
+require_once '../config.php';
+require_once 'geoipcity.inc';
 
-include("geoipcity.inc");
-include("geoipregionvars.php");
-
-$gi = geoip_open("/usr/local/share/GeoIP/GeoLiteCity.dat",GEOIP_STANDARD);
+$gi = geoip_open(GEOIP_DB_FILE, GEOIP_STANDARD);
 
 $record = geoip_record_by_addr($gi,$_GET['ip']);
 
-var_dump($record);
-
 geoip_close($gi);
 
-?>
+var_dump($record);
 

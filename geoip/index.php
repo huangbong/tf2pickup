@@ -1,10 +1,9 @@
-It looks like you live in:
 <?php
-require_once('geoip.php');
-echo findme::city();
-?>,
-<?php
-echo findme::country();
+require_once 'geoip.php';
+
+GeoIP::loadData();
+
+echo 'You are in: ' . GeoIP::getCity() . ',' . GeoIP::getCountry();
 echo '<br />';
-findme::map(600,300);
-?>
+GeoIP::map(600,300);
+

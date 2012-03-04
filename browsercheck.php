@@ -5,6 +5,5 @@ $browser = $get_browser["browser"];
 $version = $get_browser["version"];
 
 if ($browser == "IE" and $version < 9) {
-header('Location: getanewbrowser.php');
+    header('Location: getanewbrowser.php');
 }
-?>

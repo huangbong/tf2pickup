@@ -193,4 +193,40 @@ SQL;
             ':rcon' => $rcon
         ));
     }
+
+    public function createUser($steam64, $username, $avatar, $country) {
+        $sql = <<<SQL
+    INSERT INTO users (id, username, avatar, country)
+               VALUES (':steam64',':username',':avatar',':country')
+SQL;
+        return $this->__query($sql, array(
+            ':steam64' => $steam64,
+            ':username' => $username,
+            ':avatar' => $avatar,
+            ':country' => $map_name
+        ));
+    }
+
+    public function userExists($steam64) {
+        $sql = <<<SQL
+    SELECT `id` FROM `users` WHERE `id` = ':steam64'
+SQL;
+        $result = $this->__query($sql, array(':steam64' => $steam64));
+        return count($result) === 1;
+    }
+
+    public function updateUser($steam64, $username, $avatar, $country) {
+        $sql = <<<SQL
+    UPDATE `users` SET `username` = ':username'
+                     , `avatar` = ':avatar'
+                     , `country` = ':country'
+                   WHERE `id` = ':steam64'
+SQL;
+        return $this->__query($sql, array(
+            ':steam64' => $steam64,
+            ':username' => $username,
+            ':avatar' => $avatar,
+            ':country' => $map_name
+        ));
+    }
 }

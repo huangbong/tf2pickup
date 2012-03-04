@@ -106,12 +106,15 @@
                     $pugs_container.append($(html));
                 }
                 else {
-                    /* PUG Listing already exists, update?
+                    /* PUG Listing already exists, update? */
+
+
+                    /* Currently we just completely re-render the pug... but it
+                     * would be preferbale to only update what we have to
                     $pug_name = $(".pug_name", $pug);
                     if ($pug_name.text() !== this.name) {
                         $pug_name.text(this.name);
-                    }
-                    */
+                    }  */
 
                     var html = $PUGListingTemplate.render(pug);
                     $pug.replaceWith($(html));

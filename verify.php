@@ -18,19 +18,17 @@ $json = json_decode($steamapi);
 $username = $json->response->players[0]->personaname;
 $avatar = $json->response->players[0]->avatar;
 
-$country = findme::country();
+GeoIP::loadData();
+$country = GeoIP::getCountry();
 
-$con = mysql::connect();
+$db = Model::getInstance();
+$db->connect();
 
-$search = "SELECT * FROM `users` WHERE `id` = '$steam64'";
-$result = mysql_query($search);
-
-if (mysql_num_rows($result) === 1) {
-    mysql_query("UPDATE `users` SET `username` = '$username', `avatar` = '$avatar', `country` = '$country' WHERE `id` = '$steam64'");
+if ($db->userExists($steam64)) {
+    $db->updateUser($steam64, $username, $avatar, $country);
 }
 else {
-    mysql_query("INSERT INTO users (id, username, avatar, country)
-                            VALUES ('$steam64','$username','$avatar','$country')");
+    $db->createUser($steam64, $username, $avatar, $country);
 }
 
 mysql_close($con);
