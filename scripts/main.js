@@ -128,6 +128,7 @@
         });
 
         $no_pugs.toggle($("#pugs_container .pug").size() === 0);
+
         applyPUGFilters();
     };
 
@@ -143,6 +144,10 @@
 
             $("#pug_id_" + pug.id).toggle(show);
         });
+
+        /* Add a class to the first visible pug in the listing */
+        $(".pug").removeClass("first_pug");
+        $(".pug:visible:first").addClass("first_pug");
     };
 
     /* Creates a filter function from  */

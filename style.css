@@ -213,6 +213,14 @@ div#pug_list_header {
     border-radius: 10px;
     font-size: 17px;
 
+    /* We do a bit of a hack to ge the scroll bar to
+     * position properly for the pug listing, but it's
+     * use of padding covers up this header, so we use
+     * this to keep the elements hoverable and clickable.
+     */
+    position: relative;
+    z-index: 1;
+
     /* Disable annoying text selection when pressing
      * the filter buttons */
     -webkit-touch-callout: none;
@@ -320,7 +328,11 @@ div.pug {
     background-color: #333;
 }
 
-div.pug:first-child {
+/* Would use :first-child, but because javascript will be
+ * hiding pugs, the first visible element will have spacing
+ * if the true :first-child is filtered out.
+ */
+div.pug.first_pug {
     margin-top: 0;
 }
 
