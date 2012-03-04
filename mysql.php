@@ -163,7 +163,7 @@ SQL;
 
     public function isBanned($steam64) {
         $sql = <<<SQL
-    SELECT `banned` FROM `users` WHERE `id` = ':steam64'
+    SELECT `banned` FROM `users` WHERE `id`=:steam64
 SQL;
         $result = $this->__query($sql, array(':steam64' => $steam64));
         return (count($result) === 1 && $result["banned"] === 1);
@@ -203,15 +203,16 @@ SQL;
             ':steam64' => $steam64,
             ':username' => $username,
             ':avatar' => $avatar,
-            ':country' => $map_name
+            ':country' => $country
         ));
     }
 
     public function userExists($steam64) {
         $sql = <<<SQL
-    SELECT `id` FROM `users` WHERE `id` = ':steam64'
+    SELECT `id` FROM `users` WHERE `id`=:steam64
 SQL;
         $result = $this->__query($sql, array(':steam64' => $steam64));
+        var_dump ($result);
         return count($result) === 1;
     }
 
