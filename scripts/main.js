@@ -49,7 +49,8 @@
     PUGListing.prototype.load = function(data) {
         var self = this
           , required_data = ["id", "region", "map", "name", "pug_type"
-                           , "server_name", "host_name", "updated", "players"];
+                           , "server_name", "host_name", "updated"
+                           , "players", "started"];
 
         if (this.updated && data.updated) {
             if (this.updated < data.updated) {
@@ -98,6 +99,11 @@
         $.each(pugs_cache, function(id, pug) {
             var $pug = $("#pug_id_" + id), $pug_name;
             current_ids["pug_id_" + id] = true;
+
+            if (pug.started && $pug.size() === 1) {
+                //$pug.fadeOut().animate({height: 0}, {queue: false});
+                return;
+            }
 
             if (pug.needs_redisplay) {
                 /* If this PUG does not exist yet... */

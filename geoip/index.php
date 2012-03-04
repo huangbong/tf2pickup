@@ -1,5 +1,5 @@
 <?php
-require_once 'geoip.php';
+require_once dirname(__FILE__).'/geoip/geoip.php';
 
 GeoIP::loadData();
 

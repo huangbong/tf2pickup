@@ -7,9 +7,9 @@
 error_reporting(0);
 ini_set('display_errors', '0');
 
-require_once "../mysql.php";
-require_once "../session.php";
-require_once "../steam-condenser/steam-condenser.php";
+require_once dirname(__FILE__).'../mysql.php';
+require_once dirname(__FILE__).'../session.php';
+require_once dirname(__FILE__).'../steam-condenser/steam-condenser.php';
 
 //if (!isset($_SESSION['steam64']))
 //    die ("Not authenticated!");

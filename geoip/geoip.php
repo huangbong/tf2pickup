@@ -1,6 +1,6 @@
 <?php
-require_once '../config.php';
-require_once '../geoip/geoipcity.inc';
+require_once dirname(__FILE__).'/../config.php';
+require_once dirname(__FILE__).'/geoipcity.inc';
 
 /* This is still poorly designed, but at least it attempts to use
  * OOP, after what frailbod did to it

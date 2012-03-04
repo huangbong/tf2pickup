@@ -1,7 +1,7 @@
 <?php
 /* Returns complete list of open pugs to the client or
  * information about a specific lobby if an id is given. */
-require_once "../mysql.php";
+require_once dirname(__FILE__).'/../mysql.php';
 
 $db = Model::getInstance();
 $db->connect();
@@ -53,6 +53,7 @@ foreach ($pugs as $pug) {
     $pug_data["pug_type"] = $pug["pug_type"];
     $pug_data["server_name"] = $pug["server_name"];
     $pug_data["updated"] = $pug["updated"];
+    $pug_data["started"] = $pug["started"];
 
     /* Get all the players for this pug */
     $players = $db->fetchPlayersInPUG((int)$pug["id"]);
