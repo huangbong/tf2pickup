@@ -53,7 +53,7 @@ class GeoIP
         if (self::$record === NULL)
             return "";
 
-         return self::$record->city;
+         return self::$record->continent_code;
     }
 
 }

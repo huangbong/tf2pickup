@@ -75,18 +75,6 @@ div#alert_contents {
     margin: -144px auto;
 }
 
-div#alert_contents_start_pug {
-    width: 300px;
-    background-color: #333;
-    border-radius: 24px;
-    border: 3px #D0CBC7 solid;
-    text-align: center;
-    padding: 10px;
-    position: relative;
-    top: 45%;
-    margin: -144px auto;
-}
-
 div#login_box, div#start_pug_box {
     width: 100%;
     display: none;
@@ -154,7 +142,8 @@ div#login_box img {
     width: 1050px;
     height: 93px;
     padding-top: 45px;
-    z-index: 10000;
+    z-index: 100;
+    position: relative;
 }
 
 #logo {
@@ -201,7 +190,6 @@ div#login_box img {
     border-radius: 10px;
     margin-top: 10px;
     background-color: #333;
-
 }
 
 /* Filter and Start PUG header */
@@ -253,10 +241,28 @@ a#start_pug {
     float: right;
 }
 
-#start_pug_box p input {
+#start_pug_box input, #start_pug_box select {
     background:#EEE;
     color: #333;
     border: solid 3px #DFDFDF;
+    width: 167px;
+}
+
+#new_pug_ip_wrapper {
+    width: 167px;
+    margin: 0 auto;
+    position: relative;
+    display: inline-block;
+}
+
+#new_pug_ip_wrapper input#new_pug_ip {
+    width: 100%;
+}
+
+#start_pug_box div#new_pug_region_preview {
+    position: absolute;
+    top: 4px;
+    right: 4px;
 }
 
 #start_pug_box_title {
@@ -485,6 +491,7 @@ div.pug .pug_map {
 .region_na.small_region {background-position: -75px -137px;}
 .region_eu.small_region {background-position: -100px -137px;}
 .region_au.small_region {background-position: -125px -137px;}
+.region_empty.small_region {background: #333;}
 
 /* Large region icons */
 .large_region {width: 25px; height: 65px; display: inline-block;}

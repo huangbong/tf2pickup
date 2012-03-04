@@ -4,7 +4,8 @@
     /* Common jQuery handles */
     var $alert, $login_box, $start_pug_box
       , $close_alert
-      , $no_pugs, $pugs_container, $PUGListingTemplate;
+      , $no_pugs, $pugs_container, $PUGListingTemplate
+      , $server_preview;
 
     /* Cached data from server, maps id -> PUGListing */
     var pugs_cache = {};
@@ -237,6 +238,29 @@
         hideAlert();
     };
 
+    var updateServerPreview = _.debounce(function() {
+        console.log ("update");
+        $.ajax({
+            type: "GET",
+            url: "geoip/getRegion.php",
+            data: "ip=" + $(this).val(),
+            success: function(region) {
+                console.log("got: " + region);
+                $server_preview.addClass("region_" + region);
+            }
+        });
+    }, 500);
+
+    var clearServerPreview = function() {
+        console.log ("clear");
+        $.each($server_preview.attr('class').split(/\s+/), function () {
+            if (this.indexOf("region_") === 0) {
+                console.log ("remmove class: " + this);
+                $server_preview.removeClass(this);
+            }
+        });
+    };
+
     /* On page load - setup keybinds and get handles
      * to common page elements */
     $(function() {
@@ -249,6 +273,8 @@
         $alert = $("#alert");
         $login_box = $("#login_box");
         $start_pug_box = $("#start_pug_box");
+
+        $server_preview = $("#new_pug_region_preview");
 
         /* Get initial PUG listing */
         updatePUGs(true);
@@ -286,6 +312,9 @@
                 $(this).val("27015");
             }
         });
+
+        $("#new_pug_ip").on("keyup", updateServerPreview);
+        $("#new_pug_ip").on("change", clearServerPreview);
     });
 
 })(jQuery);

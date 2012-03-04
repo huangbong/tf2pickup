@@ -6,5 +6,5 @@ if (isset($_GET['ip']))
 else
     $ip = $_SERVER['REMOTE_ADDR'];
 
-GeoIP::loadData();
+GeoIP::loadData($ip);
 echo strtolower(GeoIP::getRegion());

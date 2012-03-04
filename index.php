@@ -14,7 +14,7 @@ $logged_in = isset($_SESSION['steam64']);
         <link rel="shortcut icon" type="image/x-icon" href="http://cdn.tf2pickup.com/favicon.ico"/>
         <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-        <script src="scripts/underscore.js"></script>
+        <script src="scripts/underscore-min.js"></script>
         <script src="scripts/jsrender.js"></script>
         <!--<script src="scripts/chat<?php if(isset($_GET["gc"])) {?>_gc<?php } ?>.js"></script>-->
         <script src="scripts/main.js"></script>
@@ -71,17 +71,21 @@ $logged_in = isset($_SESSION['steam64']);
                     <div class="close_alert">X</div>
 
                     <h2><div id="start_pug_box_title">Create a PUG</div></h2>
-                    PUG Name:
-                    <p><input type="text" id="new_pug_name" maxlength="150"/></p>
-                    Server IP:
-                    <p><input type="text" id="new_pug_ip" /></p>
-                    Server Port:
-                    <p><input type="text" id="new_pug_port" value="27015" /></p>
-                    RCON:
-                    <p><input type="password" id="new_pug_rcon" /></p>
-                    PUG Password:
-                    <p><input type="password" id="new_pug_password" /></p>
-                    Game Type:
+                    PUG Name:<br />
+                    <input type="text" id="new_pug_name" maxlength="150"/><br />
+                    Server IP:<br /><!--
+                 --><div id="new_pug_ip_wrapper"><!--
+                        --><input type="text" id="new_pug_ip" maxlength="15" /><!--
+                        --><div id="new_pug_region_preview" class="small_region"></div><!--
+                 --></div><!--
+                 --><br />
+                    Server Port:<br />
+                    <input type="text" id="new_pug_port" value="27015" /><br />
+                    RCON:<br />
+                    <input type="password" id="new_pug_rcon" /><br />
+                    PUG Password:<br />
+                    <input type="password" id="new_pug_password" /><br />
+                    Game Type:<br />
                     <select id="new_pug_type">
                         <option>Standard</option>
                         <option>Highlander</option>
