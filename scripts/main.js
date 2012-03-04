@@ -290,13 +290,13 @@
         });
 
         $(document).on("click", ".pug", function() {
-            $("#lobby_listing").animate({left: '-1050px'});
-            $("#in_pug").show().animate({left: '0px'});
+            $("#lobby_listing").stop(true).animate({left: '-1050px'});
+            $("#in_pug").stop(true).show().animate({left: '0px'});
         });
 
         $("#leave_pug").on("click", function() {
-            $("#lobby_listing").animate({left: '0px'});
-            $("#in_pug").animate({left: '1100px'}).hide(0);
+            $("#lobby_listing").stop(true).animate({left: '0px'});
+            $("#in_pug").stop(true).animate({left: '1100px'}).hide(0);
         });
 
         $("div.close_alert").click(hideAlert);
