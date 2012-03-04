@@ -205,7 +205,7 @@ div#login_box img {
 }
 
 /* Filter and Start PUG header */
-div#pug_list_header {
+div.page_header {
     height: 30px;
     padding: 3px 10px;
     width: 100%;
@@ -232,11 +232,11 @@ div#pug_list_header {
     user-select: none;
 }
 
-#pug_list_header .filter_button, #pug_list_header #leave_pug {
+.page_header .filter_button, .page_header #leave_pug {
     cursor: pointer;
 }
 
-div#pug_list_header .small_region {
+div.page_header .small_region {
     position: relative;
     top: 2px;
 }

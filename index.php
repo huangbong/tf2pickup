@@ -110,7 +110,7 @@ if ($logged_in) {
             <div id="pages_wrapper">
 
                 <div id="lobby_listing">
-                    <div id="pug_list_header">
+                    <div class="page_header">
                         Filter:
                         <span id="filter_6s" filter="players_per_team=6" class="filter_button">
                             6v6
@@ -141,7 +141,7 @@ if ($logged_in) {
                 </div>
 
                 <div id="in_pug">
-                    <div id="pug_list_header">
+                    <div class="page_header">
                         <span id="leave_pug">
                             Leave PUG
                         </span>

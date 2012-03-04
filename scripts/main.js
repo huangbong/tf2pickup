@@ -245,7 +245,7 @@
         updatePUGs(true);
 
         /* When clicking on filter icons... */
-        $("div#pug_list_header .filter_button").click(toggleFilter);
+        $("div.page_header .filter_button").click(toggleFilter);
 
         /* Open pug creation window */
         $("a#start_pug").click(function() {
