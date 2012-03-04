@@ -227,7 +227,7 @@ SQL;
             ':steam64' => $steam64,
             ':username' => $username,
             ':avatar' => $avatar,
-            ':country' => $map_name
+            ':country' => $country
         ));
     }
 }
