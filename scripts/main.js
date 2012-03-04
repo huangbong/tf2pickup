@@ -66,6 +66,7 @@
             self[key] = data[key];
         });
 
+        this.started = this.started === "1";
         this.pug_type = +this.pug_type;
         this.players_per_team = (this.pug_type === 1)? 6:9;
         this.max_players = 2 * this.players_per_team ;
@@ -99,13 +100,14 @@
         var current_ids = {};
         $.each(pugs_cache, function(id, pug) {
             var $pug = $("#pug_id_" + id), $pug_name;
-            current_ids["pug_id_" + id] = true;
 
             if (pug.started && $pug.size() === 1) {
-                //$pug.fadeOut().animate({height: 0}, {queue: false});
+                $pug.fadeOut().animate({height: 0}, {queue: false});
+                delete pugs_cache[id];
                 return;
             }
 
+            current_ids["pug_id_" + id] = true;
             if (pug.needs_redisplay) {
                 /* If this PUG does not exist yet... */
                 if ($pug.size() === 0) {

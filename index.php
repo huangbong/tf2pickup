@@ -152,7 +152,23 @@ if ($logged_in) {
                         </span>
                     </div>
                     <div id="in_pug_players_list">
-                        <div id="in_pug_team1">
+                        <div class="in_pug_team">
+                            <div class="in_pug_team_header team_1">RED</div>
+                            <div class="in_pug_player">
+                            </div>
+                            <div class="in_pug_player">
+                            </div>
+                            <div class="in_pug_player">
+                            </div>
+                            <div class="in_pug_player">
+                            </div>
+                            <div class="in_pug_player">
+                            </div>
+                            <div class="in_pug_player">
+                            </div>
+                        </div>
+                        <div class="in_pug_team">
+                            <div class="in_pug_team_header team_2">BLU</div>
                             <div class="in_pug_player">
                             </div>
                             <div class="in_pug_player">
