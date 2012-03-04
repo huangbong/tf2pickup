@@ -14,6 +14,7 @@ $logged_in = isset($_SESSION['steam64']);
         <link rel="shortcut icon" type="image/x-icon" href="http://cdn.tf2pickup.com/favicon.ico"/>
         <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="scripts/underscore.js"></script>
         <script src="scripts/jsrender.js"></script>
         <!--<script src="scripts/chat<?php if(isset($_GET["gc"])) {?>_gc<?php } ?>.js"></script>-->
         <script src="scripts/main.js"></script>
