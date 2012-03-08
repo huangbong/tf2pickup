@@ -17,7 +17,8 @@
      * (filled in on document load when the handle $alert is created) */
     var showAlert = function() {$alert.show();}, hideAlert = function() {$alert.hide()};
 
-    var makeDefaultTeam = function(pug_type) {
+    var makeDefaultTeam = function(pug_type, team_id) {
+        var n = 0;
         if (pug_type === 1) {
             var classes = [
                 1, 1, 2, 2, 4, 7
@@ -30,9 +31,11 @@
         }
 
         return {
+            team_id: team_id,
             players: $.map(classes, function(class_id) {
                 return {
-                    class_id: class_id,
+                    slot_id: ++n,
+                    class_id: ""+class_id, // Stringify so 0 renders correctly
                     empty: true,
                     avatar: null,
                     steamid: null
@@ -71,8 +74,8 @@
         this.players_per_team = (this.pug_type === 1)? 6:9;
         this.max_players = 2 * this.players_per_team ;
         this.player_count = 0;
-        this.teams = [makeDefaultTeam(this.pug_type)
-                    , makeDefaultTeam(this.pug_type)];
+        this.teams = [makeDefaultTeam(this.pug_type, 0)
+                    , makeDefaultTeam(this.pug_type, 1)];
 
 
         $.each(this.players, function(idx, player) {
