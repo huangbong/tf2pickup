@@ -27,14 +27,15 @@ $logged_in = isset($_SESSION['steam64']);
                 <div class="pug_map" unselectable="on">
                     <div class="large_region region_{{:region}}"></div>
                     <img src="http://cdn.tf2pickup.com/maps/320/{{:map}}.jpg"
-                         alt="badlands"
+                         alt="{{:map}}"
+                         title="{{:map}}"
                          width="116"
                          height="64" unselectable="on" />
                 </div>
                 <div class="pug_details">
                     <span class="pug_name">{{:name}}</span>
                     <div class="pug_info">
-                        {{:players_per_team}}v{{:players_per_team}} cp_badlands
+                        {{:players_per_team}}v{{:players_per_team}} {{:map}}
                         <br/>
                         {{:server_name}}
                     </div>
