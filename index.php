@@ -67,37 +67,27 @@ $logged_in = isset($_SESSION['steam64']);
         </script>
 
         <script id="InPUGTeamsTemplate" type="text/x-jsrender">
-            <div class="in_pug_team">
-                <div class="in_pug_team_header team_1">RED</div>
-                <div class="in_pug_player">
-                    <div class="med_class class_1"></div>
+            {{for teams}}
+                <div class="in_pug_team">
+                    <div class="in_pug_team_header team_{{:team_id + 1}}">
+                        {{if team_id === 0}}RED{{else}}BLU{{/if}}
+                    </div>
+                    {{for players}}
+                    <div class="in_pug_player">
+                        <div class="med_class class_{{:class_id}}"></div>
+                        {{if !empty}}
+                            <img src="{{:avatar}}"
+                                 alt="{{:name}}"
+                                 title="{{:name}}"
+                                 width="32"
+                                 height="32"
+                                 id="player_{{:steamid}}" />
+                            <div class="player_name">{{:name}}</div>
+                        {{/if}}
+                    </div>
+                    {{/for}}
                 </div>
-                <div class="in_pug_player">
-                </div>
-                <div class="in_pug_player">
-                </div>
-                <div class="in_pug_player">
-                </div>
-                <div class="in_pug_player">
-                </div>
-                <div class="in_pug_player">
-                </div>
-            </div>
-            <div class="in_pug_team">
-                <div class="in_pug_team_header team_2">BLU</div>
-                <div class="in_pug_player">
-                </div>
-                <div class="in_pug_player">
-                </div>
-                <div class="in_pug_player">
-                </div>
-                <div class="in_pug_player">
-                </div>
-                <div class="in_pug_player">
-                </div>
-                <div class="in_pug_player">
-                </div>
-            </div>
+            {{/for}}
         </script>
 
         <!-- Alert box -->
@@ -211,8 +201,7 @@ if ($logged_in) {
                             Leave PUG
                         </span>
                     </div>
-                    <div id="in_pug_players_list">
-                    </div>
+                    <div id="in_pug_teams_container"></div>
                 </div>
 
             </div>

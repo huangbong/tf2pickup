@@ -469,10 +469,21 @@ div.pug .pug_map {
     background-color: #333;
 }
 
-.in_pug_player .med_class {
+.in_pug_team {
+    float: left;
+}
+
+.in_pug_player .med_class, .in_pug_team img, .in_pug_team div.player_name {
     width: 32px;
     height: 32px;
-    margin: 6px;
+    margin: 6px 0 6px 6px;
+    float: left;
+    vertical-align: middle;
+}
+
+.in_pug_team div.player_name {
+    width: 300px;
+    text-overflow: ellipsis;
 }
 
 .in_pug_team_header {
@@ -488,10 +499,6 @@ div.pug .pug_map {
 
 .in_pug_team_header.team_2 {
     background-color: #2164d3;
-}
-
-.in_pug_team {
-    float: left;
 }
 
 .in_pug_team:last-child {

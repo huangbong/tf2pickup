@@ -6,8 +6,10 @@
 
     /* Common jQuery handles */
     var $alert
-      , $no_pugs, $pugs_container, $PUGListingTemplate
-      , $new_pug_ip, $server_preview;
+      , $no_pugs, $pugs_container
+      , $PUGListingTemplate, $InPUGTeamsTemplate
+      , $new_pug_ip, $server_preview
+      , $in_pug_teams_container;
 
     /* Map of panel name -> jquery handle for each panel in the alert box */
     var alert_panels = {};
@@ -41,17 +43,11 @@
 
     /* Creates a default team object for a given game mode */
     var makeDefaultTeam = function(pug_type, team_id) {
-        var n = 0;
-        if (pug_type === 1) {
-            var classes = [
-                1, 1, 2, 2, 4, 7
-            ];
-        }
-        else {
-            var classes = [
-                1, 2, 3, 4, 5, 6, 7, 8, 9
-            ];
-        }
+        var n = 0, classes;
+        if (pug_type === 1)
+            classes = [1, 1, 2, 2, 4, 7];
+        else
+            classes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
         return {
             team_id: team_id,
@@ -61,6 +57,7 @@
                     class_id: class_id, // Stringify so 0 renders correctly
                     empty: true,
                     avatar: null,
+                    name: null,
                     steamid: null
                 };
             })
@@ -129,6 +126,7 @@
                         slot.empty = false;
                         slot.avatar = player.avatar;
                         slot.steamid = player.steam64;
+                        slot.name = player.name;
                         return false; // break from the .each
                     }
                 });
@@ -156,7 +154,7 @@
                 if ($pug.size() === 0) {
                     html = $PUGListingTemplate.render(pug);
                     $new_pug = $(html);
-                    $new_pug.on("click", _.bind(enterPUG, $new_pug, pug.id));
+                    $new_pug.on("click", _.bind(enterPUG, $new_pug, id));
                     $pugs_container.append($new_pug);
                 }
                 else {
@@ -172,7 +170,7 @@
 
                     html = $PUGListingTemplate.render(pug);
                     $new_pug = $(html);
-                    $new_pug.on("click", _.bind(enterPUG, $new_pug, pug.id));
+                    $new_pug.on("click", _.bind(enterPUG, $new_pug, id));
                     $pug.replaceWith($new_pug);
                 }
             }
@@ -329,12 +327,13 @@
     var enterPUG = function(pug_id) {
         $("#lobby_listing").stop(true).animate({left: '-1050px'});
         $("#in_pug").stop(true).show().animate({left: '0px'});
+
+        $in_pug_teams_container.html($InPUGTeamsTemplate.render(pugs_cache[pug_id]));
     };
 
     var leavePUG = function() {
         $("#lobby_listing").stop(true).animate({left: '0px'});
         $("#in_pug").stop(true).animate({left: '1100px'}).hide(0);
-
     };
 
     /* On page load - setup keybinds and get handles
@@ -342,8 +341,10 @@
     $(function() {
         /* Various handles we want to keep a reference to */
         $pugs_container = $("#pugs_container");
+        $in_pug_teams_container = $("#in_pug_teams_container");
         $no_pugs = $("#no_pugs");
         $PUGListingTemplate = $("#PUGListingTemplate");
+        $InPUGTeamsTemplate = $("#InPUGTeamsTemplate");
 
         /* Alert box panels */
         $alert = $("#alert");
@@ -369,6 +370,8 @@
 
         /* Start a new pug */
         $("#launch_pug").click(createPUG);
+
+        $("#leave_pug").click(leavePUG);
 
         /* Update region preview of a pug's ip */
         $new_pug_ip.on("keyup keydown change", updateRegionPreview);
