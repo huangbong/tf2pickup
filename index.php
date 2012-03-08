@@ -23,7 +23,7 @@ $logged_in = isset($_SESSION['steam64']);
 
         <!-- JSRender templates -->
         <script id="PUGListingTemplate" type="text/x-jsrender">
-            <div class="pug" id="pug_id_{{:id}}">
+            <div class="pug" id="pug_id_{{zeroFix:id}}">
                 <div class="pug_map" unselectable="on">
                     <div class="large_region region_{{:region}}"></div>
                     <img src="http://cdn.tf2pickup.com/maps/320/{{:map}}.jpg"
@@ -35,13 +35,13 @@ $logged_in = isset($_SESSION['steam64']);
                 <div class="pug_details">
                     <span class="pug_name">{{:name}}</span>
                     <div class="pug_info">
-                        {{:players_per_team}}v{{:players_per_team}} {{:map}}
+                        {{zeroFix:players_per_team}}v{{zeroFix:players_per_team}} {{:map}}
                         <br/>
                         {{:server_name}}
                     </div>
                 </div>
                 <div class="pug_player_count">
-                    {{:player_count}}/{{:max_players}}
+                    {{zeroFix:player_count}}/{{zeroFix:max_players}}
                 </div>
                 <div class="pug_teams">
                     {{for teams ~pug_id=id tmpl="#PUGTeamTemplate"/}}
@@ -51,19 +51,53 @@ $logged_in = isset($_SESSION['steam64']);
 
         <script id="PUGTeamTemplate" type="text/x-jsrender">
             <div class="pug_team">
-                {{for players ~team_id=team_id tmpl="#PUGSlotTemplate"/}}
+                {{for players ~team_id=team_id tmpl="#PUGSmallSlotTemplate"/}}
             </div>
         </script>
 
-        <script id="PUGSlotTemplate" type="text/x-jsrender">
-            <span id="slot_{{:~pug_id}}_{{:~team_id}}_{{:slot_id}}">
+        <script id="PUGSmallSlotTemplate" type="text/x-jsrender">
+            <span id="slot_{{zeroFix:~pug_id}}_{{zeroFix:~team_id}}_{{zeroFix:slot_id}}">
                 {{if empty}}
-                    <div class="empty small_class class_{{:class_id}}"></div>
+                    <div class="empty small_class class_{{zeroFix:class_id}}"></div>
                 {{else}}
                     <img src="{{:avatar}}"
                          id="player_{{:steamid}}" />
                 {{/if}}
             </span>
+        </script>
+
+        <script id="InPUGTeamsTemplate" type="text/x-jsrender">
+            <div class="in_pug_team">
+                <div class="in_pug_team_header team_1">RED</div>
+                <div class="in_pug_player">
+                    <div class="med_class class_1"></div>
+                </div>
+                <div class="in_pug_player">
+                </div>
+                <div class="in_pug_player">
+                </div>
+                <div class="in_pug_player">
+                </div>
+                <div class="in_pug_player">
+                </div>
+                <div class="in_pug_player">
+                </div>
+            </div>
+            <div class="in_pug_team">
+                <div class="in_pug_team_header team_2">BLU</div>
+                <div class="in_pug_player">
+                </div>
+                <div class="in_pug_player">
+                </div>
+                <div class="in_pug_player">
+                </div>
+                <div class="in_pug_player">
+                </div>
+                <div class="in_pug_player">
+                </div>
+                <div class="in_pug_player">
+                </div>
+            </div>
         </script>
 
         <!-- Alert box -->
@@ -108,6 +142,12 @@ $logged_in = isset($_SESSION['steam64']);
 
                     TODO: Put various settings and stuff here
                 </div>
+
+                <div id="stats_box">
+                    <div class="close_alert">X</div>
+
+                    TODO: Put various stats and stuff here
+                </div>
             </div>
         </div>
 
@@ -122,9 +162,9 @@ if ($logged_in) {
                 <div id="steam">
                     <img src="<?php echo $_SESSION['avatar']; ?>" alt="avatar" width="30" height="30" />
                     <?php echo $_SESSION['username']; ?> ||
-                    <a href="/stats" target="_self">stats</a>
-                  - <a href="/settings" target="_self">settings</a>
-                  - <a href="logout.php" target="_self">logout</a>
+                    <a href="#stats" id="open_stats">stats</a>
+                  - <a href="#settings" id="open_settings">settings</a>
+                  - <a href="logout.php">logout</a>
                 </div><?php
 } ?>
             </div>
@@ -172,36 +212,6 @@ if ($logged_in) {
                         </span>
                     </div>
                     <div id="in_pug_players_list">
-                        <div class="in_pug_team">
-                            <div class="in_pug_team_header team_1">RED</div>
-                            <div class="in_pug_player">
-                            </div>
-                            <div class="in_pug_player">
-                            </div>
-                            <div class="in_pug_player">
-                            </div>
-                            <div class="in_pug_player">
-                            </div>
-                            <div class="in_pug_player">
-                            </div>
-                            <div class="in_pug_player">
-                            </div>
-                        </div>
-                        <div class="in_pug_team">
-                            <div class="in_pug_team_header team_2">BLU</div>
-                            <div class="in_pug_player">
-                            </div>
-                            <div class="in_pug_player">
-                            </div>
-                            <div class="in_pug_player">
-                            </div>
-                            <div class="in_pug_player">
-                            </div>
-                            <div class="in_pug_player">
-                            </div>
-                            <div class="in_pug_player">
-                            </div>
-                        </div>
                     </div>
                 </div>
 

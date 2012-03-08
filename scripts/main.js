@@ -1,22 +1,45 @@
 (function($) {
     "use strict";
 
-    /* Common jQuery handles */
-    var $alert, $login_box, $start_pug_box
-      , $close_alert
-      , $no_pugs, $pugs_container, $PUGListingTemplate
-      , $server_preview;
+    /* Make this context accessible from window._pug for debugging */
+    window._ctx = this;
 
-    /* Cached data from server, maps id -> PUGListing */
+    /* Common jQuery handles */
+    var $alert
+      , $no_pugs, $pugs_container, $PUGListingTemplate
+      , $new_pug_ip, $server_preview;
+
+    /* Map of panel name -> jquery handle for each panel in the alert box */
+    var alert_panels = {};
+
+    /* Timers */
+    var pugs_update_timer;
+
+    /* Cached ip -> region mapping from server */
+    var ip_region_cache = {};
+
+    /* Cached pug data from server, maps id -> PUGListing */
     var pugs_cache = {};
 
     /* Selected filters, maps filter_name -> filter_functions */
     var filters = {};
 
+    /* Slight fix for jsRender */
+    $.views.converters({
+        zeroFix: function (value) {return value || 0;}
+    });
+
     /* Functions for centered alert box (for logins, starting pugs, etc)
      * (filled in on document load when the handle $alert is created) */
-    var showAlert = function() {$alert.show();}, hideAlert = function() {$alert.hide()};
+    var showAlert = function(desired_panel_name) {
+        _.each(alert_panels, function($panel, panel_name) {
+            $panel.toggle(panel_name === desired_panel_name);
+        });
+        $alert.show();
+    };
+    var hideAlert = function() {$alert.hide()};
 
+    /* Creates a default team object for a given game mode */
     var makeDefaultTeam = function(pug_type, team_id) {
         var n = 0;
         if (pug_type === 1) {
@@ -35,7 +58,7 @@
             players: $.map(classes, function(class_id) {
                 return {
                     slot_id: ++n,
-                    class_id: ""+class_id, // Stringify so 0 renders correctly
+                    class_id: class_id, // Stringify so 0 renders correctly
                     empty: true,
                     avatar: null,
                     steamid: null
@@ -43,6 +66,26 @@
             })
         };
     };
+
+    /* Validates an IP address given by the user and normalizes it to its
+     * minimum possible representation (001.022.3.4 -> 1.2.3.4)
+     * Returns false if the given IP is invalid
+     */
+    var simplifyIP = function(rawIP) {
+        var octets = rawIP.split("."), invalid = false;
+        if (octets.length !== 4) return false;
+
+        octets = _.map(octets, function(octet) {
+            octet = parseInt(octet, 10);
+            if (_.isNaN(octet) || octet < 0 || octet > 255) invalid = true;
+            return octet;
+        });
+
+        if (invalid)
+            return false;
+        else
+            return octets.join(".");
+    }
 
     /* Constructor for a PUG listing.  Accepts decoded JSON straight from
      * the server */
@@ -93,16 +136,13 @@
 
             ++self.player_count;
         });
-
-        /* Force jsrender to display the number */
-        this.player_count = ""+this.player_count;
     }
 
     /* Updates the currently rendered PUG listing with data from pug_cache */
     var updatePUGListing = function() {
         var current_ids = {};
         $.each(pugs_cache, function(id, pug) {
-            var $pug = $("#pug_id_" + id), $pug_name;
+            var $pug = $("#pug_id_" + id), $pug_name, html, $new_pug;
 
             if (pug.started && $pug.size() === 1) {
                 $pug.fadeOut().animate({height: 0}, {queue: false});
@@ -114,8 +154,10 @@
             if (pug.needs_redisplay) {
                 /* If this PUG does not exist yet... */
                 if ($pug.size() === 0) {
-                    var html = $PUGListingTemplate.render(pug);
-                    $pugs_container.append($(html));
+                    html = $PUGListingTemplate.render(pug);
+                    $new_pug = $(html);
+                    $new_pug.on("click", _.bind(enterPUG, $new_pug, pug.id));
+                    $pugs_container.append($new_pug);
                 }
                 else {
                     /* PUG Listing already exists, update? */
@@ -126,10 +168,12 @@
                     $pug_name = $(".pug_name", $pug);
                     if ($pug_name.text() !== this.name) {
                         $pug_name.text(this.name);
-                    }  */
+                    } */
 
-                    var html = $PUGListingTemplate.render(pug);
-                    $pug.replaceWith($(html));
+                    html = $PUGListingTemplate.render(pug);
+                    $new_pug = $(html);
+                    $new_pug.on("click", _.bind(enterPUG, $new_pug, pug.id));
+                    $pug.replaceWith($new_pug);
                 }
             }
 
@@ -196,6 +240,12 @@
 
     /* Request PUG info from the server */
     var updatePUGs = function(initial) {
+        /* If we were called manually, reset the current timer */
+        if (pugs_update_timer) {
+            clearTimeout(pugs_update_timer);
+        }
+
+        /* Build query string of id,last_update pairs */
         var data = "";
         if (!initial) {
             data = [];
@@ -205,6 +255,7 @@
             data = "pugs=" + data.join(";");
         }
 
+        /* Send off ajax request */
         $.ajax({
             type: "GET",
             url: "ajax/getPUGs.php",
@@ -212,7 +263,7 @@
             success: receivePUGData,
             error: function() {
                 $("#comm_error").show();
-                setTimeout(updatePUGs, 20000);
+                pugs_update_timer = setTimeout(updatePUGs, 20000);
             }
         });
     };
@@ -233,7 +284,7 @@
         updatePUGListing();
 
         /* Schedule next update */
-        setTimeout(updatePUGs, 2500);
+        pugs_update_timer = setTimeout(updatePUGs, 25000);
     };
 
     /* Callback from "start pug" button. Reads data from the
@@ -243,27 +294,47 @@
         hideAlert();
     };
 
-    var updateServerPreview = _.debounce(function() {
-        console.log ("update");
+    /* Get the region for an IP from the server */
+    var fetchRegionPreview = _.debounce(function(ip) {
         $.ajax({
             type: "GET",
             url: "geoip/getRegion.php",
-            data: "ip=" + $(this).val(),
+            data: "ip=" + ip,
             success: function(region) {
-                console.log("got: " + region);
-                $server_preview.addClass("region_" + region);
+                ip_region_cache[ip] = region;
+                updateRegionPreview();
             }
         });
     }, 500);
 
-    var clearServerPreview = function() {
-        console.log ("clear");
+    /* Update the region preview flag when creating a server */
+    var updateRegionPreview = function() {
+        var ip = simplifyIP($new_pug_ip.val()), region = null;
+
         $.each($server_preview.attr('class').split(/\s+/), function () {
-            if (this.indexOf("region_") === 0) {
-                console.log ("remmove class: " + this);
+            if (this.indexOf("region_") === 0)
                 $server_preview.removeClass(this);
-            }
         });
+
+        if (!ip) return;
+        if (ip_region_cache.hasOwnProperty(ip))
+            region = ip_region_cache[ip];
+
+        if (region === null)
+            fetchRegionPreview(ip);
+        else
+            $server_preview.addClass("region_" + region);
+    };
+
+    var enterPUG = function(pug_id) {
+        $("#lobby_listing").stop(true).animate({left: '-1050px'});
+        $("#in_pug").stop(true).show().animate({left: '0px'});
+    };
+
+    var leavePUG = function() {
+        $("#lobby_listing").stop(true).animate({left: '0px'});
+        $("#in_pug").stop(true).animate({left: '1100px'}).hide(0);
+
     };
 
     /* On page load - setup keybinds and get handles
@@ -276,9 +347,12 @@
 
         /* Alert box panels */
         $alert = $("#alert");
-        $login_box = $("#login_box");
-        $start_pug_box = $("#start_pug_box");
+        alert_panels["login"] = $("#login_box");
+        alert_panels["start_pug"] = $("#start_pug_box");
+        alert_panels["settings"] = $("#settings_box");
+        alert_panels["stats"] = $("#stats_box");
 
+        $new_pug_ip = $("#new_pug_ip");
         $server_preview = $("#new_pug_region_preview");
 
         /* Get initial PUG listing */
@@ -288,26 +362,19 @@
         $("div.page_header .filter_button").click(toggleFilter);
 
         /* Open pug creation window */
-        $("a#start_pug").click(function() {
-            $login_box.hide();
-            $start_pug_box.show();
-            showAlert();
-        });
-
-        $(document).on("click", ".pug", function() {
-            $("#lobby_listing").stop(true).animate({left: '-1050px'});
-            $("#in_pug").stop(true).show().animate({left: '0px'});
-        });
-
-        $("#leave_pug").on("click", function() {
-            $("#lobby_listing").stop(true).animate({left: '0px'});
-            $("#in_pug").stop(true).animate({left: '1100px'}).hide(0);
-        });
-
+        $("a#start_pug").click(_.bind(showAlert, this, "start_pug"));
+        $("a#open_settings").click(_.bind(showAlert, this, "settings"));
+        $("a#open_stats").click(_.bind(showAlert, this, "stats"));
         $("div.close_alert").click(hideAlert);
 
+        /* Start a new pug */
         $("#launch_pug").click(createPUG);
 
+        /* Update region preview of a pug's ip */
+        $new_pug_ip.on("keyup keydown change", updateRegionPreview);
+        $server_preview.on("click", function() {$new_pug_ip.focus()});
+
+        /* Default a pug's port to 27015 */
         $("#new_pug_port").focus(function() {
             if ($(this).val() === "27015") {
                 $(this).val("");
@@ -317,9 +384,6 @@
                 $(this).val("27015");
             }
         });
-
-        $("#new_pug_ip").on("keyup", updateServerPreview);
-        $("#new_pug_ip").on("change", clearServerPreview);
     });
 
 })(jQuery);

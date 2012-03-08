@@ -112,6 +112,10 @@ div#login_box img {
     border: 0;
 }
 
+#settings_box, #stats_box {
+    display: none;
+}
+
 /* Content */
 #wrapper {
     margin: 0 auto;
@@ -262,6 +266,7 @@ a#start_pug {
     position: absolute;
     top: 4px;
     right: 4px;
+    cursor: text;
 }
 
 #start_pug_box_title {
@@ -464,6 +469,12 @@ div.pug .pug_map {
     background-color: #333;
 }
 
+.in_pug_player .med_class {
+    width: 32px;
+    height: 32px;
+    margin: 6px;
+}
+
 .in_pug_team_header {
     border-color: transparent;
     text-align: center;
@@ -491,7 +502,7 @@ div.pug .pug_map {
  * All the CSS Sprites         */
 .class_1, .class_2, .class_3, .class_4, .class_5, .class_6, .class_7,
 .class_8, .class_9, .region_na, .region_eu, .region_au {
-    background-image: url(http://cdn.tf2pickup.com/sprite.png);
+    background-image: url(imgs/sprite.png);
     background-repeat: no-repeat;
  }
 
@@ -507,10 +518,22 @@ div.pug .pug_map {
 .class_8.small_class {background-position: -168px 0;}
 .class_9.small_class {background-position: -192px 0;}
 
+/* Medium class icons */
+.med_class {}
+.class_1.med_class {background-position: -288px -120px;}
+.class_2.med_class {background-position: -320px -120px;}
+.class_3.med_class {background-position: -352px -120px;}
+.class_4.med_class {background-position: -384px -120px;}
+.class_5.med_class {background-position: -416px -120px;}
+.class_6.med_class {background-position: -448px -120px;}
+.class_7.med_class {background-position: -480px -120px;}
+.class_8.med_class {background-position: -512px -120px;}
+.class_9.med_class {background-position: -544px -120px;}
+
 /* Large class icons */
 .large_class {}
-.class_1.large_class {background-position: 0 -64px;}
-.class_2.large_class {background-position: -64px -64px;}
+.class_1.large_class {background-position:    0   -64px;}
+.class_2.large_class {background-position:  -64px -64px;}
 .class_3.large_class {background-position: -128px -64px;}
 .class_4.large_class {background-position: -192px -64px;}
 .class_5.large_class {background-position: -256px -64px;}
