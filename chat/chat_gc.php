@@ -7,6 +7,9 @@ header("Content-type: text/plain");
 /* TODO: Rate limiting
  * TODO: Error handling
  * TODO: DON'T USE MYSQL_* FUNCTIONS!!!!
+ *
+ *Note:
+ * I wrote this as a quick exercise, don't actually use it
  */
 
 $db = mysql::connect();
