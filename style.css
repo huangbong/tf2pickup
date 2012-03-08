@@ -4,7 +4,7 @@
  * and tf2secondary as needed */
 @font-face {
     font-family: "TF2 Build";
-    src: url(fonts/tf2build.ttf);
+    src: url("fonts/tf2build.ttf") format("truetype");
 }
 
 /* Global stuff */
@@ -438,6 +438,8 @@ div.pug .pug_map {
     float: right;
     margin: 16px 16px 0 0;
     font-size: 40px;
+    width: 118px;
+    text-align: right;
 }
 
 .pug_server_info {
