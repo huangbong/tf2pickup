@@ -129,7 +129,7 @@
                         slot.avatar = player.avatar;
                         slot.steamid = player.steam64;
                         slot.name = player.name;
-                        slot.friend = _.indexOf(cached_friends, player.steam64);
+                        slot.friend = _.indexOf(cached_friends, player.steam64) > -1;
                         return false; // break from the .each
                     }
                 });
