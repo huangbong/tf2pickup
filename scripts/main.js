@@ -161,7 +161,9 @@
                     html = $PUGListingTemplate.render(pug);
                     $new_pug = $(html);
                     $new_pug.on("click", _.bind(enterPUG, $new_pug, id));
+                    $new_pug.hide();
                     $pugs_container.append($new_pug);
+                    $new_pug.fadeIn();
                 }
                 else {
                     /* PUG Listing already exists, update? */
