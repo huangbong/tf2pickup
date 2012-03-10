@@ -18,7 +18,7 @@
     var pugs_update_timer;
 
     /* Cached SteamIDs of friends */
-    var cached_friends = [];
+    var friends_cache = [];
 
     /* Cached ip -> region mapping from server */
     var ip_region_cache = {};
@@ -129,7 +129,7 @@
                         slot.avatar = player.avatar;
                         slot.steamid = player.steam64;
                         slot.name = player.name;
-                        slot.friend = _.indexOf(cached_friends, player.steam64) > -1;
+                        slot.friend = _.indexOf(friends_cache, player.steam64) > -1;
                         return false; // break from the .each
                     }
                 });
@@ -363,7 +363,7 @@
             type: "GET",
             url: "ajax/getFriends.php",
             success: function(friends) {
-                friends_cache = friends;
+                friends_cache = JSON.parse(friends);
             }
         });
     };
@@ -389,7 +389,8 @@
         $new_pug_ip = $("#new_pug_ip");
         $server_preview = $("#new_pug_region_preview");
 
-        /* Get initial PUG listing */
+        /* Get initial data */
+        fetchFriends();
         updatePUGs(true);
 
         /* When clicking on filter icons... */
