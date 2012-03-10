@@ -74,8 +74,7 @@ class Model {
 
     private function __query($sql, $args=array()) {
         $query = $this->connection->prepare($sql);
-        if ($query->execute($args) === FALSE)
-            return false;
+        if ($query->execute($args) === FALSE) return false;
         ++$this->operations;
         return $query->fetchAll();
     }
@@ -115,9 +114,9 @@ SQL;
             array_push($ids, $id);
             array_push($params, $id, $time);
         }
-        $sql .= " OR (`pugs`.`started` = 0 AND !(`pugs`.`id` in (" . implode(",", $ids) . "))) )";
+        $sql .= " OR (`pugs`.`started` = 0 AND !(`pugs`.`id` in (" . implode(",", array_fill(0, count($ids), "?")) . "))) )";
 
-        return $this->__query($sql, $params);
+        return $this->__query($sql, array_merge($params, $ids));
     }
 
     /* Takes an array of ids and fetches all associated lobbies */
@@ -170,28 +169,51 @@ SQL;
     }
 
     public function createPUG($name, $region, $pug_type,
-                              $map_name, $host_id, $server_name,
-                              $server_ip, $server_port, $rcon) {
+                              $map, $host_id, $server_name,
+                              $ip, $port, $rcon) {
+        // TODO: my __query didn't really fit that well here...
         $sql = <<<SQL
     INSERT INTO `pugs`
-        (`name`, `region`, `pug_type`, `map_name`, `host_id`
-       , `servername`, `serverip`, `serverport`, `rcon`)
+        (`name`, `region`, `pug_type`, `map`, `host_id`
+       , `server_name`, `server_ip`, `server_port`, `rcon`)
     VALUES
-        (':name', ':region', ':pug_type', `:map_name`
-       , `:host_id`, `:server_name`, `:server_ip`, `:server_port`
-       , `rcon`)
+        (:name, :region, :pug_type, :map,
+         :host_id, :server_name, :server_ip, :server_port,
+         :rcon)
 SQL;
-        return $this->__query($sql, array(
-            ':name' => $name,
-            ':region' => $region,
-            ':pug_type' => $pug_type,
-            ':map_name' => $map_name,
-            ':host_id' => $host_id,
-            ':sever_name' => $server_name,
-            ':server_ip' => $server_ip,
-            ':server_port' => $server_port,
-            ':rcon' => $rcon
-        ));
+
+        if (!preg_match('/\d+/', $host_id)) {
+            echo "invalid host";
+            return false;
+        }
+
+        // These values need to be replaced manually
+        //$sql = str_replace(':pug_type', (int)$pug_type, $sql);
+        //$sql = str_replace(':host_id', $host_id, $sql);
+        //$sql = str_replace(':server_port', (int)$server_port, $sql);
+
+        $query = $this->connection->prepare($sql);
+
+        $query->bindParam(':name', $name, PDO::PARAM_STR);
+        $query->bindParam(':region', $region, PDO::PARAM_STR);
+        $query->bindParam(':pug_type', $pug_type, PDO::PARAM_INT);
+        $query->bindParam(':map', $map, PDO::PARAM_STR);
+        $query->bindParam(':host_id', $host_id, PDO::PARAM_STR);
+        $query->bindParam(':server_name', $name, PDO::PARAM_STR);
+        $query->bindParam(':server_ip', $ip, PDO::PARAM_STR);
+        $query->bindParam(':server_port', $port, PDO::PARAM_INT);
+        $query->bindParam(':rcon', $rcon, PDO::PARAM_STR);
+
+        if ($query->execute() === FALSE) {
+            echo "[" . $query->queryString . "]";
+            echo "MySQL error (" . $query->errorCode()
+                . "): ";
+                 var_dump($query->errorInfo());
+            return false;
+        }
+
+        ++$this->operations;
+        return $query->fetchAll();
     }
 
     public function createUser($steam64, $username, $avatar, $country) {

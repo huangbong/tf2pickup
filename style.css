@@ -311,7 +311,7 @@ a#start_pug {
     height: 100%;
 }
 
-#pugs_scrollbar_fix {
+.pugs_scrollbar_fix {
     position: absolute;
     height: 100%;
     width: 100%;
@@ -319,7 +319,7 @@ a#start_pug {
     padding-top: 138px;
 }
 
-#pugs_container {
+#pugs_container, #in_pug_teams_container {
     height: 100%;
     overflow-y: auto;
     width: 100%;
@@ -460,6 +460,14 @@ div.pug .pug_map {
     text-align: left;
 }
 
+.in_pug_team {
+    float: left;
+}
+
+.in_pug_team:last-child {
+    float: right;
+}
+
 .in_pug_player, .in_pug_team_header {
     height: 50px;
     width: 500px;
@@ -469,8 +477,8 @@ div.pug .pug_map {
     background-color: #333;
 }
 
-.in_pug_team {
-    float: left;
+.in_pug_team_header {
+    margin-top: 0;
 }
 
 .in_pug_player .med_class, .in_pug_team img, .in_pug_team div.player_name {
@@ -499,10 +507,6 @@ div.pug .pug_map {
 
 .in_pug_team_header.team_2 {
     background-color: #2164d3;
-}
-
-.in_pug_team:last-child {
-    margin-left: 50px;
 }
 
 /*******************************

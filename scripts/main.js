@@ -288,8 +288,27 @@
     /* Callback from "start pug" button. Reads data from the
      * create PUG form and sends ajax request */
     var createPUG = function() {
-        // TODO
-        hideAlert();
+        // TODO client side sanity checks
+        var data = {
+            name: $("#new_pug_name").val(),
+            pugtype: $("#new_pug_type").val(),
+            map: $("#new_pug_map").val(),
+            serverip: $("#new_pug_ip").val(),
+            serverport: $("#new_pug_port").val(),
+            rcon: $("#new_pug_rcon").val()
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "ajax/createPUG.php",
+            data: data,
+            success: onPUGCreated
+        });
+        showAlert("creating_pug");
+    };
+
+    var onPUGCreated = function(data) {
+        updatePUGs();
     };
 
     /* Get the region for an IP from the server */
@@ -352,6 +371,7 @@
         alert_panels["start_pug"] = $("#start_pug_box");
         alert_panels["settings"] = $("#settings_box");
         alert_panels["stats"] = $("#stats_box");
+        alert_panels["creating_pug"] = $("#creating_pug_box");
 
         $new_pug_ip = $("#new_pug_ip");
         $server_preview = $("#new_pug_region_preview");

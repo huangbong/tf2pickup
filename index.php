@@ -106,23 +106,26 @@ $logged_in = isset($_SESSION['steam64']);
 
                     <h2><div id="start_pug_box_title">Create a PUG</div></h2>
                     PUG Name:<br />
-                    <input type="text" id="new_pug_name" maxlength="150"/><br />
+                    <!-- TODO: REPLACE TESTING VALUES! -->
+                    <input type="text" id="new_pug_name" maxlength="150" value="test"/><br />
+                    Map Name:<br />
+                    <input type="text" id="new_pug_map" maxlength="150" value="pl_swiftwater"/><br />
                     Server IP:<br /><!--
                  --><div id="new_pug_ip_wrapper"><!--
-                        --><input type="text" id="new_pug_ip" maxlength="15" /><!--
+                        --><input type="text" id="new_pug_ip" maxlength="15" value="70.42.74.154" /><!--
                         --><div id="new_pug_region_preview" class="small_region"></div><!--
                  --></div><!--
                  --><br />
                     Server Port:<br />
-                    <input type="text" id="new_pug_port" value="27015" /><br />
+                    <input type="text" id="new_pug_port" value="27016" /><br />
                     RCON:<br />
-                    <input type="password" id="new_pug_rcon" /><br />
+                    <input type="password" id="new_pug_rcon" value="reddit" /><br />
                     PUG Password:<br />
                     <input type="password" id="new_pug_password" /><br />
                     Game Type:<br />
                     <select id="new_pug_type">
-                        <option>Standard</option>
-                        <option>Highlander</option>
+                        <option value="1">Standard</option>
+                        <option value="2">Highlander</option>
                     </select>
                     <input type="button" id="launch_pug" value="Start PUG" />
                 </div>
@@ -133,9 +136,16 @@ $logged_in = isset($_SESSION['steam64']);
                     TODO: Put various settings and stuff here
                 </div>
 
-                <div id="stats_box">
+                <div id="creating_pug_box">
                     <div class="close_alert">X</div>
 
+                    <img src="http://cdn.tf2pickup.com/ajax-loader.gif" />
+                    <br />
+                    Creating PUG
+                </div>
+
+                <div id="stats_box">
+                    <div class="close_alert">X</div>
                     TODO: Put various stats and stuff here
                 </div>
             </div>
@@ -189,9 +199,8 @@ if ($logged_in) {
                     <div id="pugs_loading">
                         <img src="http://cdn.tf2pickup.com/ajax-loader.gif" />
                     </div>
-                    <div id="pugs_scrollbar_fix">
-                        <div id="pugs_container">
-                        </div>
+                    <div class="pugs_scrollbar_fix">
+                        <div id="pugs_container"></div>
                     </div>
                 </div>
 
@@ -201,7 +210,9 @@ if ($logged_in) {
                             Leave PUG
                         </span>
                     </div>
-                    <div id="in_pug_teams_container"></div>
+                    <div class="pugs_scrollbar_fix">
+                        <div id="in_pug_teams_container"></div>
+                    </div>
                 </div>
 
             </div>
