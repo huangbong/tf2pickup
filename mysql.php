@@ -162,7 +162,7 @@ SQL;
 
     public function isBanned($steam64) {
         $sql = <<<SQL
-    SELECT `banned` FROM `users` WHERE `id`=:steam64
+    SELECT `banned` FROM `users` WHERE `id`=:steam64::BIGINT
 SQL;
         $result = $this->__query($sql, array(':steam64' => $steam64));
         return (count($result) === 1 && $result["banned"] === 1);
@@ -219,7 +219,7 @@ SQL;
     public function createUser($steam64, $username, $avatar, $country) {
         $sql = <<<SQL
     INSERT INTO users (id, username, avatar, country)
-               VALUES (':steam64',':username',':avatar',':country')
+               VALUES (':steam64::BIGINT',':username',':avatar',':country')
 SQL;
         return $this->__query($sql, array(
             ':steam64' => $steam64,
@@ -231,7 +231,7 @@ SQL;
 
     public function userExists($steam64) {
         $sql = <<<SQL
-    SELECT `id` FROM `users` WHERE `id`=:steam64
+    SELECT `id` FROM `users` WHERE `id`=:steam64::BIGINT
 SQL;
         $result = $this->__query($sql, array(':steam64' => $steam64));
         return count($result) === 1;
@@ -242,7 +242,7 @@ SQL;
     UPDATE `users` SET `username` = ':username'
                      , `avatar` = ':avatar'
                      , `country` = ':country'
-                   WHERE `id` = ':steam64'
+                   WHERE `id` = :steam64::BIGINT
 SQL;
         return $this->__query($sql, array(
             ':steam64' => $steam64,
