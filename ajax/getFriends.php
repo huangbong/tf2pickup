@@ -7,7 +7,7 @@ require_once dirname(__FILE__).'/../session.php';
 require_once dirname(__FILE__).'/../steam-condenser/steam-condenser.php';
 
 if (!isset($_SESSION['steam64']))
-    die ("Not authenticated!");
+    die ("[]");
 
 try {
     $user = new SteamId($_SESSION['steam64']);

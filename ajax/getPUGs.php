@@ -2,6 +2,7 @@
 /* Returns complete list of open pugs to the client or
  * information about a specific lobby if an id is given. */
 require_once dirname(__FILE__).'/../mysql.php';
+require_once dirname(__FILE__).'/../session.php';
 
 $db = Model::getInstance();
 $db->connect();
@@ -9,6 +10,12 @@ $db->connect();
 /* Fetch either all open pugs or, if a ?pugs parameter was given, fetch
  * only pugs which have been recently updated */
 if (isset($_GET['pugs'])) {
+    // Only give un-auth'ed clients an initial list, but block
+    // further data
+    // (This should be client side, so we don't get pinged at all...)
+    if (!isset($_SESSION['steam64']))
+        die ("[]");
+
     // Should be a list of id,time;id,time;id,time etc...
     $param = $_GET['pugs'];
 
