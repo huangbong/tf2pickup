@@ -61,6 +61,9 @@ $logged_in = isset($_SESSION['steam64']);
                     <div class="empty small_class class_{{zeroFix:class_id}}"></div>
                 {{else}}
                     <img src="{{:avatar}}"
+                         {{if friend}}
+                         class="friend"
+                         {{/if}}
                          id="player_{{:steamid}}" />
                 {{/if}}
             </span>
@@ -81,6 +84,9 @@ $logged_in = isset($_SESSION['steam64']);
                                  title="{{:name}}"
                                  width="32"
                                  height="32"
+                                 {{if friend}}
+                                 class="friend"
+                                 {{/if}}
                                  id="player_{{:steamid}}" />
                             <div class="player_name">{{:name}}</div>
                         {{/if}}

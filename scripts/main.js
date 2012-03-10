@@ -17,6 +17,9 @@
     /* Timers */
     var pugs_update_timer;
 
+    /* Cached SteamIDs of friends */
+    var cached_friends = [];
+
     /* Cached ip -> region mapping from server */
     var ip_region_cache = {};
 
@@ -58,7 +61,8 @@
                     empty: true,
                     avatar: null,
                     name: null,
-                    steamid: null
+                    steamid: null,
+                    friend: false
                 };
             })
         };
@@ -97,13 +101,11 @@
                            , "players", "started"];
 
         if (this.updated && data.updated) {
-            if (this.updated < data.updated) {
+            if (this.updated < data.updated)
                 this.needs_redisplay = true;
-            }
         }
-        else {
+        else
             this.needs_redisplay = true;
-        }
 
         $.each(required_data, function(idx, key) {
             self[key] = data[key];
@@ -127,6 +129,7 @@
                         slot.avatar = player.avatar;
                         slot.steamid = player.steam64;
                         slot.name = player.name;
+                        slot.friend = _.indexOf(cached_friends, player.steam64);
                         return false; // break from the .each
                     }
                 });
@@ -353,6 +356,16 @@
     var leavePUG = function() {
         $("#lobby_listing").stop(true).animate({left: '0px'});
         $("#in_pug").stop(true).animate({left: '1100px'}).hide(0);
+    };
+
+    var fetchFriends = function() {
+        $.ajax({
+            type: "GET",
+            url: "ajax/getFriends.php",
+            success: function(friends) {
+                friends_cache = friends;
+            }
+        });
     };
 
     /* On page load - setup keybinds and get handles

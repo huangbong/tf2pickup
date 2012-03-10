@@ -427,8 +427,9 @@ div.pug .pug_map {
     display: inline-block;
 }
 
-.pug_teams img.friend {
+img.friend {
     border: 2px rgb(167, 244, 70) solid;
+    border-radius: 2px;
 }
 
 .pug_team:first-child {

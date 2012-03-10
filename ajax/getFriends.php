@@ -18,4 +18,5 @@ $steamids = array();
 foreach ($friends as $friend) {
     array_push($steamids, $friend->getSteamID64());
 }
+
 echo json_encode($steamids);
