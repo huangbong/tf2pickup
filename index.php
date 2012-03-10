@@ -16,7 +16,7 @@ $logged_in = isset($_SESSION['steam64']);
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
         <script src="scripts/underscore-min.js"></script>
         <script src="scripts/jsrender.js"></script>
-        <!--<script src="scripts/chat<?php if(isset($_GET["gc"])) {?>_gc<?php } ?>.js"></script>-->
+        <script src="scripts/persist-min.js"></script>
         <script src="scripts/main.js"></script>
     </head>
     <body>

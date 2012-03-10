@@ -11,6 +11,9 @@
       , $new_pug_ip, $server_preview
       , $in_pug_teams_container;
 
+    /* Persist.JS handle */
+    var local_data;
+
     /* Map of panel name -> jquery handle for each panel in the alert box */
     var alert_panels = {};
 
@@ -301,13 +304,8 @@
             rcon: $("#new_pug_rcon").val()
         };
 
-        $.ajax({
-            type: "POST",
-            url: "ajax/createPUG.php",
-            data: data,
-            success: onPUGCreated
-        });
         showAlert("creating_pug");
+        return $.post("ajax/createPUG.php", data, onPUGCreated);
     };
 
     var onPUGCreated = function(data) {
@@ -358,14 +356,20 @@
         $("#in_pug").stop(true).animate({left: '1100px'}).hide(0);
     };
 
+    /* Fetch friend data from the server or local data store */
     var fetchFriends = function() {
-        $.ajax({
-            type: "GET",
-            url: "ajax/getFriends.php",
-            success: function(friends) {
+        // TODO: Provide an option to invalidate, and/or do it automatically
+        // on login.
+        friends_cache = local_data.get("friends_cache");
+        if (!_.isString(friends_cache)) {
+            return $.get("ajax/getFriends.php", function(friends) {
                 friends_cache = JSON.parse(friends);
-            }
-        });
+                local_data.set("friends_cache", friends_cache);
+            });
+        }
+        else {
+            friends_cache = friends_cache.split(",");
+        }
     };
 
     /* On page load - setup keybinds and get handles
@@ -388,6 +392,9 @@
 
         $new_pug_ip = $("#new_pug_ip");
         $server_preview = $("#new_pug_region_preview");
+
+        /* Persist.JS data store */
+        local_data = new Persist.Store("tf2pickup_data");
 
         /* Get initial data */
         fetchFriends();
