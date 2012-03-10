@@ -73,7 +73,7 @@ $logged_in = isset($_SESSION['steam64']);
             {{for teams}}
                 <div class="in_pug_team">
                     <div class="in_pug_team_header team_{{:team_id + 1}}">
-                        {{if team_id === 0}}RED{{else}}BLU{{/if}}
+                        {{if team_id === 0}}BLU{{else}}RED{{/if}}
                     </div>
                     {{for players}}
                     <div class="in_pug_player">
