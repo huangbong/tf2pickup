@@ -11,13 +11,16 @@
       , $new_pug_ip, $server_preview
       , $in_pug_teams_container;
 
+    /* PUG the player is viewing */
+    var current_pug_id = -1;
+
     /* Persist.JS handle */
     var local_data;
 
     /* Map of panel name -> jquery handle for each panel in the alert box */
     var alert_panels = {};
 
-    /* Timers */
+    /* Timer(s) */
     var pugs_update_timer;
 
     /* Cached SteamIDs of friends */
@@ -156,8 +159,8 @@
 
             current_ids["pug_id_" + id] = true;
             if (pug.needs_redisplay) {
-                /* If this PUG does not exist yet... */
                 if ($pug.size() === 0) {
+                    /* If this PUG does not exist yet... */
                     html = $PUGListingTemplate.render(pug);
                     $new_pug = $(html);
                     $new_pug.on("click", _.bind(enterPUG, $new_pug, id));
@@ -181,6 +184,10 @@
                     $new_pug.on("click", _.bind(enterPUG, $new_pug, id));
                     $pug.replaceWith($new_pug);
                 }
+
+                // Update the PUG if we're currently in it
+                if (pug.id === current_pug_id)
+                    renderCurrentPUG();
             }
 
             pug.needs_redisplay = false;
@@ -202,13 +209,8 @@
     /* Will apply filter_options to currently displayed pugs */
     var applyPUGFilters = function() {
         $.each(pugs_cache, function (idx, pug) {
-            /* If any of the filters match, hide this pug listing */
-            var show = true;
-
-            $.each(filters, function(filter_name, filter) {
-                show = show && !filter(pug);
-            });
-
+            /* If none of the filters match, hide this pug listing */
+            var show = !_.any(filters, function(f) { return f(pug); });
             $("#pug_id_" + pug.id).toggle(show);
         });
 
@@ -236,11 +238,10 @@
         var $this = $(this);
         var filter_string = $this.attr("filter");
 
-        if (filters[filter_string]) {
+        if (filters[filter_string])
             delete filters[filter_string];
-        } else {
+        else
             filters[filter_string] = makeFilter(filter_string);
-        }
 
         $this.toggleClass("filter_disabled", !!filters[filter_string]);
         applyPUGFilters();
@@ -348,22 +349,29 @@
             $server_preview.addClass("region_" + region);
     };
 
+    var renderCurrentPUG = function() {
+        var html = $InPUGTeamsTemplate.render(pugs_cache[current_pug_id]);
+        $in_pug_teams_container.html(html);
+    };
+
     var enterPUG = function(pug_id) {
         $("#lobby_listing").stop(true).animate({left: '-1050px'});
         $("#in_pug").stop(true).show().animate({left: '0px'});
+        current_pug_id = pug_id;
 
-        $in_pug_teams_container.html($InPUGTeamsTemplate.render(pugs_cache[pug_id]));
+        renderCurrentPUG();
     };
 
     var leavePUG = function() {
         $("#lobby_listing").stop(true).animate({left: '0px'});
         $("#in_pug").stop(true).animate({left: '1100px'}).hide(0);
+        current_pug_id = -1;
     };
 
     /* Fetch friend data from the server or local data store */
     var fetchFriends = function() {
-        // TODO: Provide an option to invalidate, and/or do it automatically
-        // on login.
+        // TODO: Provide an option to invalidate friends data,
+        // and/or do it automatically on login.
         friends_cache = local_data.get("friends_cache");
         if (!_.isString(friends_cache)) {
             return $.get("ajax/getFriends.php", function(friends) {
@@ -407,22 +415,23 @@
         /* When clicking on filter icons... */
         $("div.page_header .filter_button").click(toggleFilter);
 
-        /* Open pug creation window */
+        /* Event handlers */
         $("a#start_pug").click(_.bind(showAlert, this, "start_pug"));
         $("a#open_settings").click(_.bind(showAlert, this, "settings"));
         $("a#open_stats").click(_.bind(showAlert, this, "stats"));
         $("div.close_alert").click(hideAlert);
 
-        /* Start a new pug */
         $("#launch_pug").click(createPUG);
-
         $("#leave_pug").click(leavePUG);
+
+        $("#in_pug_teams_container").on("click", ".in_pug_player");
 
         /* Update region preview of a pug's ip */
         $new_pug_ip.on("keyup keydown change", updateRegionPreview);
         $server_preview.on("click", function() {$new_pug_ip.focus()});
 
-        /* Default a pug's port to 27015 */
+        /* Default a pug's port to 27015. Using this instead of an HMTL
+         * placeholder attribute so the value gets sent */
         $("#new_pug_port").focus(function() {
             if ($(this).val() === "27015") {
                 $(this).val("");
