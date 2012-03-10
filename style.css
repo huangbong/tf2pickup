@@ -478,6 +478,14 @@ img.friend {
     background-color: #333;
 }
 
+.in_pug_player {
+    cursor: pointer;
+}
+
+.in_pug_player:hover {
+    border-color: #FFFFFF;
+}
+
 .in_pug_team_header {
     margin-top: 0;
 }
