@@ -149,7 +149,7 @@
             var $pug = $("#pug_id_" + id), $pug_name, html, $new_pug;
 
             if (pug.started && $pug.size() === 1) {
-                $pug.fadeOut().animate({height: 0}, {queue: false});
+                $pug.animate({height: 0, opacity: 0, "border-width": 0, "margin-top": 0}).hide(0);
                 delete pugs_cache[id];
                 return;
             }
@@ -185,8 +185,10 @@
         });
 
         $(".pug").each(function () {
+            var $this = $(this);
             if (!current_ids[this.id]) {
-                $(this).remove();
+                // Remove element after animation has run
+                setTimeout(_.bind($this.remove, $this), 500);
             }
         });
 
