@@ -288,7 +288,7 @@
         updatePUGListing();
 
         /* Schedule next update */
-        pugs_update_timer = setTimeout(updatePUGs, 25000);
+        pugs_update_timer = setTimeout(updatePUGs, 2500);
     };
 
     /* Callback from "start pug" button. Reads data from the
