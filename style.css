@@ -84,7 +84,7 @@ div#alert_contents {
     margin: -144px auto;
 }
 
-div#login_box, div#start_pug_box {
+div#login_box, div#start_pug_box, div#creating_pug_box {
     width: 100%;
     display: none;
     outline: none;
