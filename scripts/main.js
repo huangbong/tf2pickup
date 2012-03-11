@@ -185,9 +185,12 @@
                     $pug.replaceWith($new_pug);
                 }
 
-                // Update the PUG if we're currently in it
-                if (pug.id === current_pug_id)
+                if (pug.id === current_pug_id) {
+                    // Update the PUG if we're currently in it
                     renderCurrentPUG();
+                    // and move it to the top of the listing
+                    $pugs_container.append($pug);
+                }
             }
 
             pug.needs_redisplay = false;
@@ -282,13 +285,12 @@
         var data = JSON.parse(_data);
 
         $.each(data, function(idx, pug) {
-            if (pugs_cache.hasOwnProperty(""+pug.id)) {
+            if (pugs_cache.hasOwnProperty(""+pug.id))
                 pugs_cache[pug.id].load(pug);
-            }
-            else {
+            else
                 pugs_cache[pug.id] = new PUGListing(pug);
-            }
         });
+
         $("#pugs_loading").hide();
         updatePUGListing();
 
@@ -356,16 +358,26 @@
 
     var enterPUG = function(pug_id) {
         $("#lobby_listing").stop(true).animate({left: '-1050px'});
-        $("#in_pug").stop(true).show().animate({left: '0px'});
+        $("#in_pug").stop(true)
+                    .show()
+                    .animate({left: '0px'}, function() {
+                        var $pug = $("#pug_id_" + pug_id);
+                        $pug.addClass("current_pug");
+                        $pugs_container.prepend($pug);
+                        applyPUGFilters();
+                    });
         current_pug_id = pug_id;
 
+        updatePUGs();
         renderCurrentPUG();
     };
 
     var leavePUG = function() {
         $("#lobby_listing").stop(true).animate({left: '0px'});
         $("#in_pug").stop(true).animate({left: '1100px'}).hide(0);
-        current_pug_id = -1;
+
+        $("#pug_id_" + current_pug_id).removeClass("current_pug");
+        //current_pug_id = -1;
     };
 
     /* Fetch friend data from the server or local data store */

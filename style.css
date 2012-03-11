@@ -350,7 +350,11 @@ div.pug:hover {
     border-color: #FFFFFF;
 }
 
-div.pug .pug_map {
+div.pug.current_pug {
+    border-color: #595;
+}
+
+.pug_map {
     width: 141px;
     height: 64px;
     margin: 10px 10px 10px 5px;
