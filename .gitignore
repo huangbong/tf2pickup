@@ -1,4 +1,7 @@
 .htaccess
+.project
+node_modules/
 phpmyadmin/
 fake_session.php
 non-git/
+*~
