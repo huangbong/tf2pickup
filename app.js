@@ -1,5 +1,6 @@
 // Module dependencies
 var express      = require('express')
+  , socket_io    = require('socket.io')
   , _            = require('underscore')
   , steam_login  = require('./steam.js')
   , steam_api    = require('steam');
@@ -11,8 +12,9 @@ var url = 'http://' + config.host_name;
 var steam = new steam_api({ apiKey: config.steam_api_key, format: 'json' });
 
 var app = express.createServer();
+var io  = socket_io.listen(app);
 
-// Configuration
+// Express Configuration
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
@@ -25,7 +27,7 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));    
 //  app.use(express.logger());
 });
 
@@ -33,14 +35,16 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
-// Routes
+// Socket.IO Setup
+io.sockets.on('connection',
 
 // Index page
 app.get('/', function (req, res) {
   res.render('index', {
     logged_in: false,
     openid_url: steam_login.genURL(url + '/verify', url),
-    avatar: 'http://media.steampowered.com/steamcommunity/public/images/avatars/36/36c4432f81708340cd76a40df82e0830c76b9e41.jpg',
+    avatar: config.steam_avatar_base_url
+  + '36c4432f81708340cd76a40df82e0830c76b9e41.jpg',
     username: 'Lieutenant Awesome',
   });
 });
