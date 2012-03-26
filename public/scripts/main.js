@@ -386,7 +386,7 @@
         // and/or do it automatically on login.
         friends_cache = local_data.get("friends_cache");
         if (!_.isString(friends_cache)) {
-            return $.get("ajax/getFriends.php", function(friends) {
+            return $.get("friends", function(friends) {
                 friends_cache = JSON.parse(friends);
                 local_data.set("friends_cache", friends_cache);
             });

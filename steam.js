@@ -71,7 +71,7 @@ exports.verify = function(req, res, next) {
     steam_res.on('end', function() {
       var id = req.query['openid.claimed_id'].match(VALID_ID);
       if (data.match(VALID_LOGIN) && id) {
-        req.steam64 = id[1];
+        req.steamid = id[1];
         next();
       }
       else {

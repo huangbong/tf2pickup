@@ -1,13 +1,14 @@
 // Module dependencies
 var express      = require('express')
-  , passport     = require('passport')
+  , _            = require('underscore')
   , steam_login  = require('./steam.js')
   , steam_api    = require('steam');
 
 // Load configuration
 var config = require('./config.js');
-console.log(config);
 var url = 'http://' + config.host_name;
+
+var steam = new steam_api({ apiKey: config.steam_api_key, format: 'json' });
 
 var app = express.createServer();
 
@@ -19,8 +20,6 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser());
   app.use(express.session({ secret: 'tf2pickup949172463r57276' }));
-  app.use(passport.initialize());
-  app.use(passport.session());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });
@@ -50,17 +49,28 @@ app.get('/', function (req, res) {
 app.post('/createPUG', function (req, res) {});
 app.post('/getPUGs', function (req, res) {});
 
-// Login stuff
+// Login via Steam
 app.get('/verify', steam_login.verify, function(req, res) {
   // Returned from authentication
-  console.log('User logged in: ' + req.steam64);
-  req.session.steam64 = req.steam64;
+  console.log('User logged in: ' + req.steamid);
+  req.session.steamid = req.steamid;
   res.redirect('/');
 });
 
 // Steam API proxies
 app.get('/friends', function (req, res) {
-
+  steam.getFriendList({
+    steamid: req.session.steamid,
+    relationship: 'all',
+    callback: function(err, data) {
+      if (data) {
+        data = data['friendslist']['friends'];
+        data = data.map(function(friend) {return friend['steamid'];});
+	res.write(JSON.stringify(data));
+      }
+      res.end();
+    }
+  });
 });
 
 app.listen(config.port);
