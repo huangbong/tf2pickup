@@ -70,12 +70,12 @@
     {{/for}}
 </script>
  <!-- Alert box -->
-<div id="alert"<?php if ($logged_in) { ?> class="hidden"<?php } ?>>
+<div id="alert"<% if (logged_in) { %> class="hidden"<% } %>>
   <div id="alert_contents">
     <div id="login_box">
       <h2>Please login with Steam to<br />use this site.</h2>
-        <a href="<?php echo SteamSignIn::genUrl(); ?>">
-          <img src="http://cdn.steamcommunity.com/public/images/signinthroughsteamrge_border.png"
+        <a href="<%= openid_url %>">
+          <img src="http://cdn.steamcommunity.com/public/images/signinthroughsteam/sits_large_border.png"
                alt="steam login"/>
         </a>
         </div>
@@ -127,15 +127,15 @@
   <div id="tf2_icon"></div>
   <div id="header">
     <div id="logo"></div>
-<% if (loggedin) { %>
+<% if (logged_in) { %>
       <div id="steam">
-        <img src="<%= avatar %?" alt="avatar" width="30" height="30" />
+        <img src="<%= avatar %>" alt="avatar" width="30" height="30" />
           <%= username %> ||
             <a href="#stats" id="open_stats">stats</a>
           - <a href="#settings" id="open_settings">settings</a>
           - <a href="logout.php">logout</a>
       </div>
-<? } %>
+<% } %>
     </div>
       <div id="pages_wrapper">
         <div id="lobby_listing">
