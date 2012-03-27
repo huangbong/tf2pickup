@@ -3,7 +3,8 @@ module.exports = {
   host_name: 'dev.tf2pickup.com',
 
   steam_api_key: '2C90B16410B5B8BE3DB9A7FD67A76A89',
-  steam_avatar_base_url: 'http://media.steampowered.com/steamcommunity/public/images/avatars/',
+  steam_avatar_base_url:
+    'http://media.steampowered.com/steamcommunity/public/images/avatars/db/',
 
   geoip_db_file: '/usr/local/share/GeoIP/GeoLiteCity.dat',
 

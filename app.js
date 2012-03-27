@@ -1,13 +1,19 @@
 // Module dependencies
 var express      = require('express')
+  , connect      = require('express/node_modeles/connect')
   , socket_io    = require('socket.io')
   , _            = require('underscore')
   , steam_login  = require('./steam.js')
   , steam_api    = require('steam');
 
+var sessionStore = new connect.middleware.session.MemoryStore();
+
 // Load configuration
-var config = require('./config.js');
-var url = 'http://' + config.host_name;
+var config, url;
+function loadConfig(filename) {
+  config = require('./config.js');
+  url = 'http://' + config.host_name;
+}
 
 var steam = new steam_api({ apiKey: config.steam_api_key, format: 'json' });
 
@@ -21,30 +27,65 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser());
-  app.use(express.session({ secret: 'tf2pickup949172463r57276' }));
+  app.use(express.session({ secret: 'tf2pickup949172463r57276'
+                          , cookie: 5 * 24 * 60 * 60 * 1000 }));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });
 
 app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));    
+  loadConfig('./config.dev.js');
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 //  app.use(express.logger());
 });
 
 app.configure('production', function(){
+  loadConfig('./config.production.js');
   app.use(express.errorHandler());
 });
 
 // Socket.IO Setup
-io.sockets.on('connection',
+io.set('authorization', function (data, accept) {
+  if (!data.headers.cookie)
+    return accept('No cookie transmitted.', false);
+
+  data.cookie = parseCookie(data.headers.cookie);
+  data.sessionID = data.cookie['express.sid'];
+
+  store.load(data.sessionID, function (err, session) {
+    if (err || !session) return accept('Error', false);
+
+    data.session = session;
+    return accept(null, true);
+  });
+});
+
+io.sockets.on('connection', function(socket) {
+    socket.handshake.session;
+  socket.on('get friends', function() {
+    steam.getFriendList({
+      steamid: socket.session.steamid,
+      relationship: 'all',
+      callback: function(err, data) {
+        if (data) {
+          data = data['friendslist']['friends'];
+          data = data.map(function(friend) {return friend['steamid'];});
+          socket.emit('friends', data);
+        }
+      }
+    });
+  });
+
+
+});
 
 // Index page
 app.get('/', function (req, res) {
   res.render('index', {
-    logged_in: false,
+    logged_in: req.session.steamid !== undefined,
     openid_url: steam_login.genURL(url + '/verify', url),
     avatar: config.steam_avatar_base_url
-  + '36c4432f81708340cd76a40df82e0830c76b9e41.jpg',
+  + 'dbcfdc5d1e2dd48787a47b873874b3ca55f075ff.jpg',
     username: 'Lieutenant Awesome',
   });
 });
@@ -63,18 +104,7 @@ app.get('/verify', steam_login.verify, function(req, res) {
 
 // Steam API proxies
 app.get('/friends', function (req, res) {
-  steam.getFriendList({
-    steamid: req.session.steamid,
-    relationship: 'all',
-    callback: function(err, data) {
-      if (data) {
-        data = data['friendslist']['friends'];
-        data = data.map(function(friend) {return friend['steamid'];});
-	res.write(JSON.stringify(data));
-      }
-      res.end();
-    }
-  });
+
 });
 
 app.listen(config.port);
