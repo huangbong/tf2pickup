@@ -129,8 +129,8 @@
     <div id="logo"></div>
 <% if (logged_in) { %>
       <div id="steam">
-        <img src="<%= avatar %>" alt="avatar" width="30" height="30" />
-          <%= username %> ||
+        <img src="<%= user.avatar %>" alt="avatar" width="30" height="30" />
+          <%= user.name %> ||
             <a href="#stats" id="open_stats">stats</a>
           - <a href="#settings" id="open_settings">settings</a>
           - <a href="logout.php">logout</a>

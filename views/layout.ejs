@@ -7,13 +7,24 @@
 
     <link rel="stylesheet" type="text/css" href="stylesheets/style.css" media="screen" />
 
+    <script type="text/javascript">
+      //<!--CDATA
+      var TF2PICKUP_DATA = {
+        logged_in: <%- logged_in %>,
+        user_data: <%- JSON.stringify(user) %>
+      };
+      // -->
+    </script>
+  </head>
+  <body>
+    <%- body %>
+
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="scripts/underscore-min.js"></script>
     <script src="scripts/jsrender.js"></script>
     <script src="scripts/persist-min.js"></script>
     <script src="scripts/main.js"></script>
-  </head>
-  <body>
-    <%- body %>
   </body>
 </html>

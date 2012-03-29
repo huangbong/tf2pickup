@@ -5,5 +5,5 @@ phpmyadmin/
 fake_session.php
 non-git/
 *~
-config.dev.js
+config.development.js
 [#]*[#]
