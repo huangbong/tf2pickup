@@ -1,0 +1,24 @@
+  <div class="pug" id="pug_id_{{zeroFix:id}}">
+    <div class="pug_map" unselectable="on">
+       <div class="large_region region_{{:region}}"></div>
+       <img src="http://cdn.tf2pickup.com/maps/320/{{:map}}.jpg"
+            alt="{{:map}}"
+            title="{{:map}}"
+            width="116"
+            height="64" unselectable="on" />
+    </div>
+    <div class="pug_details">
+      <span class="pug_name">{{:name}}</span>
+      <div class="pug_info">
+        {{zeroFix:players_per_team}}v{{zeroFix:players_per_team}} {{:map}}
+      <br/>
+        {{:server_name}}
+      </div>
+    </div>
+    <div class="pug_player_count">
+      {{zeroFix:player_count}}/{{zeroFix:max_players}}
+    </div>
+      <div class="pug_teams">
+        {{for teams ~pug_id=id tmpl="#PUGTeamTemplate"/}}
+      </div>
+    </div>

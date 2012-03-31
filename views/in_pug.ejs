@@ -1,0 +1,24 @@
+{{for teams}}
+  <div class="in_pug_team">
+    <div class="in_pug_team_header team_{{:team_id + 1}}">
+      {{if team_id === 0}}BLU{{else}}RED{{/if}}
+    </div>
+    {{for players}}
+      <div class="in_pug_player">
+        <div class="med_class class_{{:class_id}}"></div>
+        {{if !empty}}
+          <img src="{{:avatar}}"
+               alt="{{:name}}"
+               title="{{:name}}"
+               width="32"
+               height="32"
+               {{if friend}}
+                 class="friend"
+               {{/if}}
+               id="player_{{:steamid}}" />
+          <div class="player_name">{{:name}}</div>
+        {{/if}}
+      </div>
+    {{/for}}
+  </div>
+{{/for}}

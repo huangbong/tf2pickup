@@ -1,0 +1,11 @@
+<span id="slot_{{zeroFix:~pug_id}}_{{zeroFix:~team_id}}_{{zeroFix:slot_id}}">
+  {{if empty}}
+     <div class="empty small_class class_{{zeroFix:class_id}}"></div>
+  {{else}}
+     <img src="{{:avatar}}"
+          {{if friend}}
+          class="friend"
+          {{/if}}
+          id="player_{{:steamid}}" />
+  {{/if}}
+</span>
