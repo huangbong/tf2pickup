@@ -1,4 +1,4 @@
-if (require) var _ = require('underscore');
+if (typeof require !== "undefined") var _ = require('underscore');
 
 var TF2PICKUP_UTILITY = {
 
@@ -35,4 +35,5 @@ var TF2PICKUP_UTILITY = {
   }
 
 };
-if (module) module.exports = TF2PICKUP_UTILITY;
+
+if (typeof module !== "undefined") module.exports = TF2PICKUP_UTILITY;

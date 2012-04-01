@@ -6,10 +6,16 @@ var express      = require('express')
   , async        = require('async')
   , steam_login  = require('./steam.js')
   , steam_api    = require('steam')
+  , geoip        = require('geoip-lite-rm')
+  , to_continent = require('./continents.js').to_continent
+  , rcon         = require('./rcon.js')
+  , utils        = require('./public/scripts/utility.js');
 
 var sessionStore = new connect.middleware.session.MemoryStore()
 var app = express.createServer()
 var io  = socket_io.listen(app);
+
+geoip.load('./data');
 
 // Load configuration
 var config = require('./config.' + app.settings.env + '.js');
@@ -18,6 +24,19 @@ var url    = 'http://' + config.host_name;
 var steam = new steam_api({ apiKey: config.steam_api_key, format: 'json' });
 
 var users = {}, pugs = {}, friends_cache = {}, players_cache = {};
+
+var generateUID = (function() {
+  var n = 0;
+  return function() { return n++; };
+})();
+
+// Lookup ip -> region code (NA, EU, AU, ...)
+// Does not need to be asynchronous because the geoip library and
+// country -> continent map are stored in memory
+function getRegion(ip) {
+  var data = geoip.lookup(ip);
+  return data? to_continent(data.country).toLowerCase() : null;
+};
 
 // caching wrapper around steam api calls, usable with promises
 function getFriends(steamid, callback) {
@@ -29,7 +48,9 @@ function getFriends(steamid, callback) {
       relationship: 'all',
       callback: function(err, data) {
         if (!err && data && data.friendslist && data.friendslist.friends) {
-          data = data.friendslist.friends.map(function(friend) {return friend.steamid;});
+          data = data.friendslist.friends.map(function(friend) {
+            return friend.steamid;
+          });
           friends_cache[steamid] = data;
           callback(null, data);
         }
@@ -46,24 +67,83 @@ function getPlayerInfo(steamid, callback) {
     steam.getPlayerSummaries({
       steamids: [steamid],
       callback: function(err, data) {
-        if (!err && data && data.response && data.response.players[0])
-          callback(null, data.response.players[0]);
+        if (!err && data && data.response && data.response.players[0]) {
+          var player = data.response.players[0];
+          players_cache[steamid] = player;
+          callback(null, player);
+        }
         else
           callback(err, data);
       }
     });
 };
 
-function createUser(sessionid, steamid, callback) {
-  if (users.hasOwnProperty(sessionid)) {
-    users[sessionid].destroy();
-    users[sessionid] = null;
-  }
+// Takes a server's raw status (from an rcon 'status' command) and parses it
+// into an object, or returns false if it was invalid
+function parseServerStatus(raw_data) {
+  var data = raw_data.split("\n\n");
+  if (data.length !== 2) return callback("Invalid server response");
 
+  var headers = {}
+    , _headers = data[0].split("\n")
+    , players = data[1].split("\n");
+
+  _.each(_headers, function(header) {
+    var parts = utils.split(header, ':', 1);
+    headers[parts[0].trim()] = parts[1].trim();
+  });
+
+  // Remove header row from player list
+  players.shift();
+
+  players = _.map(players, function(player) {
+    // TODO: What if a player has a " in their name?
+    if (player[0] === '#') {
+      var row = player.slice(10).split('"');
+      return {
+        name: row[0],
+        steamid: row[1].trim().split(" ")[0]
+      };
+    }
+  });
+
+  return {
+    headers: headers,
+    players: _.compact(players) // remove empty rows
+  };
+};
+
+function getServerStatus(ip, port, pass, callback) {
+  new rcon.RCon(ip, port, function(e) {
+    if (e) return callback(e);
+
+    this.auth(pass, function(e) {
+      var socket = this;
+      if (e) return callback(e);
+
+      this.send('status', function(data) {
+        socket.end();
+
+        var data = parseServerStatus(data);
+        if (data)
+          callback(null, data);
+        else
+          callback("Invalid status from game server");
+      });
+    });
+  });
+};
+
+function createUser(sessionid, steamid, callback) {
   async.parallel([
     function(callback) { getFriends(steamid, callback); }
   , function(callback) { getPlayerInfo(steamid, callback); }
   ],function(err, results) {
+    if (users[sessionid]) {
+      users[sessionid].disconnect();
+      users[sessionid] = null;
+    }
+
     if (err)
       callback(err);
     else {
@@ -80,17 +160,93 @@ function createUser(sessionid, steamid, callback) {
         socket: null,
 
         onConnection: function(socket) {
-          if (this.socket)
-            this.socket.disconnect();
+          this.disconnect();
           this.socket = socket;
         },
 
-        destroy: function() {
-          this.socket.disconnect();
+        disconnect: function() {
+          if (this.socket)
+            this.socket.disconnect();
         }
       };
       callback();
     }
+  });
+};
+
+function createPug(new_pug, callback) {
+  var required_keys = ['name', 'type', 'map', 'ip', 'port', 'rcon'];
+
+  // If new_pug is missing any of required_keys
+  if(!_.all(required_keys, function(key) { return _.has(new_pug, key); }))
+    return callback("Missing argument");
+
+  // Now that we know all the required parameters are present, verify them
+  // TODO: Replace all these if's with a JSON schema module
+  if (new_pug.name.length > 150)
+    return callback("PUG Name too long");
+
+  if (new_pug.map.length > 150)
+    return callback("Map name too long");
+
+  new_pug.ip = utils.simplifyIP(new_pug.ip);
+  if (!new_pug.ip)
+    return callback("Invalid IP");
+
+  new_pug.port = parseInt(new_pug.port, 10);
+  if (_.isNaN(new_pug.port) || new_pug.port < 0 || new_pug.port > 65535)
+    return callback("Invalid port number");
+
+  new_pug.type = parseInt(new_pug.type, 10);
+  if (new_pug.type !== 1 && new_pug.type !== 2)
+    return callback("Invalid PUG type");
+
+  // Get info about the server
+  async.parallel([
+    function(callback) { getServerStatus(new_pug.ip, new_pug.port
+                                       , new_pug.rcon, callback); }
+  , function(callback) { callback(null, getRegion(new_pug.ip));   }
+  ], function(err, results) {
+    if (err) return callback(err);
+
+    var server_data   = results[0]
+      , server_region = results[1];
+
+    if (!server_data.headers.hostname || !server_data.headers.players)
+      return callback('Server returned insufficient information');
+
+    var required_players = ((new_pug.type === 1)? 6:9) * 2;
+    var max_players = server_data.headers.players.match(/\d+ \((\d+) max\)/);
+    if (!max_players)
+      return callback('Server returned an invalid status message');
+    else if (required_players > parseInt(max_players[1], 10))
+      return callback('Server does not have enough player slots');
+
+    var non_bots = _.filter(server_data.players.length, function(player) {
+      return player.steamid !== "BOT";
+    });
+
+    if (non_bots.length > 0)
+      return callback("Server already has players on it.");
+
+    // TODO: Check if server has the map
+
+    // If we made it here, we can create the pug!
+    var id = generateUID();
+    pugs[id] = {
+      id: id,
+      server_name: server_data.headers.hostname,
+      region: server_region,
+      players: [],
+
+      name: new_pug.name,
+      type: new_pug.type,
+      map: new_pug.map,
+      ip: new_pug.ip,
+      port: new_pug.port
+    };
+
+    callback(null, pugs[id]);
   });
 };
 
@@ -100,7 +256,7 @@ function loadUser(req, res, next) {
 };
 
 // Express Configuration
-app.configure(function(){
+app.configure(function() {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(express.cookieParser());
@@ -112,12 +268,12 @@ app.configure(function(){
   app.use(express.static(__dirname + '/public'));
 });
 
-app.configure('development', function(){
+app.configure('development', function() {
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 //  app.use(express.logger());
 });
 
-app.configure('production', function(){
+app.configure('production', function() {
   app.use(express.errorHandler());
 });
 
@@ -143,21 +299,31 @@ io.set('authorization', function (data, accept) {
   });
 });
 
-
-// Test code:
-var n=0;
-setInterval(function() {
-  _.each(users, function(k, user) {
-
-  });
-  ++n;
-}, 2000);
-
 io.sockets.on('connection', function(socket) {
   var session = socket.handshake.session
     , user = users[session.id];
 
+  console.log(user.data.name + " connected");
+
   user.onConnection(socket);
+
+  socket.on('create pug', function(data) {
+    createPug(data, function(err, new_pug) {
+      if (!err) {
+        io.sockets.emit('pug', [new_pug]);
+        socket.emit('pug created', new_pug.id);
+      }
+      else
+        socket.emit('create pug error', err);
+    })
+  });
+
+  socket.on('region', function(ip) {
+    if ((ip = utils.simplifyIP(ip)))
+      socket.emit('region', { ip: ip, region: getRegion(ip) || false });
+  });
+
+  socket.emit('pug', pugs);
 });
 
 // Index page
@@ -166,6 +332,18 @@ app.get('/', loadUser, function (req, res) {
     user: req.user? req.user.data : {},
     logged_in: req.user !== undefined,
     openid_url: steam_login.genURL(url + '/verify', url)
+  });
+});
+
+app.get('/fake', function(req, res) {
+  req.steamid = '76561197993836391';
+  createUser(req.session.id, req.steamid, function(err) {
+    if (!err) {
+      console.log('User logged in: ' + req.steamid);
+      req.session.steamid = req.steamid;
+    }
+
+    res.redirect('/');
   });
 });
 
@@ -185,3 +363,7 @@ app.get('/verify', steam_login.verify, function(req, res) {
 app.listen(config.port);
 console.log("Express server running tf2pickup on port %d in %s mode"
                 , app.address().port, app.settings.env);
+
+module.exports = {
+  getServerStatus: getServerStatus
+};

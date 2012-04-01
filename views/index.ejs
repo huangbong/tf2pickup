@@ -1,77 +1,23 @@
 <!-- JSRender templates -->
 <script id="PUGListingTemplate" type="text/x-jsrender">
-  <div class="pug" id="pug_id_{{zeroFix:id}}">
-    <div class="pug_map" unselectable="on">
-       <div class="large_region region_{{:region}}"></div>
-       <img src="http://cdn.tf2pickup.com/maps/320/{{:map}}.jpg"
-            alt="{{:map}}"
-            title="{{:map}}"
-            width="116"
-            height="64" unselectable="on" />
-    </div>
-    <div class="pug_details">
-      <span class="pug_name">{{:name}}</span>
-      <div class="pug_info">
-        {{zeroFix:players_per_team}}v{{zeroFix:players_per_team}} {{:map}}
-      <br/>
-        {{:server_name}}
-      </div>
-    </div>
-    <div class="pug_player_count">
-      {{zeroFix:player_count}}/{{zeroFix:max_players}}
-    </div>
-      <div class="pug_teams">
-        {{for teams ~pug_id=id tmpl="#PUGTeamTemplate"/}}
-      </div>
-    </div>
+  <%- partial('listing.ejs')  %>
 </script>
 <script id="PUGTeamTemplate" type="text/x-jsrender">
-  <div class="pug_team">
-    {{for players ~team_id=team_id tmpl="#PUGSmallSlotTemplate"/}}
-  </div>
+  <%- partial('team.ejs')  %>
 </script>
 <script id="PUGSmallSlotTemplate" type="text/x-jsrender">
-  <span id="slot_{{zeroFix:~pug_id}}_{{zeroFix:~team_id}}_{{zeroFix:slot_id}}">
-    {{if empty}}
-       <div class="empty small_class class_{{zeroFix:class_id}}"></div>
-    {{else}}
-       <img src="{{:avatar}}"
-            {{if friend}}
-            class="friend"
-            {{/if}}
-            id="player_{{:steamid}}" />
-    {{/if}}
-  </span>
+  <%- partial('small_slot.ejs')  %>
 </script>
 <script id="InPUGTeamsTemplate" type="text/x-jsrender">
-  {{for teams}}
-    <div class="in_pug_team">
-      <div class="in_pug_team_header team_{{:team_id + 1}}">
-        {{if team_id === 0}}BLU{{else}}RED{{/if}}
-      </div>
-            {{for players}}
-            <div class="in_pug_player">
-                <div class="med_class class_{{:class_id}}"></div>
-                {{if !empty}}
-                    <img src="{{:avatar}}"
-                         alt="{{:name}}"
-                         title="{{:name}}"
-                         width="32"
-                         height="32"
-                         {{if friend}}
-                           class="friend"
-                         {{/if}}
-                         id="player_{{:steamid}}" />
-                    <div class="player_name">{{:name}}</div>
-                {{/if}}
-            </div>
-            {{/for}}
-        </div>
-    {{/for}}
+  <%- partial('in_pug.ejs')  %>
 </script>
- <!-- Alert box -->
+
+<!-- Alert box -->
 <div id="alert"<% if (logged_in) { %> class="hidden"<% } %>>
   <div id="alert_contents">
+    <div id="disconnected">
+      Disconnected from server. Automatically retrying...
+    </div>
     <div id="login_box">
       <h2>Please login with Steam to<br />use this site.</h2>
         <a href="<%= openid_url %>">
@@ -83,19 +29,22 @@
             <div class="close_alert">X</div>
             <h2><div id="start_pug_box_title">Create a PUG</div></h2>
             PUG Name:<br />
-            <input type="text" id="new_pug_name" maxlength="150" /><br />
+            <input type="text" id="new_pug_name" maxlength="150"
+                   value="Awesome sauce pug!" /><br />
             Map Name:<br />
-            <input type="text" id="new_pug_map" maxlength="150" />
+            <input type="text" id="new_pug_map" maxlength="150"
+                   value="cp_badlands" /><br />
             Server IP:<br /><!--
          --><div id="new_pug_ip_wrapper"><!--
-           --><input type="text" id="new_pug_ip" maxlength="15" /><!--
+           --><input type="text" id="new_pug_ip" maxlength="15"
+                     value="70.42.74.154"/><!--
            --><div id="new_pug_region_preview" class="small_region"></div><!--
          --></div><!--
          --><br />
             Server Port:<br />
-            <input type="text" id="new_pug_port" /><br />
+            <input type="text" id="new_pug_port" value="27016" /><br />
             RCON:<br />
-            <input type="password" id="new_pug_rcon" /><br />
+            <input type="password" id="new_pug_rcon" value="reddit" /><br />
             PUG Password:<br />
             <input type="password" id="new_pug_password" /><br />
             Game Type:<br />
@@ -103,7 +52,7 @@
                 <option value="1">Standard</option>
                 <option value="2">Highlander</option>
             </select>
-            <input type="button" id="launch_pug" />
+            <input type="button" value="Launch" id="launch_pug" />
         </div>
         <div id="settings_box">
             <div class="close_alert">X</div>
@@ -114,6 +63,12 @@
           <img src="http://cdn.tf2pickup.com/ajax-loader.gif" />
           <br />
           Creating PUG
+        </div>
+        <div id="create_pug_error">
+          <div class="close_alert">X</div>
+          Error Creating PUG:
+          <br />
+          <p></p>
         </div>
         <div id="stats_box">
           <div class="close_alert">X</div>
@@ -141,17 +96,24 @@
         <div id="lobby_listing">
           <div class="page_header">
             Filter:
-            <span id="filter_6s" filter="players_per_team=6" class="filter_button">
+            <span id="filter_6s"
+                  filter="players_per_team=6"
+                  class="filter_button">
                6v6
             </span>
-            <span id="filter_9s" filter="players_per_team=9" class="filter_button">
+            <span id="filter_9s"
+                  filter="players_per_team=9"
+                  class="filter_button">
                9v9
             </span>
-            <div id="filter_na" filter="region=na"
+            <div id="filter_na"
+                 filter="region=na"
                  class="small_region region_na filter_button"></div>
-            <div id="filter_eu" filter="region=eu"
+            <div id="filter_eu"
+                 filter="region=eu"
                  class="small_region region_eu filter_button"></div>
-            <div id="filter_au" filter="region=au"
+            <div id="filter_au"
+                 filter="region=au"
                  class="small_region region_au filter_button"></div>
             <a href="#" id="start_pug">
                Start PUG
@@ -160,25 +122,23 @@
           <div id="no_pugs">
             No PUGs are open!
           </div>
-          <div id="comm_error">
-            Error retreiving servers. Automatically retrying.
-          </div>
           <div id="pugs_loading">
             <img src="http://cdn.tf2pickup.com/ajax-loader.gif" />
+            <p id="loading_status">Connecting...</p>
           </div>
           <div class="pugs_scrollbar_fix">
             <div id="pugs_container"></div>
           </div>
        </div>
          <div id="in_pug">
-            <div class="page_header">
-                <span id="leave_pug">
-                    Leave PUG
-                </span>
-            </div>
-            <div class="pugs_scrollbar_fix">
-                <div id="in_pug_teams_container"></div>
-            </div>
+           <div class="page_header">
+             <span id="leave_pug">
+               Leave PUG
+             </span>
+           </div>
+           <div class="pugs_scrollbar_fix">
+             <div id="in_pug_teams_container"></div>
+           </div>
         </div>
      </div>
  </div>

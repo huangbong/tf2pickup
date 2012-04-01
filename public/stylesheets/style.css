@@ -4,7 +4,7 @@
  * and tf2secondary as needed */
 @font-face {
     font-family: "TF2 Build";
-    src: url("fonts/tf2build.ttf") format("truetype");
+    src: url("/fonts/tf2build.ttf") format("truetype");
 }
 
 /* Global stuff */
@@ -84,11 +84,29 @@ div#alert_contents {
     margin: -144px auto;
 }
 
-div#login_box, div#start_pug_box, div#creating_pug_box {
+div#login_box, div#start_pug_box, div#creating_pug_box, div#disconnected,
+div#create_pug_error {
     width: 100%;
     display: none;
     outline: none;
 }
+/*
+
+#disconnected {
+    display: none;
+    text-align: center;
+    font-size: 32px;
+    background-color: #333;
+    border-color: #B30909;
+    border-radius: 10px;
+    border: 3px #B30909 solid;
+    margin-bottom: 10px;
+    padding: 10px;
+    margin-top: 200px;
+    width: 500px;
+    margin: 200px auto 0;
+}
+*/
 
 div.close_alert {
     position: absolute;
@@ -288,7 +306,7 @@ a#start_pug {
     padding-right: 50px;
 }
 
-#no_pugs, #comm_error {
+#no_pugs {
     margin-top: 25px;
     text-align: center;
     color: red;
@@ -526,7 +544,7 @@ img.friend {
  * All the CSS Sprites         */
 .class_1, .class_2, .class_3, .class_4, .class_5, .class_6, .class_7,
 .class_8, .class_9, .region_na, .region_eu, .region_au {
-    background-image: url(imgs/sprite.png);
+    background-image: url(/imgs/sprite.png);
     background-repeat: no-repeat;
  }
 
