@@ -3,15 +3,22 @@
  *
  * Derived from https://github.com/Nican/SRCDS-node.js-tools
  *
+ * Protocol reference:
+ * https://developer.valvesoftware.com/wiki/Source_RCON_Protocol
+ *
  * Modified by Gcommer to work with tf2pickup
+ * (At this point, I've rewritten the vast majority of the code)
  */
 
 var util = require('util');
 var events = require("events");
 var net = require("net");
 
-exports.SERVERDATA_EXECCOMMAND = 2;
-exports.SERVERDATA_AUTH = 3;
+var SERVERDATA_EXECCOMMAND = 2;
+var SERVERDATA_AUTH = 3;
+
+var SERVERDATA_RESPONSE_VALUE = 0;
+var SERVERDATA_AUTH_RESPONSE = 2;
 
 function RCon(host, port, callback) {
   var self = this;
@@ -19,20 +26,22 @@ function RCon(host, port, callback) {
 
 	this.host = host;
 	this.port = port;
-	this.id = 0;
 
 	this.buffer          = null;
   this.bytes_received  = 0;
   this.bytes_remaining = 0;
 
-  this.callback = callback;
+  this.init_callback = callback;
 
   this.connected = false;
 	this.connect(this.port, this.host);
 
+  // Map of request ids -> callback functions
+  this.requests = {};
+
   this.on('connect', function() {
     self.connected = true;
-    self.callback.call(self, null);
+    self.init_callback.call(self, null);
   });
 
 	this.on('data', this._receiveMessage );
@@ -42,31 +51,38 @@ function RCon(host, port, callback) {
 
 util.inherits(RCon, net.Socket);
 
+RCon.prototype._receiveError = function(data){
+  if (!this.connected)
+    this.init_callback("Could not connect to server");
+};
+
+RCon.prototype.generateRequestId = (function() {
+  var n = 0;
+  return function() { return n++; };
+})();
+
 RCon.prototype.auth = function(password, callback) {
   var self = this;
-  this.command(exports.SERVERDATA_AUTH, password);
+  var request_id = this._command(SERVERDATA_AUTH, password);
 
-  this.once('auth', function(id) {
-		if (id == -1)
-			callback.call(self, "Could not auth with the server");
-		else
+  this.auth_callback = function(id) {
+		if (id === -1)
+			callback.call(self, "Incorrect RCON password");
+		else if (id === request_id)
 			callback.call(self, null);
-	});
+    else
+      callback.call(self, "Invalid response to RCON authentication");
+	};
 };
 
 RCon.prototype.send = function(cmd, callback) {
-	var returnId = this.command(exports.SERVERDATA_EXECCOMMAND, cmd);
-
-  this.on('response', function(id, type, data) {
-    if (id == returnId) callback(data);
-  });
+	this._command(SERVERDATA_EXECCOMMAND, cmd, callback);
 };
 
-RCon.prototype.command = function(cmd, message) {
-  var out_len = 14 + message.length
-    , buffer  = new Buffer(out_len);
-
-  var request_id = Math.floor(Math.random() * 999999);
+RCon.prototype._command = function(cmd, message, callback) {
+  var out_len    = 14 + message.length
+    , buffer     = new Buffer(out_len)
+    , request_id = this.generateRequestId();
 
   buffer.writeInt32LE(out_len - 4 , 0);
   buffer.writeInt32LE(request_id  , 4);
@@ -77,55 +93,51 @@ RCon.prototype.command = function(cmd, message) {
 
 	this.write(buffer);
 
+  if (cmd === SERVERDATA_EXECCOMMAND)
+    this.requests[request_id] = callback;
+
   return request_id;
 };
 
 RCon.prototype._receiveMessage = function(data) {
-  var start = 0;
-
   // Messages come from the server in chunks, with the first int of the first
   // chunk specifying the number of bytes in the complete message
 	if (this.buffer === null) {
-    var total_bytes = data.readInt32LE(0);
-
-		this.buffer   = new Buffer(total_bytes);
-
+    var total_bytes      = data.readInt32LE(0) + 4;
+		this.buffer          = new Buffer(total_bytes);
     this.bytes_received  = 0;
     this.bytes_remaining = total_bytes; // exclude 'size' byte
-
-    start = 4;
 	}
 
-  var bytes_to_read = Math.min((data.length - start), this.bytes_remaining);
+  var bytes_to_read = Math.min(data.length, this.bytes_remaining);
 
-  data.copy(this.buffer, this.bytes_received, start, start + bytes_to_read);
+  data.copy(this.buffer, this.bytes_received, 0, bytes_to_read);
 
   this.bytes_received  += bytes_to_read;
   this.bytes_remaining -= bytes_to_read;
 
 	if (this.bytes_remaining === 0) {
-    // Done receiving, read data from this packet
-    var request_id = this.buffer.readInt32LE(0);
-		var response   = this.buffer.readInt32LE(4);
+    // Done receiving, read packet data from this buffer:
+    var request_id = this.buffer.readInt32LE(4);
+		var response   = this.buffer.readInt32LE(8);
 
     // Operate under the assumption str2 is always empty
-    var str1       = this.buffer.toString('ascii', 8, this.buffer.length - 2);
+    var str1       = this.buffer.toString('ascii', 12, this.bytes_received - 2);
 //  var str2       = buffer.readInt32LE(0);
 
-		this.buffer = null;
-		this.emit('response', request_id, response, str1);
+    if (response === SERVERDATA_RESPONSE_VALUE
+     && typeof this.requests[request_id] === "function") {
+      this.requests[request_id](str1);
+      delete this.requests[request_id];
+    }
+    else if (response === SERVERDATA_AUTH_RESPONSE)
+      this.auth_callback(request_id);
 
-		if (response == 2)
-			this.emit('auth', request_id);
+ 		this.buffer = null;
 	}
 
-  if ((bytes_to_read + start) !== data.length)
+  if (bytes_to_read !== data.length)
     this._receiveMessage(data.slice(bytes_to_read));
-
-};
-
-RCon.prototype._receiveError = function(data){
-  if (!this.connected) this.callback("Could not connect to server");
 };
 
 exports.RCon = RCon;
