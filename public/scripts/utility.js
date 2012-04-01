@@ -20,8 +20,19 @@ var TF2PICKUP_UTILITY = {
       return false;
     else
       return octets.join(".");
+  },
+
+  /* Javascript's default String.prototype.split has a limit option, but it
+   * doesn't actually limit the number of splits, only the number that are
+   * returned.  This function actually only splits on the first n occurences
+   * of the given delimiter
+   */
+  split: function(string, delimiter, limit) {
+    var splits = string.split(delimiter)
+      , tail   = splits.splice(limit).join(delimiter);
+    splits.push(tail);
+    return splits;
   }
 
 };
-
 if (module) module.exports = TF2PICKUP_UTILITY;
