@@ -201,6 +201,11 @@ function createPug(new_pug, callback) {
   if (new_pug.type !== 1 && new_pug.type !== 2)
     return callback("Invalid PUG type");
 
+  if (_.any(pugs, function(pug) {
+    return pug.ip === new_pug.ip && pug.port === new_pug.port;
+  }))
+    return callback("Server already being used for a pug");
+
   // Get info about the server
   async.parallel([
     function(callback) { getServerStatus(new_pug.ip, new_pug.port
@@ -231,23 +236,65 @@ function createPug(new_pug, callback) {
 
     // TODO: Check if server has the map
 
-    // If we made it here, we can create the pug!
     var id = generateUID();
     pugs[id] = {
       id: id,
       server_name: server_data.headers.hostname,
-      region: server_region,
-      players: [],
+      region:      server_region,
+      players:     [],
 
       name: new_pug.name,
       type: new_pug.type,
-      map: new_pug.map,
-      ip: new_pug.ip,
+      map:  new_pug.map,
+      ip:   new_pug.ip,
       port: new_pug.port
     };
 
     callback(null, pugs[id]);
   });
+};
+
+function pugsRemovePlayer(steamid) {
+  _.each(pugs, function(pug, pug_id) {
+    var player = _.find(pug.players, function(p) {
+      return p.steamid === steamid;
+    });
+
+    if (player) {
+      io.sockets.emit('leave', { pug_id: pug_id, steamid: steamid });
+      pug.players.splice(pug.players.indexOf(player), 1);
+    }
+  });
+};
+
+// Adds the given user as a player in the pug specified by pug_id
+// Returns true on success, false on error
+function pugAddPlayer(pug_id, user, class_id, team_id) {
+  if (!pugs[pug_id]) return false;
+  var players = pugs[pug_id].players
+    , available_classes = utils.getClasses(pugs[pug_id].pug_type)
+    , taken_classes;
+
+  // get the class id's of all player's with the given team_id
+  taken_classes = _.map(_.filter(players,
+                                 function(p) { return p.team_id === team_id; }),
+                        function(p) { return p.class_id; });
+
+  available_classes = _.difference(available_classes, taken_classes);
+  if (!_.find(available_classes, function(c) { return c === class_id }))
+    return false; // Desired class not available
+
+  var player = {
+    team_id:  team_id,
+    class_id: class_id,
+
+    name:    user.data.name,
+    avatar:  user.data.avatar,
+    steamid: user.data.steamid
+  };
+
+  players.push(player);
+  return player;
 };
 
 function loadUser(req, res, next) {
@@ -304,7 +351,6 @@ io.sockets.on('connection', function(socket) {
     , user = users[session.id];
 
   console.log(user.data.name + " connected");
-
   user.onConnection(socket);
 
   socket.on('create pug', function(data) {
@@ -316,6 +362,22 @@ io.sockets.on('connection', function(socket) {
       else
         socket.emit('create pug error', err);
     })
+  });
+
+  socket.on('join', function(pug_id, class_id, team_id) {
+    // TODO: reload session?
+    if (pugs[pug_id]                       // Valid pug_ud
+    && 1 <= class_id && class_id <= 9      // Valid class_id
+    && (team_id === 0 || team_id === 1)) { // Valid team_id
+      var player;
+
+      pugsRemovePlayer(user.data.steamid);
+      player = pugAddPlayer(pug_id, user, class_id, team_id);
+
+      if (player)
+        io.sockets.emit('join', { pug_id: pug_id, player: player });
+    }
+
   });
 
   socket.on('region', function(ip) {
@@ -364,6 +426,7 @@ app.listen(config.port);
 console.log("Express server running tf2pickup on port %d in %s mode"
                 , app.address().port, app.settings.env);
 
+// For tests:
 module.exports = {
   getServerStatus: getServerStatus
 };

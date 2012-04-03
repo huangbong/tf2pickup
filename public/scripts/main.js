@@ -56,31 +56,7 @@
     });
     $alert.show();
   };
-  var hideAlert = function() {$alert.hide()};
-
-  /* Creates a default team object for a given game mode */
-  var makeDefaultTeam = function(pug_type, team_id) {
-    var n = 0, classes;
-    if (pug_type === 1)
-      classes = [1, 1, 2, 2, 4, 7];
-    else
-      classes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-    return {
-      team_id: team_id,
-      players: $.map(classes, function(class_id) {
-        return {
-          slot_id: ++n,
-          class_id: class_id, // Stringify so 0 renders correctly
-          empty: true,
-          avatar: null,
-          name: null,
-          steamid: null,
-          friend: false
-        };
-      })
-    };
-  };
+  var hideAlert = function() { $alert.hide(); };
 
   /* Constructor for a PUG listing.  Accepts decoded JSON straight from
    * the server */
@@ -92,7 +68,7 @@
     var self = this
       , required_data = ["id", "region", "map", "name", "pug_type"
                          , "server_name", "host_name"
-                         , "players", "started"];
+                         , "players"];
 
     this.needs_redisplay = false;
 
@@ -102,31 +78,36 @@
       self[key] = data[key];
     });
 
-    this.started = this.started === "1";
     this.pug_type = +this.pug_type;
     this.players_per_team = (this.pug_type === 1)? 6:9;
-    this.max_players = 2 * this.players_per_team ;
+    this.max_players = 2 * this.players_per_team;
     this.player_count = 0;
-    this.teams = [makeDefaultTeam(this.pug_type, 0)
-                , makeDefaultTeam(this.pug_type, 1)];
+
+    this.organizeTeams();
+  };
+
+  PUGListing.prototype.organizeTeams = function() {
+    var self = this;
+    this.teams = [utils.makeDefaultTeam(this.pug_type, 0)
+                , utils.makeDefaultTeam(this.pug_type, 1)];
 
     $.each(this.players, function(idx, player) {
       var class_id = +player.class_id;
       if (class_id > 0) {
-        $.each(self.teams[+player.team].players, function(idx, slot) {
+        $.each(self.teams[+player.team_id].players, function(idx, slot) {
           if (slot.class_id === class_id && slot.empty) {
-            slot.empty = false;
-            slot.avatar = player.avatar;
-            slot.steamid = player.steam64;
-            slot.name = player.name;
-            slot.friend = _.indexOf(friends_cache, player.steam64) > -1;
+            slot.empty   = false;
+            slot.avatar  = player.avatar;
+            slot.steamid = player.steamid;
+            slot.name    = player.name;
+            slot.friend  = _.indexOf(friends_cache, player.steam64) > -1;
             return false; // break from the .each
           }
         });
       }
       ++self.player_count;
     });
-  }
+  };
 
   /* Updates the currently rendered PUG listing with data from pug_cache */
   var updatePUGListing = function() {
@@ -136,18 +117,24 @@
 
       // Remove pugs that have started
       if (pug.started && $pug.size() === 1) {
-        $pug.animate({height: 0, opacity: 0, "border-width": 0, "margin-top": 0}).hide(0);
+        $pug.animate({
+          height: 0,
+          opacity: 0,
+          "border-width": 0,
+          "margin-top": 0
+        }).hide(0);
         delete pugs_cache[id];
         return;
       }
 
       current_ids["pug_id_" + id] = true;
       if (pug.needs_redisplay) {
+        html = $PUGListingTemplate.render(pug);
+        $new_pug = $(html);
+        $new_pug.on("click", _.bind(enterPUG, $new_pug, id));
+
         if ($pug.size() === 0) {
           /* If this PUG does not exist yet... */
-          html = $PUGListingTemplate.render(pug);
-          $new_pug = $(html);
-          $new_pug.on("click", _.bind(enterPUG, $new_pug, id));
           $new_pug.hide();
           $pugs_container.append($new_pug);
           $new_pug.fadeIn();
@@ -160,9 +147,6 @@
           if ($pug_name.text() !== this.name) {
               $pug_name.text(this.name);
             } */
-          html = $PUGListingTemplate.render(pug);
-          $new_pug = $(html);
-          $new_pug.on("click", _.bind(enterPUG, $new_pug, id));
           $pug.replaceWith($new_pug);
         }
 
@@ -170,7 +154,7 @@
           // Update the PUG we're currently in and move
           // it to the top of the listng
           renderCurrentPUG();
-          $pugs_container.append($pug);
+          //$pugs_container.append($pug);
         }
       }
       pug.needs_redisplay = false;
@@ -201,18 +185,18 @@
     $(".pug:visible:first").addClass("first_pug");
   };
 
-  /* Creates a filter function from  */
+  /* Creates a filter function from a filter string, defined as 'property=val'
+   * in HTML */
   var makeFilter = function(filter_string) {
-      var parts = filter_string.split("=");
-      if (parts.length !== 2) {
-          return function() {return true;};
-      }
+    var parts = filter_string.split("=");
+    if (parts.length !== 2)
+      return function() {return true;};
 
-      var attr_name = parts[0], reject_val = parts[1];
-      return function(pug) {
-          /* (Using == on purpose) */
-          return (pug[attr_name] == reject_val);
-      };
+    var attr_name = parts[0], reject_val = parts[1];
+    return function(pug) {
+      /* (Using == on purpose) */
+      return (pug[attr_name] == reject_val);
+    };
   };
 
   /* Callback when filters are clicked */
@@ -249,8 +233,8 @@
     socket.emit('create pug', {
       name: $("#new_pug_name").val(),
       type: $("#new_pug_type").val(),
-      map: $("#new_pug_map").val(),
-      ip: $("#new_pug_ip").val(),
+      map:  $("#new_pug_map").val(),
+      ip:   $("#new_pug_ip").val(),
       port: $("#new_pug_port").val(),
       rcon: $("#new_pug_rcon").val()
     });
@@ -268,26 +252,28 @@
 
   /* Update the region preview flag when creating a server */
   var updateRegionPreview = function() {
-      var ip = utils.simplifyIP($new_pug_ip.val()), region = null;
+    var ip = utils.simplifyIP($new_pug_ip.val()), region = null;
 
-      $.each($server_preview.attr('class').split(/\s+/), function () {
-          if (this.indexOf("region_") === 0)
-              $server_preview.removeClass(this);
-      });
+    $.each($server_preview.attr('class').split(/\s+/), function () {
+      if (this.indexOf("region_") === 0)
+        $server_preview.removeClass(this);
+    });
 
-      if (!ip) return;
-      if (ip_region_cache.hasOwnProperty(ip))
-          region = ip_region_cache[ip];
+    if (!ip) return;
+    if (ip_region_cache.hasOwnProperty(ip))
+      region = ip_region_cache[ip];
 
-      if (region === null)
-          fetchRegionPreview(ip);
-      else
-          $server_preview.addClass("region_" + region);
+    if (region === null)
+      fetchRegionPreview(ip);
+    else
+      $server_preview.addClass("region_" + region);
   };
 
   var renderCurrentPUG = function() {
+    if (current_pug_id >= 0) {
       var html = $InPUGTeamsTemplate.render(pugs_cache[current_pug_id]);
       $in_pug_teams_container.html(html);
+    }
   };
 
   var enterPUG = function(pug_id) {
@@ -307,30 +293,30 @@
   };
 
   var leavePUG = function() {
-      $("#lobby_listing").stop(true).animate({left: '0px'});
-      $("#in_pug").stop(true).animate({left: '1100px'}).hide(0);
+    $("#lobby_listing").stop(true).animate({left: '0px'});
+    $("#in_pug").stop(true).animate({left: '1100px'}).hide(0);
 
-      $("#pug_id_" + current_pug_id).removeClass("current_pug");
+    $("#pug_id_" + current_pug_id).removeClass("current_pug");
   };
 
   /* On page load - setup keybinds and get handles
    * to common page elements */
   $(function() {
     /* Various handles we want to keep a reference to */
-    $pugs_container = $("#pugs_container");
+    $pugs_container         = $("#pugs_container");
     $in_pug_teams_container = $("#in_pug_teams_container");
-    $no_pugs = $("#no_pugs");
-    $PUGListingTemplate = $("#PUGListingTemplate");
-    $InPUGTeamsTemplate = $("#InPUGTeamsTemplate");
+    $no_pugs                = $("#no_pugs");
+    $PUGListingTemplate     = $("#PUGListingTemplate");
+    $InPUGTeamsTemplate     = $("#InPUGTeamsTemplate");
 
     /* Alert box panels */
     $alert = $("#alert");
-    alert_panels["login"] = $("#login_box");
-    alert_panels["start_pug"] = $("#start_pug_box");
-    alert_panels["settings"] = $("#settings_box");
-    alert_panels["stats"] = $("#stats_box");
-    alert_panels["creating_pug"] = $("#creating_pug_box");
-    alert_panels["disconnected"] = $("#disconnected");
+    alert_panels["login"]            = $("#login_box");
+    alert_panels["start_pug"]        = $("#start_pug_box");
+    alert_panels["settings"]         = $("#settings_box");
+    alert_panels["stats"]            = $("#stats_box");
+    alert_panels["creating_pug"]     = $("#creating_pug_box");
+    alert_panels["disconnected"]     = $("#disconnected");
     alert_panels["create_pug_error"] = $("#create_pug_error");
 
     /* Error label: */
@@ -340,7 +326,6 @@
     $server_preview = $("#new_pug_region_preview");
 
     /* Error and info panels */
-
     $loading_status = $("#loading_status");
 
     /* Persist.JS data store */
@@ -358,22 +343,25 @@
     $("#launch_pug").click(createPUG);
     $("#leave_pug").click(leavePUG);
 
-    $("#in_pug_teams_container").on("click", ".in_pug_player");
+    $("#in_pug_teams_container").on("click", ".available", function() {
+      var $this = $(this);
+      socket.emit('join', current_pug_id
+                        , +$this.attr('js-class')
+                        , +$this.attr('js-team'));
+    });
 
     /* Update region preview of a pug's ip */
     $new_pug_ip.on("keyup keydown change", updateRegionPreview);
-    $server_preview.on("click", function() {$new_pug_ip.focus()});
+    $server_preview.on("click", function() { $new_pug_ip.focus(); });
 
     /* Default a pug's port to 27015. Using this instead of an HMTL
      * placeholder attribute so the value gets sent */
     $("#new_pug_port").focus(function() {
-      if ($(this).val() === "27015") {
+      if ($(this).val() === "27015")
         $(this).val("");
-      }
     }).blur(function() {
-      if ($(this).val() === "") {
+      if ($(this).val() === "")
         $(this).val("27015");
-      }
     });
 
     socket = io.connect();
@@ -388,6 +376,28 @@
     /* Our custom events */
     socket.on('pug', receivePUGData);
     socket.on('pug created', enterPUG);
+
+    socket.on('join', function(data) {
+      var pug = pugs_cache[data.pug_id];
+      pug.players.push(data.player);
+      pug.organizeTeams();
+      pug.needs_redisplay = true;
+
+      updatePUGListing();
+      renderCurrentPUG();
+    });
+
+    socket.on('leave', function(data) {
+      var pug = pugs_cache[data.pug_id];
+      pug.players = _.reject(pug.players, function(p) {
+        return p.steamid === data.steamid;
+      });
+      pug.organizeTeams();
+      pug.needs_redisplay = true;
+
+      updatePUGListing();
+      renderCurrentPUG();
+    });
 
     socket.on('region', function(data) {
       ip_region_cache[data.ip] = data.region;

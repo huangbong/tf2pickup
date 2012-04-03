@@ -1,10 +1,12 @@
 {{for teams}}
   <div class="in_pug_team">
-    <div class="in_pug_team_header team_{{:team_id + 1}}">
+    <div class="in_pug_team_header team_{{zeroFix:team_id}}">
       {{if team_id === 0}}BLU{{else}}RED{{/if}}
     </div>
     {{for players}}
-      <div class="in_pug_player">
+      <div class="in_pug_player{{if !empty}} available{{/if}}"
+           js-class="{{:class_id}}"
+           js-team="{{zeroFix:teamid}}">
         <div class="med_class class_{{:class_id}}"></div>
         {{if !empty}}
           <img src="{{:avatar}}"

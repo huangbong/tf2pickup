@@ -500,7 +500,7 @@ img.friend {
     background-color: #333;
 }
 
-.in_pug_player {
+.in_pug_player.available {
     cursor: pointer;
 }
 
@@ -532,11 +532,11 @@ img.friend {
     font-family: "TF2 Build", Verdana, Arial, sans-serif;
 }
 
-.in_pug_team_header.team_1 {
+.in_pug_team_header.team_0 {
     background-color: #2164d3;
 }
 
-.in_pug_team_header.team_2 {
+.in_pug_team_header.team_1 {
     background-color: #b30909;
 }
 

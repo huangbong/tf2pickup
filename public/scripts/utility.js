@@ -32,6 +32,34 @@ var TF2PICKUP_UTILITY = {
       , tail   = splits.splice(limit).join(delimiter);
     splits.push(tail);
     return splits;
+  },
+
+  getClasses: function(pug_type) {
+    if (pug_type === 1)
+      return [1, 1, 2, 2, 4, 7];
+    else
+      return [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  },
+
+  /* Creates a default team object for a given game mode */
+  makeDefaultTeam: function(pug_type, team_id) {
+    var n = 0;
+    return {
+      team_id: team_id,
+      players: _.map(TF2PICKUP_UTILITY.getClasses(pug_type),
+                     function(class_id) {
+        return {
+          slot_id: ++n,
+          teamid: team_id, // Don't ask, jsrender sucks apparently...
+          class_id: class_id,
+          empty: true,
+          avatar: null,
+          name: null,
+          steamid: null,
+          friend: false
+        };
+      })
+    };
   }
 
 };
