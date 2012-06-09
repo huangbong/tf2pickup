@@ -1,10 +1,13 @@
-{{for teams}}
+  <div id="pug_info">
+
+  </div>
+  {{for teams}}
   <div class="in_pug_team">
     <div class="in_pug_team_header team_{{zeroFix:team_id}}">
-      {{if team_id === 0}}BLU{{else}}RED{{/if}}
+      {{teamName:team_id}}
     </div>
     {{for players}}
-      <div class="in_pug_player{{if !empty}} available{{/if}}"
+      <div class="in_pug_player available"
            js-class="{{:class_id}}"
            js-team="{{zeroFix:teamid}}">
         <div class="med_class class_{{:class_id}}"></div>
@@ -23,4 +26,4 @@
       </div>
     {{/for}}
   </div>
-{{/for}}
+  {{/for}}

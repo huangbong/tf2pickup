@@ -306,49 +306,6 @@ a#start_pug {
     width: 66px;
 }
 
-div#current_pug {
-    float: left;
-    width: 260px;
-    margin-left: 15px;
-    cursor: pointer;
-    display: none;
-}
-
-div#current_pug div.med_region {
-    float: left;
-    border-radius: 5px 0 0 5px;
-}
-
-div#current_pug img {
-    float: left;
-    border-radius: 0 5px 5px 0;
-    margin-right: 5px;
-}
-
-div#current_pug div#cur_team {
-    float: left;
-}
-
-div#current_pug div#cur_team_name {
-    width: 40px;
-    text-align: center;
-    float: left;
-    display: inline-block;
-    border-radius: 4px;
-}
-
-div#current_pug div.small_class {
-    width: 24px;
-    height: 24px;
-    margin: 2px 0 0 8px;
-    float: left;
-}
-
-div#current_pug div#cur_player_count {
-    float: right;
-    font-size: 35px;
-}
-
 /* Needed solely for the overflow: hidden */
 #pages_wrapper {
     width: 100%;
@@ -449,12 +406,7 @@ div.pug.current_pug {
 }
 
 .pug_info {
-    width: 216px;
-    float: left;
-    background-color: #282828;
-    display: block;
-    border-radius: 10px;
-    height: 100%;
+    font-size: 12px;
 }
 
 .pug_teams {
@@ -523,15 +475,15 @@ img.friend {
 }
 
 .in_pug_team:last-child {
-    margin-left: 8px;
+    float: right;
 }
 
 .in_pug_player, .in_pug_team_header {
-    height: 40px;
-    width: 400px;
+    height: 50px;
+    width: 500px;
     border: 3px #d0cbc7 solid;
     border-radius: 10px;
-    margin-top: 8px;
+    margin-top: 10px;
     background-color: #333;
 }
 
@@ -547,33 +499,31 @@ img.friend {
     margin-top: 0;
 }
 
-.in_pug_player .med_class, .in_pug_team img, .in_pug_team .player_name {
+.in_pug_player .med_class, .in_pug_team img, .in_pug_team div.player_name {
     width: 32px;
     height: 32px;
-    margin-left: 6px;
+    margin: 6px 0 6px 6px;
     float: left;
     vertical-align: middle;
 }
 
-.in_pug_team div.player_name, .player_name {
-    width: 310px;
+.in_pug_team div.player_name {
+    width: 300px;
     text-overflow: ellipsis;
-    overflow: hidden;
-    display: inline-block;
 }
 
 .in_pug_team_header {
     border-color: transparent;
     text-align: center;
-    font-size: 33px;
+    font-size: 41px;
     font-family: "TF2 Build", Verdana, Arial, sans-serif;
 }
 
-.team_0 {
+.in_pug_team_header.team_0 {
     background-color: #2164d3;
 }
 
-.team_1 {
+.in_pug_team_header.team_1 {
     background-color: #b30909;
 }
 
@@ -627,13 +577,6 @@ img.friend {
 .region_eu.small_region {background-position: -100px -137px;}
 .region_au.small_region {background-position: -125px -137px;}
 .region_empty.small_region {background: #333;}
-
-/* Medium region icons */
-.med_region {width: 19px; height: 48px; display: inline-block;}
-.region_na.med_region {background-position: -75px  -88px;}
-.region_eu.med_region {background-position: -90px -88px;}
-.region_au.med_region {background-position: -105px -88px;}
-.region_empty.med_region {background: #333;}
 
 /* Large region icons */
 .large_region {width: 25px; height: 65px; display: inline-block;}

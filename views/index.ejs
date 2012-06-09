@@ -11,6 +11,20 @@
 <script id="InPUGTeamsTemplate" type="text/x-jsrender">
   <%- partial('in_pug.ejs')  %>
 </script>
+<script id="PUGViewTemplate" type="text/x-jsrender">
+  <div class="med_region region_{{:pug.region}}"></div>
+  <img src="http://cdn.tf2pickup.com/maps/320/{{:pug.map}}.jpg"
+       height="48"
+       alt="{{:pug.map}}"
+       title="{{:pug.map}}" />
+  <div id="cur_team">
+    <div id="cur_team_name" class="team_{{zeroFix:player.team_id}}"><!--
+    -->{{teamName:player.team_id}}</div><br />
+    <div class="small_class class_{{zeroFix:player.class_id}}"></div>
+  </div>
+  <div id="cur_player_count"><!--
+  -->{{zeroFix:pug.players.length}}/{{zeroFix:pug.max_players}}</div>
+</script>
 
 <!-- Alert box -->
 <div id="alert"<% if (logged_in) { %> class="hidden"<% } %>>
@@ -82,13 +96,15 @@
   <div id="tf2_icon"></div>
   <div id="header">
     <div id="logo"></div>
+    <div id="current_pug">
+    </div>
 <% if (logged_in) { %>
       <div id="steam">
         <img src="<%= user.avatar %>" alt="avatar" width="30" height="30" />
-          <%= user.name %> ||
-            <a href="#stats" id="open_stats">stats</a>
+          <div class="player_name"><%= user.name %></div> ||
+          <a href="#stats" id="open_stats">stats</a>
           - <a href="#settings" id="open_settings">settings</a>
-          - <a href="logout.php">logout</a>
+          - <a href="/logout">logout</a>
       </div>
 <% } %>
     </div>

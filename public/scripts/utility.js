@@ -48,17 +48,17 @@ var TF2PICKUP_UTILITY = {
       team_id: team_id,
       players: _.map(TF2PICKUP_UTILITY.getClasses(pug_type),
                      function(class_id) {
-        return {
-          slot_id: ++n,
-          teamid: team_id, // Don't ask, jsrender sucks apparently...
-          class_id: class_id,
-          empty: true,
-          avatar: null,
-          name: null,
-          steamid: null,
-          friend: false
-        };
-      })
+                       return {
+                         slot_id: ++n,
+                         teamid: team_id,
+                         class_id: class_id,
+                         empty: true,
+                         avatar: null,
+                         name: null,
+                         steamid: null,
+                         friend: false
+                       };
+                     })
     };
   }
 

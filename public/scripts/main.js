@@ -17,7 +17,8 @@
     , $new_pug_ip, $server_preview
     , $in_pug_teams_container
     , $loading_status
-    , $create_pug_error;
+    , $create_pug_error
+    , $cur_pug;
 
   /* PUG the player is viewing */
   var current_pug_id = -1;
@@ -45,7 +46,8 @@
 
   /* Slight fix for jsRender */
   $.views.converters({
-    zeroFix: function (value) {return value || 0;}
+    zeroFix: function (v) {return v || 0;},
+    teamName: function (v) { return (v == "0")? "BLU":"RED"; }
   });
 
   /* Functions for centered alert box (for logins, starting pugs, etc)
@@ -64,11 +66,43 @@
     this.load(data);
   };
 
+  // TODO: Use Backbone...
+  var PUG = Backbone.Model.extend({
+    defaults: {
+      id: -1,
+      region: "",
+      map: "",
+      name: "",
+      pug_type: "",
+      server_name: "",
+      host_name: "",
+      players: []
+    },
+
+    initialize: function() {
+
+    }
+  });
+
+  var PUGList = Backbone.Collection.extend({
+
+  });
+
+  var PUGView = Backbone.View.extend({
+    tagName: "li",
+    template: ""
+
+  });
+
+  var AppView = Backbone.View.extend({
+    el: $("body")
+
+  });
+
   PUGListing.prototype.load = function(data) {
     var self = this
       , required_data = ["id", "region", "map", "name", "pug_type"
-                         , "server_name", "host_name"
-                         , "players"];
+                         , "server_name", "host_name", "players"];
 
     this.needs_redisplay = false;
 
@@ -81,7 +115,6 @@
     this.pug_type = +this.pug_type;
     this.players_per_team = (this.pug_type === 1)? 6:9;
     this.max_players = 2 * this.players_per_team;
-    this.player_count = 0;
 
     this.organizeTeams();
   };
@@ -105,8 +138,7 @@
           }
         });
       }
-      ++self.player_count;
-    });
+     });
   };
 
   /* Updates the currently rendered PUG listing with data from pug_cache */
@@ -271,8 +303,19 @@
 
   var renderCurrentPUG = function() {
     if (current_pug_id >= 0) {
-      var html = $InPUGTeamsTemplate.render(pugs_cache[current_pug_id]);
+      var pug = pugs_cache[current_pug_id]
+        , html = $InPUGTeamsTemplate.render(pug);
       $in_pug_teams_container.html(html);
+
+      // Upper in-game notification
+      var player = _.filter(pug.players, function(p) {
+        return p.steamid === user_data.steamid;
+      })[0];
+      if (player)
+        $cur_pug.html($("#PUGViewTemplate").render({
+          player: player,
+          pug: pug
+        }));
     }
   };
 
@@ -288,15 +331,24 @@
       });
     current_pug_id = pug_id;
 
+    // TODO: Update information in this box
+    $cur_pug.show();
+
     renderCurrentPUG();
     hideAlert();
   };
 
-  var leavePUG = function() {
+  var viewListing = function() {
     $("#lobby_listing").stop(true).animate({left: '0px'});
     $("#in_pug").stop(true).animate({left: '1100px'}).hide(0);
 
     $("#pug_id_" + current_pug_id).removeClass("current_pug");
+  };
+
+  var leavePUG = function() {
+    viewListing();
+    current_pug_id = -1;
+    $cur_pug.hide();
   };
 
   /* On page load - setup keybinds and get handles
@@ -308,6 +360,7 @@
     $no_pugs                = $("#no_pugs");
     $PUGListingTemplate     = $("#PUGListingTemplate");
     $InPUGTeamsTemplate     = $("#InPUGTeamsTemplate");
+    $cur_pug                = $("#current_pug");
 
     /* Alert box panels */
     $alert = $("#alert");
@@ -342,6 +395,8 @@
 
     $("#launch_pug").click(createPUG);
     $("#leave_pug").click(leavePUG);
+
+    $cur_pug.click(function() { enterPUG(current_pug_id); });
 
     $("#in_pug_teams_container").on("click", ".available", function() {
       var $this = $(this);

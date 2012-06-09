@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="pug_player_count">
-      {{zeroFix:player_count}}/{{zeroFix:max_players}}
+      {{zeroFix:players.length}}/{{zeroFix:max_players}}
     </div>
       <div class="pug_teams">
         {{for teams ~pug_id=id tmpl="#PUGTeamTemplate"/}}

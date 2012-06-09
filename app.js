@@ -6,6 +6,9 @@ var express      = require('express')
   , async        = require('async')
   , steam_login  = require('./steam.js')
   , steam_api    = require('steam')
+  // TODO: use these:
+  , check        = require('validator').check
+  , sanitize     = require('validator').sanitize
   , geoip        = require('geoip-lite-rm')
   , to_continent = require('./continents.js').to_continent
   , rcon         = require('./rcon.js')
@@ -139,10 +142,13 @@ function createUser(sessionid, steamid, callback) {
     function(callback) { getFriends(steamid, callback); }
   , function(callback) { getPlayerInfo(steamid, callback); }
   ],function(err, results) {
-    if (users[sessionid]) {
-      users[sessionid].disconnect();
-      users[sessionid] = null;
-    }
+    if (users[sessionid])
+      users[sessionid].destroy();
+
+    // Kill any users with the same steamid
+    _.chain(users)
+     .filter(function(u) { return u.steamid === steamid; })
+     .each(function(u) { u.destroy(); });
 
     if (err)
       callback(err);
@@ -158,10 +164,19 @@ function createUser(sessionid, steamid, callback) {
         },
 
         socket: null,
+        sessionid: sessionid,
 
         onConnection: function(socket) {
+          // Kill old connections using this session id and then
+          // map this session id to the new socket
           this.disconnect();
           this.socket = socket;
+        },
+
+        destroy: function() {
+          this.disconnect();
+          this.session.destroy();
+          delete users[this.sessionid];
         },
 
         disconnect: function() {
@@ -169,6 +184,7 @@ function createUser(sessionid, steamid, callback) {
             this.socket.disconnect();
         }
       };
+
       callback();
     }
   });
@@ -383,6 +399,10 @@ io.sockets.on('connection', function(socket) {
   socket.on('region', function(ip) {
     if ((ip = utils.simplifyIP(ip)))
       socket.emit('region', { ip: ip, region: getRegion(ip) || false });
+  });
+
+  socket.on('disconnect', function() {
+    pugsRemovePlayer(user.data.steamid);
   });
 
   socket.emit('pug', pugs);

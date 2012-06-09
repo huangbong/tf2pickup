@@ -101,18 +101,16 @@ SQL;
         $params = array();
         $ids = array();
         foreach ($pugs as $pug) {
-            if (!$first)
-                $sql .= " OR ";
-            $first = false;
-
             // Could use a HAVING clause instead of re-applying UNIX_TIMESTAMP,
             // but HAVING clauses can hurt performance, while UNIX_TIMESTAMP
             // has practically no overhead
+            if (!$first) $sql .= " OR ";
             $sql .= "(`pugs`.`id` = ? AND UNIX_TIMESTAMP(`pugs`.`last_updated`) > ?)";
 
             list($id, $time) = $pug;
             array_push($ids, $id);
             array_push($params, $id, $time);
+            $first = false;
         }
         $sql .= " OR (`pugs`.`started` = 0 AND !(`pugs`.`id` in (" . implode(",", array_fill(0, count($ids), "?")) . "))) )";
 
