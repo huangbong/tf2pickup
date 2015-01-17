@@ -4,6 +4,7 @@ node_modules/
 phpmyadmin/
 fake_session.php
 non-git/
+data/
 *~
 config.development.js
 [#]*[#]
